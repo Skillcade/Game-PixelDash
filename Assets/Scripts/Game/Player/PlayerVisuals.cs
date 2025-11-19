@@ -1,0 +1,136 @@
+using System;
+using SkillcadeSDK;
+using SkillcadeSDK.Common;
+using TMPro;
+using Unity.Cinemachine;
+using UnityEngine;
+using UnityEngine.UI;
+using VContainer;
+
+namespace Game.Player
+{
+    public class PlayerVisuals : MonoBehaviour
+    {
+        private static readonly int JumpTrigger = Animator.StringToHash("JumpTrigger");
+        private static readonly int Grounded = Animator.StringToHash("Grounded");
+        private static readonly int VelY = Animator.StringToHash("VelY");
+        private static readonly int SpeedX = Animator.StringToHash("SpeedX");
+        
+        [Header("References")]
+        [SerializeField] private PlayerMovement _movement;
+        [SerializeField] private Animator _animator;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private Image _hpBarImage;
+        [SerializeField] private TMP_Text _nicknameText;
+        
+        [Header("Config")]
+        [SerializeField] private float _speedThreshold;
+        [SerializeField] private float _remoteDarkenMul = 0.7f;
+        [SerializeField] private float _remoteAlpha = 0.9f;
+
+        // [Inject] private readonly FishNetPlayerDataService _playerDataService;
+
+        private string _nickname;
+
+        private void OnEnable()
+        {
+            this.InjectToMe();
+            InitNickname();
+            
+            _movement.JumpFx += OnJumpFx;
+            // _playerDataService.OnPlayerUpdated += OnPlayerUpdated;
+        }
+
+        private void OnDisable()
+        {
+            _movement.JumpFx -= OnJumpFx;
+            // _playerDataService.OnPlayerUpdated -= OnPlayerUpdated;
+        }
+
+        private void Start()
+        {
+            if (_movement.NetworkObject.Owner.IsLocalClient)
+            {
+                CinemachineCamera targetCamera = FindAnyObjectByType<CinemachineCamera>(FindObjectsInactive.Include);
+                if (targetCamera != null)
+                {
+                    targetCamera.Target.TrackingTarget = transform;
+                }
+            }
+            else
+            {
+                TryApplyNonLocalVisuals();
+            }
+        }
+
+        private void InitNickname()
+        {
+            if (_movement == null || _movement.NetworkObject == null)
+                return;
+            
+            // if (!_playerDataService.TryGetData(_movement.OwnerId, out var data))
+            //     return;
+
+            // _nickname = data.Nickname;
+            _nicknameText.text = _nickname;
+        }
+        
+        private void Update()
+        {
+            Vector2 vel = _movement.Velocity;
+            _animator.SetFloat(SpeedX, GetAbsWithThreshold(vel.x));
+            _animator.SetFloat(VelY, GetAbsWithThreshold(vel.y));
+            _animator.SetBool(Grounded, _movement.IsGrounded);
+
+            if (vel.x > 0.01f)
+            {
+                _spriteRenderer.flipX = false;
+            }
+            else if (vel.x < -0.01f)
+            {
+                _spriteRenderer.flipX = true;
+            }
+            
+            _hpBarImage.fillAmount = _movement.Health01;
+        }
+
+        private float GetAbsWithThreshold(float value)
+        {
+            var speed = Mathf.Abs(value);
+            if (speed < _speedThreshold)
+                speed = 0;
+
+            return speed;
+        }
+        
+        private void OnJumpFx()
+        {
+            _animator.SetTrigger(JumpTrigger);
+        }
+        
+        private void TryApplyNonLocalVisuals()
+        {
+            if (_spriteRenderer == null)
+            {
+                return;
+            }
+            
+            Color c = _spriteRenderer.color;
+            c *= _remoteDarkenMul;
+            c.a = _remoteAlpha;
+            _spriteRenderer.color = c;
+        }
+
+        private void OnPlayerUpdated(int clientId, PlayerData playerData)
+        {
+            if (_movement == null || _movement.OwnerId != clientId)
+                return;
+            
+            if (string.Equals(_nickname, playerData.Nickname, StringComparison.InvariantCulture))
+                return;
+
+            _nickname = playerData.Nickname;
+            _nicknameText.text = _nickname;
+        }
+    }
+}
