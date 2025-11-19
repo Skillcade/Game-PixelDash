@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using SkillcadeSDK;
 using SkillcadeSDK.Common;
+using SkillcadeSDK.Common.Players;
+using SkillcadeSDK.FishNetAdapter.Players;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -16,7 +18,7 @@ namespace Game.GUI.Debug
         [SerializeField] private Transform _pingsRoot;
         [SerializeField] private PlayerPingItem _pingItemPrefab;
 
-        // [Inject] private readonly FishNetPlayerDataService _playerDataService;
+        [Inject] private readonly IPlayersController _playersController;
 
         private Dictionary<int, PlayerPingItem> _playerPingItems;
         
@@ -26,9 +28,9 @@ namespace Game.GUI.Debug
             _openButton.onClick.AddListener(OpenPressed);
             _closeButton.onClick.AddListener(ClosePressed);
             
-            // _playerDataService.OnPlayerAdded += OnPlayerAdded;
-            // _playerDataService.OnPlayerUpdated += OnPlayerUpdated;
-            // _playerDataService.OnPlayerRemoved += OnPlayerRemoved;
+            _playersController.OnPlayerAdded += OnPlayerAdded;
+            _playersController.OnPlayerDataUpdated += OnPlayerUpdated;
+            _playersController.OnPlayerRemoved += OnPlayerRemoved;
             
             _playerPingItems = new Dictionary<int, PlayerPingItem>();
             InitExistingPings();
@@ -36,17 +38,17 @@ namespace Game.GUI.Debug
 
         private void OnDestroy()
         {
-            // _playerDataService.OnPlayerAdded -= OnPlayerAdded;
-            // _playerDataService.OnPlayerUpdated -= OnPlayerUpdated;
-            // _playerDataService.OnPlayerRemoved -= OnPlayerRemoved;
+            _playersController.OnPlayerAdded -= OnPlayerAdded;
+            _playersController.OnPlayerDataUpdated -= OnPlayerUpdated;
+            _playersController.OnPlayerRemoved -= OnPlayerRemoved;
         }
 
         private void InitExistingPings()
         {
-            // foreach (var playerData in _playerDataService.PlayerData)
-            // {
-            //     CreatePingItem(playerData.Key, playerData.Value);
-            // }
+            foreach (var playerData in _playersController.GetAllPlayersData())
+            {
+                CreatePingItem(playerData.PlayerNetworkId, playerData);
+            }
         }
 
         private void OpenPressed()
@@ -59,22 +61,24 @@ namespace Game.GUI.Debug
             _panelRoot.SetActive(false);
         }
 
-        private void OnPlayerAdded(int clientId, PlayerData playerData)
+        private void OnPlayerAdded(int clientId, IPlayerData playerData)
         {
             CreatePingItem(clientId, playerData);
         }
 
-        private void OnPlayerUpdated(int clientId, PlayerData playerData)
+        private void OnPlayerUpdated(int clientId, IPlayerData playerData)
         {
             if (!_playerPingItems.TryGetValue(clientId, out var playerPingItem))
                 playerPingItem = CreatePingItem(clientId, playerData);
             
-            playerPingItem.SetPing(playerData.Ping);
-            // if (playerData.Nickname != playerPingItem.Username)
-            //     playerPingItem.SetUsername(playerData.Nickname, clientId == _playerDataService.LocalPlayerId);
+            if (playerData.TryGetData(PlayerDataConst.Ping, out int ping))
+                playerPingItem.SetPing(ping);
+            
+            if (playerData.TryGetData(PlayerDataConst.Nickname, out string nickname) && nickname != playerPingItem.Username)
+                playerPingItem.SetUsername(nickname, clientId == _playersController.LocalPlayerId);
         }
 
-        private void OnPlayerRemoved(int clientId, PlayerData playerData)
+        private void OnPlayerRemoved(int clientId, IPlayerData playerData)
         {
             if (!_playerPingItems.TryGetValue(clientId, out var playerPingItem))
                 return;
@@ -83,11 +87,16 @@ namespace Game.GUI.Debug
             _playerPingItems.Remove(clientId);
         }
 
-        private PlayerPingItem CreatePingItem(int clientId, PlayerData playerData)
+        private PlayerPingItem CreatePingItem(int clientId, IPlayerData playerData)
         {
             var item = Instantiate(_pingItemPrefab, _pingsRoot);
-            // item.SetUsername(playerData.Nickname, clientId == _playerDataService.LocalPlayerId);
-            item.SetPing(playerData.Ping);
+            
+            if (playerData.TryGetData(PlayerDataConst.Nickname, out string nickname))
+                item.SetUsername(nickname, clientId == _playersController.LocalPlayerId);
+            
+            if (playerData.TryGetData(PlayerDataConst.Ping, out int ping))
+                item.SetPing(ping);
+            
             _playerPingItems.Add(clientId, item);
             return item;
         }

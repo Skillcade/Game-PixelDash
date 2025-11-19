@@ -21,11 +21,11 @@ namespace Game.GUI
             _readyButton.onClick.AddListener(OnReadyClick);
         }
 
-        public void SetReadyState(int ready, int notReady, bool selfReady)
+        public void SetReadyState(int ready, int total, bool selfReady)
         {
             _isReady = selfReady;
             _readyButtonText.text = selfReady ? "Not Ready" : "Ready";
-            _othersReadyStateText.text = $"{ready.ToString()} / {notReady.ToString()}";
+            _othersReadyStateText.text = $"{ready.ToString()} / {total.ToString()}";
         }
 
         private void OnReadyClick()
