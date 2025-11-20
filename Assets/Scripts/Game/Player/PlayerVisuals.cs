@@ -1,6 +1,7 @@
 using System;
 using SkillcadeSDK;
-using SkillcadeSDK.Common;
+using SkillcadeSDK.Common.Players;
+using SkillcadeSDK.FishNetAdapter.Players;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace Game.Player
         [SerializeField] private float _remoteDarkenMul = 0.7f;
         [SerializeField] private float _remoteAlpha = 0.9f;
 
-        // [Inject] private readonly FishNetPlayerDataService _playerDataService;
+        [Inject] private readonly IPlayersController _playersController;
 
         private string _nickname;
 
@@ -38,13 +39,13 @@ namespace Game.Player
             InitNickname();
             
             _movement.JumpFx += OnJumpFx;
-            // _playerDataService.OnPlayerUpdated += OnPlayerUpdated;
+            _playersController.OnPlayerDataUpdated += OnPlayerUpdated;
         }
 
         private void OnDisable()
         {
             _movement.JumpFx -= OnJumpFx;
-            // _playerDataService.OnPlayerUpdated -= OnPlayerUpdated;
+            _playersController.OnPlayerDataUpdated -= OnPlayerUpdated;
         }
 
         private void Start()
@@ -68,10 +69,13 @@ namespace Game.Player
             if (_movement == null || _movement.NetworkObject == null)
                 return;
             
-            // if (!_playerDataService.TryGetData(_movement.OwnerId, out var data))
-            //     return;
+            if (!_playersController.TryGetPlayerData(_movement.OwnerId, out var playerData))
+                return;
 
-            // _nickname = data.Nickname;
+            if (!playerData.TryGetData(PlayerDataConst.Nickname, out string nickname))
+                return;
+            
+            _nickname = nickname;
             _nicknameText.text = _nickname;
         }
         
@@ -121,15 +125,18 @@ namespace Game.Player
             _spriteRenderer.color = c;
         }
 
-        private void OnPlayerUpdated(int clientId, PlayerData playerData)
+        private void OnPlayerUpdated(int clientId, IPlayerData playerData)
         {
             if (_movement == null || _movement.OwnerId != clientId)
                 return;
             
-            if (string.Equals(_nickname, playerData.Nickname, StringComparison.InvariantCulture))
+            if (!playerData.TryGetData(PlayerDataConst.Nickname, out string nickname))
+                return;
+            
+            if (string.Equals(_nickname, nickname, StringComparison.InvariantCulture))
                 return;
 
-            _nickname = playerData.Nickname;
+            _nickname = nickname;
             _nicknameText.text = _nickname;
         }
     }

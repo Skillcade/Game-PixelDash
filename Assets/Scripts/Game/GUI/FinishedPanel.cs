@@ -1,7 +1,6 @@
-﻿using Game.StateMachine.States;
-using SkillcadeSDK.FishNetAdapter.StateMachine.States;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
+using FinishReason = Game.StateMachine.States.FinishReason;
 
 namespace Game.GUI
 {

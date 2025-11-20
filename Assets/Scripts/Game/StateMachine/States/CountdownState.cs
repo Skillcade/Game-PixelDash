@@ -1,22 +1,36 @@
 ﻿using Game.GUI;
+using SkillcadeSDK.FishNetAdapter;
 using SkillcadeSDK.FishNetAdapter.StateMachine;
-using SkillcadeSDK.FishNetAdapter.StateMachine.States;
+using SkillcadeSDK.StateMachine;
+using UnityEngine;
 using VContainer;
 
 namespace Game.StateMachine.States
 {
-    public class CountdownState : CountdownStateBase
+    public class CountdownState : NetworkState<GameStateType>
     {
+        public override GameStateType Type => GameStateType.Countdown;
+        
         [Inject] private readonly GameUi _gameUi;
+        [Inject] private readonly GameConfig _gameConfig;
+        [Inject] private readonly PlayerSpawner _playerSpawner;
+        
+        private float _timer;
 
-        protected override void OnEnter(GameStateType prevState, CountdownStateData data)
+        public override void OnEnter(GameStateType prevState)
         {
-            base.OnEnter(prevState, data);
+            base.OnEnter(prevState);
+            _timer = _gameConfig.StartGameCountdownSeconds;
+
+            if (IsServer)
+            {
+                _playerSpawner.SpawnAllInGamePlayers();
+            }
             
             if (IsClient)
             {
                 _gameUi.CountdownPanel.gameObject.SetActive(true);
-                _gameUi.CountdownPanel.SetTime(data.Timer);
+                _gameUi.CountdownPanel.SetTime(_timer);
             }
         }
 
@@ -31,9 +45,13 @@ namespace Game.StateMachine.States
         public override void Update()
         {
             base.Update();
-
+            _timer -= Time.deltaTime;
+            
+            if (IsServer && _timer <= 0f)
+                StateMachine.SetStateServer(GameStateType.Running);
+            
             if (IsClient)
-                _gameUi.CountdownPanel.SetTime(Timer);
+                _gameUi.CountdownPanel.SetTime(_timer);
         }
     }
 }

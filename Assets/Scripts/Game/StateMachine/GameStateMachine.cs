@@ -1,10 +1,10 @@
-﻿using Game.StateMachine.States;
-using SkillcadeSDK.Common.Players;
+﻿using SkillcadeSDK.Common.Players;
 using SkillcadeSDK.FishNetAdapter.Players;
 using SkillcadeSDK.FishNetAdapter.StateMachine;
-using SkillcadeSDK.FishNetAdapter.StateMachine.States;
 using SkillcadeSDK.StateMachine;
 using VContainer;
+using FinishedStateData = Game.StateMachine.States.FinishedStateData;
+using FinishReason = Game.StateMachine.States.FinishReason;
 
 namespace Game.StateMachine
 {
