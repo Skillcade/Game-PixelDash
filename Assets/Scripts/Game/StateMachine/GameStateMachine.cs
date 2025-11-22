@@ -44,7 +44,7 @@ namespace Game.StateMachine
             if (inGamePlayers == 0)
                 SetStateServer(GameStateType.WaitForPlayers);
             else if (inGamePlayers == 1 && CurrentStateType != GameStateType.Finished)
-                SetStateServer(GameStateType.Finished, new FinishedStateData(winnerId, _gameConfig.WaitAfterFinishSeconds, FinishReason.TechnicalWin));
+                SetStateServer(GameStateType.Finished, new FinishedStateData(winnerId, FinishReason.TechnicalWin));
         }
     }
 }

@@ -2,7 +2,6 @@
 using SkillcadeSDK.Common.Players;
 using SkillcadeSDK.FishNetAdapter;
 using SkillcadeSDK.FishNetAdapter.Players;
-using SkillcadeSDK.FishNetAdapter.StateMachine;
 using SkillcadeSDK.StateMachine;
 using SkillcadeSDK.WebRequests;
 using UnityEngine;
@@ -19,13 +18,11 @@ namespace Game.StateMachine.States
     public class FinishedStateData
     {
         public readonly int WinnerId;
-        public readonly float WaitTimer;
         public readonly FinishReason FinishReason;
 
-        public FinishedStateData(int winnerId, float waitTimer, FinishReason finishReason)
+        public FinishedStateData(int winnerId, FinishReason finishReason)
         {
             WinnerId = winnerId;
-            WaitTimer = waitTimer;
             FinishReason = finishReason;
         }
     }
@@ -48,12 +45,14 @@ namespace Game.StateMachine.States
             
             if (IsClient)
                 InitUi(data);
-
-            if (!TryValidateMatchIds())
-                Debug.LogError("MatchId is invalid");
+            
+            _timer = _gameConfig.StartGameCountdownSeconds;
             
             if (IsServer)
             {
+                if (!TryValidateMatchIds())
+                    Debug.LogError("MatchId is invalid");
+                
                 SendWinnerToBackend(data.WinnerId);
                 _playerSpawner.DespawnAllPlayers();
             }
@@ -65,7 +64,18 @@ namespace Game.StateMachine.States
             if (IsClient)
                 _gameUi.FinishedPanel.gameObject.SetActive(false);
         }
-        
+
+        public override void Update()
+        {
+            base.Update();
+            _timer -= Time.deltaTime;
+            
+            if (_timer <= 0f && IsServer)
+            {
+                StateMachine.SetStateServer(GameStateType.WaitForPlayers);
+            }
+        }
+
         private void InitUi(FinishedStateData data)
         {
             _gameUi.FinishedPanel.gameObject.SetActive(true);

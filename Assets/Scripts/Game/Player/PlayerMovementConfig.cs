@@ -18,12 +18,12 @@ namespace Game.Player
         [SerializeField] public float _coyoteTime;
         
         [Header("Ground check")]
+        [SerializeField] public float _groundCheckOffset;
         [SerializeField] public float _groundCheckDistance;
         [SerializeField] public LayerMask _groundMask;
         
         [Header("Common")]
         [SerializeField] public float _maxHealth;
         [SerializeField] public float _knockbackForce;
-        [SerializeField] public bool _predictInputs;
     }
 }

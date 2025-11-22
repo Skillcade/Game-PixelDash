@@ -90,7 +90,7 @@ MonoBehaviour:
   _timingType: 1
   _allowTickDropping: 1
   _maximumFrameTicks: 5
-  _tickRate: 60
+  _tickRate: 90
   _pingInterval: 1
   _physicsMode: 1
 --- !u!114 &1618705665565809933

@@ -44,14 +44,14 @@
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       },
-      "hash": "eaec46be131e420ed0981910597b2a3767a9c0c4"
+      "hash": "5c18ee83776140d99353e7fabb8f0033d68a7a40"
     },
     "com.skillcade.sdk-fishnet": {
       "version": "https://github.com/Skillcade/SkillcadeSDK-FishNet.git?path=Assets/Sources/SkillcadeSDK",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "028d4daea7e375099c90e0375936bbd526459f9b"
+      "hash": "48dcd3a4f7869a1c951e39272e170758e694a50c"
     },
     "com.unity.ai.navigation": {
       "version": "2.0.9",
@@ -148,6 +148,15 @@
       "dependencies": {
         "com.unity.modules.uielements": "1.0.0"
       }
+    },
+    "com.unity.multiplayer.playmode": {
+      "version": "1.3.3",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "2.0.2"
+      },
+      "url": "https://packages.unity.com"
     },
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.4",

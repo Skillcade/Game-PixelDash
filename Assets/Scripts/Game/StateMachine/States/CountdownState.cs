@@ -1,6 +1,5 @@
 ﻿using Game.GUI;
 using SkillcadeSDK.FishNetAdapter;
-using SkillcadeSDK.FishNetAdapter.StateMachine;
 using SkillcadeSDK.StateMachine;
 using UnityEngine;
 using VContainer;

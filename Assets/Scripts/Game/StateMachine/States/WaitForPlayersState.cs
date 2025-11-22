@@ -1,4 +1,5 @@
 ﻿using Game.GUI;
+using SkillcadeSDK.Common.Level;
 using SkillcadeSDK.Common.Players;
 using SkillcadeSDK.FishNetAdapter;
 using SkillcadeSDK.FishNetAdapter.Players;
@@ -16,6 +17,7 @@ namespace Game.StateMachine.States
         [Inject] private readonly GameConfig _gameConfig;
         [Inject] private readonly PlayerSpawner _playerSpawner;
         [Inject] private readonly IPlayersController _playersController;
+        [Inject] private readonly RespawnServiceProvider _respawnServiceProvider;
 
         private bool _skipUpdate;
         
@@ -28,6 +30,7 @@ namespace Game.StateMachine.States
             {
                 ClearReadyStateForPlayers();
                 _playerSpawner.DespawnAllPlayers();
+                _respawnServiceProvider.TriggerRespawn();
             }
 
             if (IsClient)

@@ -2,19 +2,19 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Collectable
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Player1
+  - Player2
+  - Player3
+  - Player4
   - 
   - 
   - 
@@ -41,6 +41,27 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: WalkInFront
+    uniqueID: 2499145439
+    locked: 0
+  - name: GroundAccent
+    uniqueID: 2079298585
+    locked: 0
+  - name: Ground
+    uniqueID: 183649783
+    locked: 0
+  - name: PlayerDebug
+    uniqueID: 2113370715
+    locked: 0
+  - name: Player
+    uniqueID: 859394333
+    locked: 0
+  - name: Collision
+    uniqueID: 4150383573
+    locked: 0
+  - name: WalkBehind
+    uniqueID: 4225800809
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1
@@ -50,27 +71,3 @@ TagManager:
   - Light Layer 5
   - Light Layer 6
   - Light Layer 7
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
