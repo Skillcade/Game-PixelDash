@@ -1,6 +1,5 @@
 using System;
 using SkillcadeSDK;
-using SkillcadeSDK.Common.Players;
 using SkillcadeSDK.FishNetAdapter.Players;
 using TMPro;
 using Unity.Cinemachine;
@@ -29,7 +28,7 @@ namespace Game.Player
         [SerializeField] private float _remoteDarkenMul = 0.7f;
         [SerializeField] private float _remoteAlpha = 0.9f;
 
-        [Inject] private readonly IPlayersController _playersController;
+        [Inject] private readonly FishNetPlayersController _playersController;
 
         private string _nickname;
 
@@ -72,10 +71,10 @@ namespace Game.Player
             if (!_playersController.TryGetPlayerData(_movement.OwnerId, out var playerData))
                 return;
 
-            if (!playerData.TryGetData(PlayerDataConst.Nickname, out string nickname))
+            if (!PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
                 return;
             
-            _nickname = nickname;
+            _nickname = matchData.Nickname;
             _nicknameText.text = _nickname;
         }
         
@@ -125,18 +124,18 @@ namespace Game.Player
             _spriteRenderer.color = c;
         }
 
-        private void OnPlayerUpdated(int clientId, IPlayerData playerData)
+        private void OnPlayerUpdated(int clientId, FishNetPlayerData data)
         {
             if (_movement == null || _movement.OwnerId != clientId)
                 return;
             
-            if (!playerData.TryGetData(PlayerDataConst.Nickname, out string nickname))
+            if (!PlayerMatchData.TryGetFromPlayer(data, out var matchData))
                 return;
             
-            if (string.Equals(_nickname, nickname, StringComparison.InvariantCulture))
+            if (string.Equals(_nickname, matchData.Nickname, StringComparison.InvariantCulture))
                 return;
-
-            _nickname = nickname;
+            
+            _nickname = matchData.Nickname;
             _nicknameText.text = _nickname;
         }
     }

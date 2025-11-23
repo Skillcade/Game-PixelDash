@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using SkillcadeSDK;
-using SkillcadeSDK.Common;
-using SkillcadeSDK.Common.Players;
+using SkillcadeSDK.FishNetAdapter.PingService;
 using SkillcadeSDK.FishNetAdapter.Players;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,7 +17,7 @@ namespace Game.GUI.Debug
         [SerializeField] private Transform _pingsRoot;
         [SerializeField] private PlayerPingItem _pingItemPrefab;
 
-        [Inject] private readonly IPlayersController _playersController;
+        [Inject] private readonly FishNetPlayersController _playersController;
 
         private Dictionary<int, PlayerPingItem> _playerPingItems;
         
@@ -61,24 +60,24 @@ namespace Game.GUI.Debug
             _panelRoot.SetActive(false);
         }
 
-        private void OnPlayerAdded(int clientId, IPlayerData playerData)
+        private void OnPlayerAdded(int clientId, FishNetPlayerData data)
         {
-            CreatePingItem(clientId, playerData);
+            CreatePingItem(clientId, data);
         }
 
-        private void OnPlayerUpdated(int clientId, IPlayerData playerData)
+        private void OnPlayerUpdated(int clientId, FishNetPlayerData data)
         {
             if (!_playerPingItems.TryGetValue(clientId, out var playerPingItem))
-                playerPingItem = CreatePingItem(clientId, playerData);
+                playerPingItem = CreatePingItem(clientId, data);
             
-            if (playerData.TryGetData(PlayerDataConst.Ping, out int ping))
-                playerPingItem.SetPing(ping);
+            if (PlayerPingData.TryGetFromPlayer(data, out var pingData))
+                playerPingItem.SetPing(pingData.PingInMs);
             
-            if (playerData.TryGetData(PlayerDataConst.Nickname, out string nickname) && nickname != playerPingItem.Username)
-                playerPingItem.SetUsername(nickname, clientId == _playersController.LocalPlayerId);
+            if (PlayerMatchData.TryGetFromPlayer(data, out var matchData))
+                playerPingItem.SetUsername(matchData.Nickname, clientId == _playersController.LocalPlayerId);
         }
 
-        private void OnPlayerRemoved(int clientId, IPlayerData playerData)
+        private void OnPlayerRemoved(int clientId, FishNetPlayerData data)
         {
             if (!_playerPingItems.TryGetValue(clientId, out var playerPingItem))
                 return;
@@ -87,15 +86,15 @@ namespace Game.GUI.Debug
             _playerPingItems.Remove(clientId);
         }
 
-        private PlayerPingItem CreatePingItem(int clientId, IPlayerData playerData)
+        private PlayerPingItem CreatePingItem(int clientId, FishNetPlayerData playerData)
         {
             var item = Instantiate(_pingItemPrefab, _pingsRoot);
             
-            if (playerData.TryGetData(PlayerDataConst.Nickname, out string nickname))
-                item.SetUsername(nickname, clientId == _playersController.LocalPlayerId);
+            if (PlayerPingData.TryGetFromPlayer(playerData, out var pingData))
+                item.SetPing(pingData.PingInMs);
             
-            if (playerData.TryGetData(PlayerDataConst.Ping, out int ping))
-                item.SetPing(ping);
+            if (PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
+                item.SetUsername(matchData.Nickname, clientId == _playersController.LocalPlayerId);
             
             _playerPingItems.Add(clientId, item);
             return item;

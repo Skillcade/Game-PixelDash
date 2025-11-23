@@ -1,17 +1,14 @@
-﻿using SkillcadeSDK.Common.Players;
+﻿using Game.StateMachine.States;
 using SkillcadeSDK.FishNetAdapter.Players;
-using SkillcadeSDK.FishNetAdapter.StateMachine;
 using SkillcadeSDK.StateMachine;
 using VContainer;
-using FinishedStateData = Game.StateMachine.States.FinishedStateData;
-using FinishReason = Game.StateMachine.States.FinishReason;
 
 namespace Game.StateMachine
 {
     public class GameStateMachine : NetworkStateMachine<GameStateType>
     {
         [Inject] private readonly GameConfig _gameConfig;
-        [Inject] private readonly IPlayersController _playersController;
+        [Inject] private readonly FishNetPlayersController _playersController;
         
         public override void Initialize()
         {
@@ -25,7 +22,14 @@ namespace Game.StateMachine
             _playersController.OnPlayerRemoved -= OnPlayerRemoved;
         }
 
-        private void OnPlayerRemoved(int playerId, IPlayerData data)
+        protected override void OnNetworkStart()
+        {
+            base.OnNetworkStart();
+            if (IsServer)
+                SetStateServer(GameStateType.WaitForPlayers);
+        }
+
+        private void OnPlayerRemoved(int playerId, FishNetPlayerData fishNetPlayerData)
         {
             if (!IsServer)
                 return;
@@ -34,7 +38,7 @@ namespace Game.StateMachine
             int winnerId = -1;
             foreach (var playerData in _playersController.GetAllPlayersData())
             {
-                if (playerData.TryGetData(PlayerDataConst.InGame, out bool inGame) && inGame)
+                if (PlayerInGameData.TryGetFromPlayer(playerData, out var inGameData) && inGameData.InGame)
                 {
                     winnerId = playerData.PlayerNetworkId;
                     inGamePlayers++;

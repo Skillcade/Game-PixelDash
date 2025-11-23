@@ -25,7 +25,7 @@ namespace Game
             builder.RegisterInstance(_finishLine);
             builder.RegisterInstance(_collectablesRespawnService).AsImplementedInterfaces();
 
-            builder.Register<GameStateMachine>(Lifetime.Singleton);
+            builder.Register<GameStateMachine>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<WaitForPlayersState>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<CountdownState>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<RunningState>(Lifetime.Singleton).AsImplementedInterfaces();

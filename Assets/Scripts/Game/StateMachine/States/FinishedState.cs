@@ -1,5 +1,4 @@
 ﻿using Game.GUI;
-using SkillcadeSDK.Common.Players;
 using SkillcadeSDK.FishNetAdapter;
 using SkillcadeSDK.FishNetAdapter.Players;
 using SkillcadeSDK.StateMachine;
@@ -35,7 +34,7 @@ namespace Game.StateMachine.States
         [Inject] private readonly GameConfig _gameConfig;
         [Inject] private readonly WebRequester _webRequester;
         [Inject] private readonly PlayerSpawner _playerSpawner;
-        [Inject] private readonly IPlayersController _playersController;
+        [Inject] private readonly FishNetPlayersController _playersController;
 
         private float _timer;
 
@@ -86,8 +85,8 @@ namespace Game.StateMachine.States
                 return;
             }
             
-            if (playerData.TryGetData(PlayerDataConst.Nickname, out string nickname))
-                _gameUi.FinishedPanel.SetWinner(nickname, data.FinishReason);
+            if (PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
+                _gameUi.FinishedPanel.SetWinner(matchData.Nickname, data.FinishReason);
             
             _gameUi.FinishedPanel.SetUserState(_playersController.LocalPlayerId == data.WinnerId);
         }
@@ -97,10 +96,10 @@ namespace Game.StateMachine.States
             string matchId = null;
             foreach (var playerData in _playersController.GetAllPlayersData())
             {
-                if (!playerData.TryGetData(PlayerDataConst.MatchId, out string playerMatchId))
+                if (!PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
                     continue;
                 
-                if (string.IsNullOrEmpty(playerMatchId))
+                if (string.IsNullOrEmpty(matchData.MatchId))
                 {
                     Debug.Log($"Player {playerData.PlayerNetworkId} matchId is null");
                     continue;
@@ -108,11 +107,11 @@ namespace Game.StateMachine.States
                 
                 if (string.IsNullOrEmpty(matchId))
                 {
-                    matchId = playerMatchId;
+                    matchId = matchData.MatchId;
                 }
-                else if (!string.Equals(matchId, playerMatchId))
+                else if (!string.Equals(matchId, matchData.MatchId))
                 {
-                    Debug.Log($"Players matchId is different: first {matchId}, second: {playerMatchId}");
+                    Debug.Log($"Players matchId is different: first {matchId}, second: {matchData.MatchId}");
                     return false;
                 }
             }
@@ -128,13 +127,8 @@ namespace Game.StateMachine.States
                 return;
             }
             
-            if (!playerData.TryGetData(PlayerDataConst.MatchId, out string matchId))
-                return;
-            
-            if (!playerData.TryGetData(PlayerDataConst.UserId, out string userId))
-                return;
-
-            _webRequester.SendWinner(matchId, userId);
+            if (PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
+                _webRequester.SendWinner(matchData.MatchId, matchData.PlayerId);
         }
     }
 }

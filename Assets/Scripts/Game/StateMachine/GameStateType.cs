@@ -2,9 +2,10 @@
 {
     public enum GameStateType
     {
-        WaitForPlayers = 0,
-        Countdown = 1,
-        Running = 2,
-        Finished = 3,
+        None = 0,
+        WaitForPlayers = 1,
+        Countdown = 2,
+        Running = 3,
+        Finished = 4,
     }
 }

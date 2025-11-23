@@ -131,7 +131,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 278550531
+  m_SortingLayerID: -144583723
   m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300056, guid: 3a42cd8a7d582c242b3448c5834f1adc, type: 3}
@@ -160,9 +160,7 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 1691659755529564869}
   _networkObjectCache: {fileID: 0}
-  _tickCallbacks: 6
   Damage: 50
-  _trigger: {fileID: 2117515439504612277}
 --- !u!61 &2822278422150078881
 BoxCollider2D:
   m_ObjectHideFlags: 0
