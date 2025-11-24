@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceb6c9a31e2a43d9b1c3b3e9a9dcd82f, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
+  GameName: Pixel Dash
+  GameVersion: 0.1.1
   StartGameCountdownSeconds: 3
   WaitAfterFinishSeconds: 10

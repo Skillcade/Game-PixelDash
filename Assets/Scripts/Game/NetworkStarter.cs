@@ -12,6 +12,12 @@ namespace Game
         [SerializeField] private Button _startServerButton;
         [SerializeField] private Button _connectButton;
         [SerializeField] private GameObject _inGamePanel;
+        [SerializeField] private GameConfig _gameConfig;
+
+        private void Awake()
+        {
+            Debug.Log($"[{_gameConfig.GameName}] Starting game, version: {_gameConfig.GameVersion}");
+        }
 
         protected override void InitManualConnection()
         {

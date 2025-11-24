@@ -5548,7 +5548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d372188900cc43d799e45aae48724bef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _useWebBridge: 0
+  _useWebBridge: 1
 --- !u!4 &888954193
 Transform:
   m_ObjectHideFlags: 0
@@ -5596,11 +5596,12 @@ MonoBehaviour:
   _dedicatedServerMode: 2
   _webGlMode: 1
   _connectionMode: 0
-  _config: {fileID: 11400000, guid: 4005b0ff013f89644a5e23e586d77277, type: 2}
+  _config: {fileID: 11400000, guid: 5fa8a9f51d08fac4eb687a64030b4d8e, type: 2}
   _networkManager: {fileID: 1028377064}
   _startServerButton: {fileID: 1734752909}
   _connectButton: {fileID: 40239264}
   _inGamePanel: {fileID: 773952958}
+  _gameConfig: {fileID: 11400000, guid: 21a9aae8b7220d1479c9456a1c7d1bf4, type: 2}
 --- !u!4 &896066700
 Transform:
   m_ObjectHideFlags: 0

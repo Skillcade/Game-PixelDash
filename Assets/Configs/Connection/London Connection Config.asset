@@ -16,6 +16,6 @@ MonoBehaviour:
   ServerListenPort: 10902
   WssConnectPort: 10102
   WssServerName: skillcade.games
-  UseEncryption: 1
+  UseEncryption: 0
   ReconnectDelay: 5
   ReconnectAttempts: 3
