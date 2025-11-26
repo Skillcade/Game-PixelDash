@@ -799,7 +799,7 @@ PlayerSettings:
   webGLTemplate: APPLICATION:Default
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
-  webGLCompressionFormat: 0
+  webGLCompressionFormat: 2
   webGLWasmArithmeticExceptions: 0
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
@@ -817,9 +817,9 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Server: FISHNET;FISHNET_V4
+    Server: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS
     Standalone: FISHNET;FISHNET_V4
-    WebGL: FISHNET;FISHNET_V4
+    WebGL: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

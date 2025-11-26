@@ -7,23 +7,16 @@ namespace DefaultNamespace.Collectables
     {
         Unknown = 0
     }
+    
     [RequireComponent(typeof(Collider2D))]
     public class CollectableBase : NetworkBehaviour
     {
-        [SerializeField] private CollectableType _type = CollectableType.Unknown;
-        [SerializeField] private NetworkObject _respawnPrefab;
-        
-        private Vector3 _startPosition;
-        private Quaternion _startRotation;
         public CollectableType Type => _type;
         public NetworkObject RespawnPrefab => _respawnPrefab;
         public bool Collected { get; private set; }
-
-        public override void OnStartServer()
-        {
-            _startPosition = transform.position;
-            _startRotation = transform.rotation;
-        }
+        
+        [SerializeField] private CollectableType _type = CollectableType.Unknown;
+        [SerializeField] private NetworkObject _respawnPrefab;
         
         public bool TryCollectServer(PlayerCollector playerCollector)
         {
@@ -50,14 +43,6 @@ namespace DefaultNamespace.Collectables
             {
                 Destroy(gameObject);
             }
-        }
-        
-        [Server]
-        public void ResetForRespawn()
-        {
-            Collected = false;
-            transform.SetPositionAndRotation(_startPosition, _startRotation);
-            gameObject.SetActive(true);
         }
     }
 }

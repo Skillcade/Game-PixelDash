@@ -9,6 +9,17 @@
       },
       "hash": "08756d9733a556018041e52fcb9d2a6035346aeb"
     },
+    "com.edgegap.unity-servers-plugin": {
+      "version": "https://github.com/edgegap/edgegap-unity-plugin.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.2.1",
+        "com.unity.toolchain.win-x86_64-linux-x86_64": "2.0.6",
+        "com.unity.modules.uielements": "1.0.0"
+      },
+      "hash": "fe7c540b806f7a77daefcbee655924cab1b98188"
+    },
     "com.firstgeargames.fishnet": {
       "version": "https://github.com/FirstGearGames/FishNet.git?path=Assets/FishNet#4.6.12",
       "depth": 0,

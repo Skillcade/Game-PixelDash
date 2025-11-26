@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FishNet.Object;
+using SkillcadeSDK.FishNetAdapter;
 using UnityEngine;
 
 namespace DefaultNamespace.Collectables
@@ -9,8 +10,8 @@ namespace DefaultNamespace.Collectables
         private struct SpawnPoint
         {
             public NetworkObject Prefab;
-            public Vector3 LocalPosition;
-            public Quaternion LocalRotation;
+            public Vector3 Position;
+            public Quaternion Rotation;
         }
 
         private readonly List<SpawnPoint> _spawnPoints = new();
@@ -24,7 +25,6 @@ namespace DefaultNamespace.Collectables
         private void CacheSpawnPoints()
         {
             _spawnPoints.Clear();
-
             var collectables = FindObjectsByType<CollectableBase>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
             foreach (var c in collectables)
@@ -37,8 +37,8 @@ namespace DefaultNamespace.Collectables
                 _spawnPoints.Add(new SpawnPoint
                 {
                     Prefab = c.RespawnPrefab,
-                    LocalPosition = c.transform.localPosition,
-                    LocalRotation = c.transform.localRotation
+                    Position = c.transform.position,
+                    Rotation = c.transform.rotation
                 });
             }
         }
@@ -58,6 +58,7 @@ namespace DefaultNamespace.Collectables
                 {
                     continue;
                 }
+                
                 if (c.NetworkObject.IsSpawned)
                 {
                     c.NetworkObject.Despawn();
@@ -75,20 +76,11 @@ namespace DefaultNamespace.Collectables
                     continue;
                 }
 
-                var instance = Instantiate(point.Prefab);
-                instance.transform.localPosition = point.LocalPosition;
-                instance.transform.localRotation = point.LocalRotation;
-
+                var instance = NetworkManager.ServerManager.InstantiateAndSpawn(point.Prefab, point.Position, point.Rotation);
                 if (instance.TryGetComponent<Rigidbody2D>(out var rb))
                 {
                     rb.linearVelocity = Vector2.zero;
                     rb.angularVelocity = 0;
-                }
-
-                NetworkManager.ServerManager.Spawn(instance);
-                if (instance.TryGetComponent<CollectableBase>(out var c))
-                {
-                    c.ResetForRespawn();
                 }
             }
         }

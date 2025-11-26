@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.alven.fishnet.unitytransport": "https://github.com/ooonush/FishyUnityTransport.git?path=Assets/FishNet/Plugins/FishyUnityTransport",
+    "com.edgegap.unity-servers-plugin": "https://github.com/edgegap/edgegap-unity-plugin.git",
     "com.firstgeargames.fishnet": "https://github.com/FirstGearGames/FishNet.git?path=Assets/FishNet#4.6.12",
     "com.skillcade.sdk": "https://github.com/Skillcade/SkillcadeSDK.git?path=Assets/Source/SkillcadeSDK",
     "com.skillcade.sdk-fishnet": "https://github.com/Skillcade/SkillcadeSDK-FishNet.git?path=Assets/Sources/SkillcadeSDK",
