@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df69eddb58024b47ba33a4774cee9a70, type: 3}
-  m_Name: GameLift Connection Config
+  m_Name: SkillcadeHub Connection Config
   m_EditorClassIdentifier: 
   ServerAddress: 98.88.33.86
   ServerListenPort: 10902
