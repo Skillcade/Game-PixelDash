@@ -126949,6 +126949,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3745991838715497275, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
+      propertyPath: WasActiveDuringEdit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3745991838715497275, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
+      propertyPath: <SceneId>k__BackingField
+      value: 2143289084
+      objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalScale.x
       value: 3
@@ -127000,6 +127008,14 @@ PrefabInstance:
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2637202103619406344, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
+      propertyPath: WasActiveDuringEdit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2637202103619406344, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
+      propertyPath: <SceneId>k__BackingField
+      value: 4286560253
       objectReference: {fileID: 0}
     - target: {fileID: 3469379874709613770, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_Name
