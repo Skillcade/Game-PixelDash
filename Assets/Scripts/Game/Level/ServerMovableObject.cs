@@ -1,10 +1,9 @@
-using System;
 using FishNet.Object;
 using UnityEngine;
 
 namespace Game.Level
 {
-    public class ServerMovablePlatform : NetworkBehaviour
+    public class ServerMovableObject : NetworkBehaviour
     {
         [SerializeField] private float _oneSideMoveTime;
         [SerializeField] private AnimationCurve _oneSideMoveCurve;
@@ -21,7 +20,7 @@ namespace Game.Level
 
         private void Update()
         {
-            if (!IsServer)
+            if (!IsServerInitialized)
             {
                 return;
             }

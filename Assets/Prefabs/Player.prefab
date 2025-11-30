@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 6550249093487379794}
   - component: {fileID: 2097062857943216485}
   - component: {fileID: 8853420040916459752}
+  - component: {fileID: 4179726082534470876}
   - component: {fileID: 8340567812076309624}
   - component: {fileID: -9039423653466011732}
   m_Layer: 0
@@ -65,7 +66,7 @@ MonoBehaviour:
   - {fileID: 8866073289841078330}
   - {fileID: 6550249093487379794}
   - {fileID: 2097062857943216485}
-  - {fileID: 8853420040916459752}
+  - {fileID: 0}
   - {fileID: 8340567812076309624}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
@@ -278,9 +279,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef10938afa40485894f3318d131f6184, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 3
+--- !u!114 &4179726082534470876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7294861560698192311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6aafabae93e40de84332014822724e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
   _addedNetworkObject: {fileID: 4944023266038734634}
-  _networkObjectCache: {fileID: 4944023266038734634}
+  _networkObjectCache: {fileID: 0}
 --- !u!114 &8340567812076309624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,7 +310,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
   _componentConfiguration: 3
-  _synchronizeParent: 0
+  _synchronizeParent: 1
   _packing:
     Position: 1
     Rotation: 1

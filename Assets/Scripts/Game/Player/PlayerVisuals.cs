@@ -28,6 +28,8 @@ namespace Game.Player
         [SerializeField] private float _remoteDarkenMul = 0.7f;
         [SerializeField] private float _remoteAlpha = 0.9f;
 
+        [SerializeField] private bool _isGrounded;
+
         [Inject] private readonly FishNetPlayersController _playersController;
 
         private string _nickname;
@@ -80,10 +82,11 @@ namespace Game.Player
         
         private void Update()
         {
-            Vector2 vel = _movement.Velocity;
+            _isGrounded = _movement.IsGroundedVisual;
+            Vector2 vel = _movement.VelocityVisual;
             _animator.SetFloat(SpeedX, GetAbsWithThreshold(vel.x));
             _animator.SetFloat(VelY, GetAbsWithThreshold(vel.y));
-            _animator.SetBool(Grounded, _movement.IsGrounded);
+            _animator.SetBool(Grounded, _movement.IsGroundedVisual);
 
             if (vel.x > 0.01f)
             {
@@ -108,6 +111,7 @@ namespace Game.Player
         
         private void OnJumpFx()
         {
+            Debug.Log("[PlayerVisuals] Got jump trigger");
             _animator.SetTrigger(JumpTrigger);
         }
         

@@ -20,10 +20,10 @@ MonoBehaviour:
   _maxFallSpeed: 25
   _jumpHeight: 8
   _coyoteTime: 0.2
-  _groundCheckDistance: 1.5
+  _groundCheckOffset: 0.1
+  _groundCheckDistance: 0.5
   _groundMask:
     serializedVersion: 2
     m_Bits: 1
   _maxHealth: 100
   _knockbackForce: 20
-  _predictInputs: 1
