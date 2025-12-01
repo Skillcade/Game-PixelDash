@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 8155658178347754107}
   - component: {fileID: 2229645839795360059}
   - component: {fileID: 4157329822031842845}
-  - component: {fileID: 2411655580192190070}
+  - component: {fileID: 3481866315551263833}
   m_Layer: 2
   m_Name: Saw
   m_TagString: Untagged
@@ -278,7 +278,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &2411655580192190070
+--- !u!114 &3481866315551263833
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -287,14 +287,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2192751021213653548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f9dfe9134a4419a372bd115ad2a07f, type: 3}
+  m_Script: {fileID: 11500000, guid: b18cf8ec00054ebea0c74481416ff6ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 5039122664999532716}
   _networkObjectCache: {fileID: 0}
-  _tickCallbacks: 6
-  _debug: 0
   _oneSideMoveTime: 2
   _oneSideMoveCurve:
     serializedVersion: 2
@@ -302,18 +300,18 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -322,12 +320,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   _startPoint: {fileID: 8236016551163293386}
   _endPoint: {fileID: 4445089699791252933}
-  _rigidbody: {fileID: 4157329822031842845}
-  _moveTime: 2
-  _passedTime: 0
-  _left: 0
-  _tick: 0
-  _reconcile: 0
 --- !u!1 &3584268969437341264
 GameObject:
   m_ObjectHideFlags: 0

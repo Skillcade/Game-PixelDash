@@ -44,13 +44,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3034906385735999840}
   - component: {fileID: 3163456729119693188}
-  - component: {fileID: 2658148970622440622}
-  - component: {fileID: 815510508543298354}
   - component: {fileID: 5230357491844638018}
   - component: {fileID: 7708937912395519445}
-  - component: {fileID: 8662097086465400595}
-  - component: {fileID: 3039644176916744562}
-  - component: {fileID: 5938347727896975176}
+  - component: {fileID: 4114137360437025529}
+  - component: {fileID: 2665637207870546166}
+  - component: {fileID: 1748959626818576942}
   m_Layer: 0
   m_Name: PlatformNetworkObject
   m_TagString: Untagged
@@ -126,63 +124,6 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 0}
     Scale: {x: 0, y: 0, z: 0}
     IsValid: 0
---- !u!114 &2658148970622440622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1274593300539092038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b18cf8ec00054ebea0c74481416ff6ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 3163456729119693188}
-  _networkObjectCache: {fileID: 0}
-  _oneSideMoveTime: 2
-  _oneSideMoveCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _startPoint: {fileID: 7627849541704970}
-  _endPoint: {fileID: 2946821399218262888}
---- !u!114 &815510508543298354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1274593300539092038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3887bd1116348e791824bef2da7d4b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 3163456729119693188}
-  _networkObjectCache: {fileID: 0}
 --- !u!61 &5230357491844638018
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -237,7 +178,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1274593300539092038}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -256,7 +197,49 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 5
---- !u!114 &8662097086465400595
+--- !u!114 &4114137360437025529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274593300539092038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b18cf8ec00054ebea0c74481416ff6ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 3163456729119693188}
+  _networkObjectCache: {fileID: 0}
+  _oneSideMoveTime: 2
+  _oneSideMoveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _startPoint: {fileID: 7627849541704970}
+  _endPoint: {fileID: 2946821399218262888}
+--- !u!114 &2665637207870546166
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -271,7 +254,7 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 3163456729119693188}
   _networkObjectCache: {fileID: 0}
-  _componentConfiguration: 3
+  _componentConfiguration: 0
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -281,8 +264,8 @@ MonoBehaviour:
   _extrapolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1
-  _clientAuthoritative: 0
-  _sendToOwner: 0
+  _clientAuthoritative: 1
+  _sendToOwner: 1
   _interval: 1
   _synchronizePosition: 1
   _positionSensitivity: 0.001
@@ -290,64 +273,18 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
-  _synchronizeRotation: 0
+  _synchronizeRotation: 1
   _rotationSnapping:
     X: 0
     Y: 0
     Z: 0
-  _synchronizeScale: 0
+  _synchronizeScale: 1
   _scaleSensitivity: 0.001
   _scaleSnapping:
     X: 0
     Y: 0
     Z: 0
---- !u!61 &3039644176916744562
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1274593300539092038}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 1}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 3, y: 1}
-  m_EdgeRadius: 0
---- !u!114 &5938347727896975176
+--- !u!114 &1748959626818576942
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -356,10 +293,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1274593300539092038}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0c6cc1309d34036bad08d6cc58d2263, type: 3}
+  m_Script: {fileID: 11500000, guid: b3887bd1116348e791824bef2da7d4b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 7708937912395519445}
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 3163456729119693188}
+  _networkObjectCache: {fileID: 0}
 --- !u!1 &5640061688148572173
 GameObject:
   m_ObjectHideFlags: 0
