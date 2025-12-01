@@ -44,9 +44,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3034906385735999840}
   - component: {fileID: 3163456729119693188}
-  - component: {fileID: 3603073163693856818}
   - component: {fileID: 5230357491844638018}
   - component: {fileID: 7708937912395519445}
+  - component: {fileID: 4114137360437025529}
+  - component: {fileID: 2665637207870546166}
   m_Layer: 0
   m_Name: PlatformNetworkObject
   m_TagString: Untagged
@@ -122,56 +123,6 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 0}
     Scale: {x: 0, y: 0, z: 0}
     IsValid: 0
---- !u!114 &3603073163693856818
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1274593300539092038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f9dfe9134a4419a372bd115ad2a07f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 3163456729119693188}
-  _networkObjectCache: {fileID: 0}
-  _tickCallbacks: 6
-  _debug: 0
-  _oneSideMoveTime: 2
-  _oneSideMoveCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _startPoint: {fileID: 7627849541704970}
-  _endPoint: {fileID: 2946821399218262888}
-  _rigidbody: {fileID: 7708937912395519445}
-  _moveTime: 2
-  _passedTime: 0
-  _left: 0
-  _tick: 0
-  _reconcile: 0
 --- !u!61 &5230357491844638018
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -245,6 +196,93 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 5
+--- !u!114 &4114137360437025529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274593300539092038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b18cf8ec00054ebea0c74481416ff6ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 3163456729119693188}
+  _networkObjectCache: {fileID: 0}
+  _oneSideMoveTime: 2
+  _oneSideMoveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _startPoint: {fileID: 7627849541704970}
+  _endPoint: {fileID: 2946821399218262888}
+--- !u!114 &2665637207870546166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274593300539092038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 3163456729119693188}
+  _networkObjectCache: {fileID: 0}
+  _componentConfiguration: 0
+  _synchronizeParent: 0
+  _packing:
+    Position: 1
+    Rotation: 1
+    Scale: 0
+  _interpolation: 2
+  _extrapolation: 2
+  _enableTeleport: 0
+  _teleportThreshold: 1
+  _clientAuthoritative: 1
+  _sendToOwner: 1
+  _interval: 1
+  _synchronizePosition: 1
+  _positionSensitivity: 0.001
+  _positionSnapping:
+    X: 0
+    Y: 0
+    Z: 0
+  _synchronizeRotation: 1
+  _rotationSnapping:
+    X: 0
+    Y: 0
+    Z: 0
+  _synchronizeScale: 1
+  _scaleSensitivity: 0.001
+  _scaleSnapping:
+    X: 0
+    Y: 0
+    Z: 0
 --- !u!1 &5640061688148572173
 GameObject:
   m_ObjectHideFlags: 0
