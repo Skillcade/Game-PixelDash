@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 7708937912395519445}
   - component: {fileID: 4114137360437025529}
   - component: {fileID: 2665637207870546166}
+  - component: {fileID: 1748959626818576942}
   m_Layer: 0
   m_Name: PlatformNetworkObject
   m_TagString: Untagged
@@ -283,6 +284,21 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
+--- !u!114 &1748959626818576942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274593300539092038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3887bd1116348e791824bef2da7d4b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 3163456729119693188}
+  _networkObjectCache: {fileID: 0}
 --- !u!1 &5640061688148572173
 GameObject:
   m_ObjectHideFlags: 0

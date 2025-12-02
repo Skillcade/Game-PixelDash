@@ -36,24 +36,29 @@ namespace Game.Player
     {
         public event System.Action JumpFx;
 
-        public Vector2 Velocity => _rigidbody.linearVelocity;
-        public float Health01 => Mathf.Clamp01(_health.Value / _playerMovementConfig._maxHealth);
-        private bool CanMove => _knockbackTimer <= 0 && _health.Value > 0 && _gameStateMachine.CurrentStateType == GameStateType.Running;
+        public Vector2 VelocityVisual => IsOwner ? _rigidbody.linearVelocity : _velocitySync.Value;
+        public bool IsGroundedVisual => IsOwner ? _isGrounded : _isGroundedSync.Value;
+        public float Health01 => Mathf.Clamp01(_healthSync.Value / _playerMovementConfig._maxHealth);
+        private bool CanMove => _knockbackTimer <= 0 && _healthSync.Value > 0 && _gameStateMachine.CurrentStateType == GameStateType.Running;
         
         public PlayerMovementConfig Config => _playerMovementConfig;
         
         public RuntimeMoveValues MoveValues { get; set; }
-        public bool IsGrounded { get; private set; }
 
         [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] private PlayerInputReader _inputReader;
         [SerializeField] private PlayerMovementConfig _playerMovementConfig;
         [SerializeField] private Collider2D _collider;
 
+        [SerializeField] private bool _groundedDebugSync;
+        
         [Inject] private readonly GameStateMachine _gameStateMachine;
 
-        private readonly SyncVar<float> _health = new SyncVar<float>(new SyncTypeSettings(WritePermission.ServerOnly));
+        private readonly SyncVar<float> _healthSync = new SyncVar<float>(new SyncTypeSettings(WritePermission.ServerOnly));
+        private readonly SyncVar<Vector2> _velocitySync = new SyncVar<Vector2>(new SyncTypeSettings(WritePermission.ServerOnly));
+        private readonly SyncVar<bool> _isGroundedSync = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ServerOnly));
         
+        private bool _isGrounded;
         private float _knockbackTimer;
         private float _coyoteTimer;
 
@@ -64,7 +69,7 @@ namespace Game.Player
             this.InjectToMe();
 
             _knockbackTimer = 0f;
-            _health.SetInitialValues(_playerMovementConfig._maxHealth);
+            _healthSync.SetInitialValues(_playerMovementConfig._maxHealth);
             MoveValues.ResetToConfig(_playerMovementConfig);
         }
         
@@ -83,6 +88,7 @@ namespace Game.Player
         
         private void SimulateInputs(PlayerInput input)
         {
+            _groundedDebugSync = _isGroundedSync.Value;
             if (!IsOwner)
                 return;
             
@@ -93,17 +99,18 @@ namespace Game.Player
             
             UpdateGrounded();
 
-            if (IsGrounded)
+            if (_isGrounded)
                 _coyoteTimer = _playerMovementConfig._coyoteTime;
             else
                 _coyoteTimer -= (float)TimeManager.TickDelta;
 
             CapFallVelocity();
+            SetMovementValuesServerRpc(_rigidbody.linearVelocity, _isGrounded);
         }
 
         private void UpdateGrounded()
         {
-            IsGrounded = _collider.IsTouchingLayers(_playerMovementConfig._groundMask);
+            _isGrounded = _collider.IsTouchingLayers(_playerMovementConfig._groundMask);
         }
 
         private void UpdateKnockback(float dt)
@@ -112,7 +119,7 @@ namespace Game.Player
             {
                 _knockbackTimer -= dt;
             }
-            else if (_knockbackTimer <= 0f && _health.Value <= 0f)
+            else if (_knockbackTimer <= 0f && _healthSync.Value <= 0f)
             {
                 Debug.Log("Respawning");
                 _rigidbody.linearVelocity = Vector2.zero;
@@ -131,18 +138,18 @@ namespace Game.Player
             {
                 float targetSpeed = input.Movement * MoveValues.Speed;
 
-                float acceleration = IsGrounded ? _playerMovementConfig._groundAcceleration : _playerMovementConfig._airAcceleration;
+                float acceleration = _isGrounded ? _playerMovementConfig._groundAcceleration : _playerMovementConfig._airAcceleration;
                 float newX = Mathf.MoveTowards(currentVelocity.x, targetSpeed, acceleration * dt);
                 _rigidbody.linearVelocity = new Vector2(newX, currentVelocity.y);
             }
             else
             {
-                float deceleration = IsGrounded ? _playerMovementConfig._groundDeceleration : _playerMovementConfig._airDeceleration;
+                float deceleration = _isGrounded ? _playerMovementConfig._groundDeceleration : _playerMovementConfig._airDeceleration;
                 float newX = Mathf.MoveTowards(currentVelocity.x, 0f, deceleration * dt);
                 _rigidbody.linearVelocity = new Vector2(newX, currentVelocity.y);
             }
 
-            if (input.Jump && (IsGrounded || _coyoteTimer > 0f))
+            if (input.Jump && (_isGrounded || _coyoteTimer > 0f))
             {
                 Jump();
             }
@@ -167,9 +174,10 @@ namespace Game.Player
             }
 
             JumpFx?.Invoke();
+            TriggerJumpServerRpc();
 
             _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            IsGrounded = false;
+            _isGrounded = false;
         }
         
         public void TakeDamage(ObstacleController obstacleController)
@@ -177,8 +185,8 @@ namespace Game.Player
             if (!IsServerInitialized)
                 return;
             
-            _health.Value -= obstacleController.Damage;
-            if (_health.Value <= 0)
+            _healthSync.Value -= obstacleController.Damage;
+            if (_healthSync.Value <= 0)
                 return;
             
             KnockbackClientRpc(obstacleController.transform.position);
@@ -207,7 +215,28 @@ namespace Game.Player
         [ServerRpc(RequireOwnership = true)]
         private void RespawnServerRpc()
         {
-            _health.Value = _playerMovementConfig._maxHealth;
+            _healthSync.Value = _playerMovementConfig._maxHealth;
+        }
+
+        [ServerRpc(RequireOwnership = true)]
+        private void SetMovementValuesServerRpc(Vector2 velocity, bool isGrounded)
+        {
+            _velocitySync.Value = velocity;
+            _isGroundedSync.Value = isGrounded;
+        }
+
+        [ServerRpc(RequireOwnership = true)]
+        private void TriggerJumpServerRpc()
+        {
+            JumpFx?.Invoke();
+            TriggerJumpObserversRpc();
+        }
+
+        [ObserversRpc(ExcludeOwner = true)]
+        private void TriggerJumpObserversRpc()
+        {
+            Debug.Log("[PlayerMovement] Trigger jump");
+            JumpFx?.Invoke();
         }
     }
 }

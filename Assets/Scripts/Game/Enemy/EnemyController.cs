@@ -10,7 +10,7 @@ namespace Game.Enemy
         [SerializeField] private Transform _spriteRoot;
         [SerializeField] private Transform _frontHitbox;
         [SerializeField] private Animator _animator;
-        [SerializeField] private ServerMovablePlatform _platform;
+        [SerializeField] private ServerMovableObject _platform;
         
         private Vector3 _lastPosition;
         
