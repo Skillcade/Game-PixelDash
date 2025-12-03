@@ -20,6 +20,7 @@ MonoBehaviour:
   _maxFallSpeed: 25
   _jumpHeight: 8
   _coyoteTime: 0.2
+  _jumpDelay: 0.3
   _groundCheckOffset: 0.1
   _groundCheckDistance: 0.5
   _groundMask:

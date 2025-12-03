@@ -16,6 +16,7 @@ namespace Game.Player
         [SerializeField] public float _maxFallSpeed;
         [SerializeField] public float _jumpHeight;
         [SerializeField] public float _coyoteTime;
+        [SerializeField] public float _jumpDelay;
         
         [Header("Ground check")]
         [SerializeField] public float _groundCheckOffset;

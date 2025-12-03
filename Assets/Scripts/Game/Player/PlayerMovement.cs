@@ -49,8 +49,6 @@ namespace Game.Player
         [SerializeField] private PlayerInputReader _inputReader;
         [SerializeField] private PlayerMovementConfig _playerMovementConfig;
         [SerializeField] private Collider2D _collider;
-
-        [SerializeField] private bool _groundedDebugSync;
         
         [Inject] private readonly GameStateMachine _gameStateMachine;
 
@@ -61,6 +59,7 @@ namespace Game.Player
         private bool _isGrounded;
         private float _knockbackTimer;
         private float _coyoteTimer;
+        private float _jumpTimer;
 
         private PlayerInput _lastCreatedInput;
 
@@ -88,11 +87,13 @@ namespace Game.Player
         
         private void SimulateInputs(PlayerInput input)
         {
-            _groundedDebugSync = _isGroundedSync.Value;
             if (!IsOwner)
                 return;
             
             float dt = (float)TimeManager.TickDelta;
+
+            if (_jumpTimer > 0f)
+                _jumpTimer -= dt;
 
             UpdateKnockback(dt);
             Move(input, dt);
@@ -110,7 +111,9 @@ namespace Game.Player
 
         private void UpdateGrounded()
         {
-            _isGrounded = _collider.IsTouchingLayers(_playerMovementConfig._groundMask);
+            var origin = transform.position + Vector3.up * _playerMovementConfig._groundCheckOffset;
+            _isGrounded = Physics2D.Raycast(origin, Vector2.down, _playerMovementConfig._groundCheckDistance,
+                _playerMovementConfig._groundMask);
         }
 
         private void UpdateKnockback(float dt)
@@ -121,7 +124,6 @@ namespace Game.Player
             }
             else if (_knockbackTimer <= 0f && _healthSync.Value <= 0f)
             {
-                Debug.Log("Respawning");
                 _rigidbody.linearVelocity = Vector2.zero;
                 _rigidbody.position = Vector2.zero;
                 RespawnServerRpc();
@@ -149,9 +151,10 @@ namespace Game.Player
                 _rigidbody.linearVelocity = new Vector2(newX, currentVelocity.y);
             }
 
-            if (input.Jump && (_isGrounded || _coyoteTimer > 0f))
+            if (input.Jump && (_isGrounded || _coyoteTimer > 0f) && _jumpTimer <= 0f)
             {
                 Jump();
+                _jumpTimer = _playerMovementConfig._jumpDelay;
             }
         }
 
@@ -235,7 +238,6 @@ namespace Game.Player
         [ObserversRpc(ExcludeOwner = true)]
         private void TriggerJumpObserversRpc()
         {
-            Debug.Log("[PlayerMovement] Trigger jump");
             JumpFx?.Invoke();
         }
     }
