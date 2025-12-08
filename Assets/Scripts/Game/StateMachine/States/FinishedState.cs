@@ -2,9 +2,12 @@
 using SkillcadeSDK.FishNetAdapter;
 using SkillcadeSDK.FishNetAdapter.Players;
 using SkillcadeSDK.StateMachine;
-using SkillcadeSDK.WebRequests;
 using UnityEngine;
 using VContainer;
+
+#if UNITY_SERVER
+using SkillcadeSDK.WebRequests;
+#endif
 
 namespace Game.StateMachine.States
 {
@@ -32,9 +35,12 @@ namespace Game.StateMachine.States
         
         [Inject] private readonly GameUi _gameUi;
         [Inject] private readonly GameConfig _gameConfig;
-        [Inject] private readonly WebRequester _webRequester;
         [Inject] private readonly PlayerSpawner _playerSpawner;
         [Inject] private readonly FishNetPlayersController _playersController;
+
+#if UNITY_SERVER
+        [Inject] private readonly WebRequester _webRequester;
+#endif
 
         private float _timer;
 
@@ -49,10 +55,9 @@ namespace Game.StateMachine.States
             
             if (IsServer)
             {
-                if (!TryValidateMatchIds())
-                    Debug.LogError("MatchId is invalid");
-                
+#if UNITY_SERVER
                 SendWinnerToBackend(data.WinnerId);
+#endif
                 _playerSpawner.DespawnAllPlayers();
             }
         }
@@ -91,34 +96,7 @@ namespace Game.StateMachine.States
             _gameUi.FinishedPanel.SetUserState(_playersController.LocalPlayerId == data.WinnerId);
         }
 
-        private bool TryValidateMatchIds()
-        {
-            string matchId = null;
-            foreach (var playerData in _playersController.GetAllPlayersData())
-            {
-                if (!PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
-                    continue;
-                
-                if (string.IsNullOrEmpty(matchData.MatchId))
-                {
-                    Debug.Log($"Player {playerData.PlayerNetworkId} matchId is null");
-                    continue;
-                }
-                
-                if (string.IsNullOrEmpty(matchId))
-                {
-                    matchId = matchData.MatchId;
-                }
-                else if (!string.Equals(matchId, matchData.MatchId))
-                {
-                    Debug.Log($"Players matchId is different: first {matchId}, second: {matchData.MatchId}");
-                    return false;
-                }
-            }
-            
-            return matchId != null;
-        }
-
+#if UNITY_SERVER
         private void SendWinnerToBackend(int winnerId)
         {
             if (winnerId == 0 || !_playersController.TryGetPlayerData(winnerId, out var playerData))
@@ -128,7 +106,8 @@ namespace Game.StateMachine.States
             }
             
             if (PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
-                _webRequester.SendWinner(matchData.MatchId, matchData.PlayerId);
+                _webRequester.SendWinner(matchData.PlayerId);
         }
+#endif
     }
 }

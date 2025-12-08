@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   GameName: Pixel Dash
-  GameVersion: 0.1.1
+  GameVersion: 1.3.0
   StartGameCountdownSeconds: 3
   WaitAfterFinishSeconds: 10

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2271500187710771536}
   - component: {fileID: 6465623768314185214}
   - component: {fileID: 5390835218289763325}
+  - component: {fileID: 4801329532924595030}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -155,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68828c85278210948b9d50a8db3aab74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _authenticator: {fileID: 0}
+  _authenticator: {fileID: 4801329532924595030}
   _remoteClientTimeout: 2
   _remoteClientTimeoutDuration: 60
   _allowPredictedSpawning: 0
@@ -185,3 +186,15 @@ MonoBehaviour:
   _remoteServerTimeoutDuration: 60
   _changeFrameRate: 1
   _frameRate: 500
+--- !u!114 &4801329532924595030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5991760196429670136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec0a1c719eac4e7899177cc7b60c8dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
