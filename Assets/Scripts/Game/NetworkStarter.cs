@@ -1,7 +1,8 @@
 ﻿using FishNet.Managing;
+using Game.GUI;
 using SkillcadeSDK.Common;
 using UnityEngine;
-using UnityEngine.UI;
+using VContainer;
 
 namespace Game
 {
@@ -9,14 +10,16 @@ namespace Game
     {
         [Header("Manual connection settings")]
         [SerializeField] private NetworkManager _networkManager;
-        [SerializeField] private Button _startServerButton;
-        [SerializeField] private Button _connectButton;
-        [SerializeField] private GameObject _inGamePanel;
         [SerializeField] private GameConfig _gameConfig;
 
-        private void Awake()
+        [Inject] private readonly LobbyUi _lobbyUi;
+        [Inject] private readonly GameUi _gameUi;
+
+
+        public override void Initialize()
         {
             Debug.Log($"[{_gameConfig.GameName}] Starting game, version: {_gameConfig.GameVersion}");
+            base.Initialize();
         }
 
         protected override void InitManualConnection()
@@ -24,31 +27,31 @@ namespace Game
 #if UNITY_WEBGL && !UNITY_EDITOR
             _startServerButton.gameObject.SetActive(false);
 #endif
-            _inGamePanel.SetActive(false);
-            _startServerButton.onClick.AddListener(OnStartServer);
-            _connectButton.onClick.AddListener(OnStartClient);
+            _gameUi.gameObject.SetActive(false);
+            _lobbyUi.StartServerButton.onClick.AddListener(OnStartServer);
+            _lobbyUi.ConnectButton.onClick.AddListener(OnStartClient);
         }
-        
+
         private void OnStartServer()
         {
             StartServer();
-            _startServerButton.gameObject.SetActive(false);
-            _connectButton.gameObject.SetActive(false);
+            _lobbyUi.StartServerButton.gameObject.SetActive(false);
+            _lobbyUi.ConnectButton.gameObject.SetActive(false);
         }
 
         private void OnStartClient()
         {
             StartClient();
-            _startServerButton.gameObject.SetActive(false);
-            _connectButton.gameObject.SetActive(false);
-            _inGamePanel.SetActive(true);
+            _lobbyUi.StartServerButton.gameObject.SetActive(false);
+            _lobbyUi.ConnectButton.gameObject.SetActive(false);
+            _gameUi.gameObject.SetActive(true);
         }
 
         protected override void OnConnectionStarted(ConnectionMode mode)
         {
-            _startServerButton.gameObject.SetActive(false);
-            _connectButton.gameObject.SetActive(false);
-            _inGamePanel.SetActive(mode == ConnectionMode.Client);
+            _lobbyUi.StartServerButton.gameObject.SetActive(false);
+            _lobbyUi.ConnectButton.gameObject.SetActive(false);
+            _gameUi.gameObject.SetActive(mode == ConnectionMode.Client);
         }
     }
 }

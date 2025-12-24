@@ -104,9 +104,12 @@ namespace Game.StateMachine.States
                 Debug.Log($"Don't send winner, id: {winnerId}");
                 return;
             }
-            
+
+            Debug.Log($"[FinishedState] Winner is {winnerId}");
             if (PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
                 _webRequester.SendWinner(matchData.PlayerId);
+            else
+                Debug.Log("[FinishedState] Can't get winner player data");
         }
 #endif
     }

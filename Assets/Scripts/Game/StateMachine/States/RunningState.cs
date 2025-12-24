@@ -2,6 +2,7 @@
 using Game.Level;
 using SkillcadeSDK.Common.Level;
 using SkillcadeSDK.FishNetAdapter;
+using SkillcadeSDK.FishNetAdapter.Replays;
 using SkillcadeSDK.StateMachine;
 using VContainer;
 
@@ -16,6 +17,7 @@ namespace Game.StateMachine.States
         [Inject] private readonly FinishLine _finishLine;
         [Inject] private readonly PlayerSpawner _playerSpawner;
         [Inject] private readonly RespawnServiceProvider _respawnServiceProvider;
+        [Inject] private readonly FishNetReplayWriteService _fishNetReplayWriteService;
 
         public override void OnEnter(GameStateType prevState)
         {
@@ -29,6 +31,7 @@ namespace Game.StateMachine.States
                 _playerSpawner.SpawnAllInGamePlayers();
                 _finishLine.OnPlayerReachedFinish += OnPlayerFinished;
                 _respawnServiceProvider.TriggerRespawn();
+                _fishNetReplayWriteService.Start();
             }
         }
 
@@ -40,7 +43,10 @@ namespace Game.StateMachine.States
                 _gameUi.RunningPanel.gameObject.SetActive(false);
             
             if (IsServer)
+            {
                 _finishLine.OnPlayerReachedFinish += OnPlayerFinished;
+                _fishNetReplayWriteService.Stop();
+            }
         }
 
         private void OnPlayerFinished(int winnerId)
