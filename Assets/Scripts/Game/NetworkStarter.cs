@@ -14,8 +14,7 @@ namespace Game
 
         [Inject] private readonly LobbyUi _lobbyUi;
         [Inject] private readonly GameUi _gameUi;
-
-
+        
         public override void Initialize()
         {
             Debug.Log($"[{_gameConfig.GameName}] Starting game, version: {_gameConfig.GameVersion}");
@@ -24,9 +23,6 @@ namespace Game
 
         protected override void InitManualConnection()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            _startServerButton.gameObject.SetActive(false);
-#endif
             _gameUi.gameObject.SetActive(false);
             _lobbyUi.StartServerButton.onClick.AddListener(OnStartServer);
             _lobbyUi.ConnectButton.onClick.AddListener(OnStartClient);

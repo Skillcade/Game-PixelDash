@@ -478,6 +478,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9008493408307000727}
+  - component: {fileID: 4280446690048807563}
+  - component: {fileID: 4215356431117948582}
   m_Layer: 2
   m_Name: Shredder
   m_TagString: Untagged
@@ -502,3 +504,31 @@ Transform:
   - {fileID: 3244945930516696537}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4280446690048807563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4365292111170567653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb130e9c21924082abdce7a25b45804b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefabId: 4
+  _targetObject: {fileID: 2192751021213653548}
+  _networkObject: {fileID: 5039122664999532716}
+--- !u!114 &4215356431117948582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4365292111170567653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b96d45f34d654c07b8525419794b6b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 4157329822031842845}

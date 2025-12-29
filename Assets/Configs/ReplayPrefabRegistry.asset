@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dcc7c5396e7483f85d3c2d379fb7290, type: 3}
+  m_Name: ReplayPrefabRegistry
+  m_EditorClassIdentifier: 
+  _prefabs:
+  - {fileID: 5861739500247060896, guid: 38a0e5d5159114945891dbb6fe2c2e0a, type: 3}
+  - {fileID: 8630069138022729546, guid: 4400739d603442d4180922e02766a98b, type: 3}
+  - {fileID: 4280446690048807563, guid: 1b9160f49e94f204080e653744534a55, type: 3}
+  - {fileID: 248730003391850478, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
+  - {fileID: 5381256584560845712, guid: f0e123ac357a9a74384b4ac561698900, type: 3}

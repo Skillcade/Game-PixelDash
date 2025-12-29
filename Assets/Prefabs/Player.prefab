@@ -366,6 +366,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb130e9c21924082abdce7a25b45804b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _prefabId: 0
+  _targetObject: {fileID: 7294861560698192311}
   _networkObject: {fileID: 4944023266038734634}
 --- !u!114 &4120784234525979764
 MonoBehaviour:

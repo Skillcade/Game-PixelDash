@@ -38,24 +38,24 @@ namespace Game.Player
             InitNickname();
             
             _movement.JumpFx += OnJumpFx;
-            _playersController.OnPlayerDataUpdated += OnPlayerUpdated;
+            if (_playersController != null)
+                _playersController.OnPlayerDataUpdated += OnPlayerUpdated;
         }
 
         private void OnDisable()
         {
             _movement.JumpFx -= OnJumpFx;
-            _playersController.OnPlayerDataUpdated -= OnPlayerUpdated;
+            if (_playersController != null)
+                _playersController.OnPlayerDataUpdated -= OnPlayerUpdated;
         }
 
         private void Start()
         {
             if (_movement.NetworkObject.Owner.IsLocalClient)
             {
-                CinemachineCamera targetCamera = FindAnyObjectByType<CinemachineCamera>(FindObjectsInactive.Include);
+                var targetCamera = FindAnyObjectByType<CinemachineCamera>(FindObjectsInactive.Include);
                 if (targetCamera != null)
-                {
                     targetCamera.Target.TrackingTarget = transform;
-                }
             }
             else
             {
@@ -66,6 +66,9 @@ namespace Game.Player
         private void InitNickname()
         {
             if (_movement == null || _movement.NetworkObject == null)
+                return;
+            
+            if (_playersController == null)
                 return;
             
             if (!_playersController.TryGetPlayerData(_movement.OwnerId, out var playerData))

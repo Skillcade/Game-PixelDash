@@ -2923,8 +2923,8 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _sceneNames:
-  - NetworkingScene
   - LevelScene
+  - NetworkingScene
   _rootInstallers:
   - {fileID: 1699503129}
   - {fileID: 1699503130}
