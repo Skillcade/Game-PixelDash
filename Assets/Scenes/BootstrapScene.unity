@@ -2854,6 +2854,7 @@ GameObject:
   - component: {fileID: 1699503131}
   - component: {fileID: 1699503129}
   - component: {fileID: 1699503130}
+  - component: {fileID: 1699503132}
   m_Layer: 0
   m_Name: MainScope
   m_TagString: Untagged
@@ -2890,6 +2891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _autoInjectGameObjects: []
   _webBridge: {fileID: 888954192}
+  _gameVersionConfig: {fileID: 11400000, guid: e7a4e54cb5f022844b9ce9d5fa535b02, type: 2}
 --- !u!114 &1699503130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2928,6 +2930,20 @@ MonoBehaviour:
   _rootInstallers:
   - {fileID: 1699503129}
   - {fileID: 1699503130}
+  - {fileID: 1699503132}
+--- !u!114 &1699503132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699503125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4b3f99721aa4562b139bf32168818d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _autoInjectGameObjects: []
 --- !u!1 &1734752907
 GameObject:
   m_ObjectHideFlags: 0
@@ -3788,7 +3804,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1904258399}
-  - {fileID: 888954193}
   - {fileID: 1699503128}
+  - {fileID: 888954193}
   - {fileID: 823921870}
   - {fileID: 1456099570}

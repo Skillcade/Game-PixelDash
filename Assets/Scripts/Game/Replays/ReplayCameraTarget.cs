@@ -14,11 +14,25 @@ namespace Game.Replays
         private Vector2 _movement;
         private PlayerControls _playerControls;
         
+        private CinemachineCamera _targetCamera;
+        
         public void Initialize()
         {
-            var targetCamera = FindAnyObjectByType<CinemachineCamera>(FindObjectsInactive.Include);
-            if (targetCamera != null)
-                targetCamera.Target.TrackingTarget = transform;
+            SetupCamera();
+        }
+
+        public void SetupCamera()
+        {
+            if (_targetCamera == null)
+                _targetCamera = FindAnyObjectByType<CinemachineCamera>(FindObjectsInactive.Include);
+            
+            if (_targetCamera != null)
+            {
+                if (_targetCamera.Target.TrackingTarget != null)
+                    transform.position = _targetCamera.Target.TrackingTarget.transform.position;
+                
+                _targetCamera.Target.TrackingTarget = transform;
+            }
         }
 
         private void OnEnable()

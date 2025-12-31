@@ -1,6 +1,7 @@
 ﻿using FishNet.Managing;
 using Game.GUI;
 using SkillcadeSDK.Common;
+using SkillcadeSDK.Replays;
 using UnityEngine;
 using VContainer;
 
@@ -10,14 +11,14 @@ namespace Game
     {
         [Header("Manual connection settings")]
         [SerializeField] private NetworkManager _networkManager;
-        [SerializeField] private GameConfig _gameConfig;
+        [SerializeField] private GameVersionConfig _gameVersionConfig;
 
         [Inject] private readonly LobbyUi _lobbyUi;
         [Inject] private readonly GameUi _gameUi;
         
         public override void Initialize()
         {
-            Debug.Log($"[{_gameConfig.GameName}] Starting game, version: {_gameConfig.GameVersion}");
+            Debug.Log($"[{_gameVersionConfig.GameName}] Starting game, version: {_gameVersionConfig.GameVersion}");
             base.Initialize();
         }
 

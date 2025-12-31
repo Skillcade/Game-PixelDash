@@ -325,9 +325,9 @@ MonoBehaviour:
   _dedicatedServerMode: 2
   _webGlMode: 1
   _connectionMode: 0
-  _config: {fileID: 11400000, guid: 4005b0ff013f89644a5e23e586d77277, type: 2}
+  _config: {fileID: 11400000, guid: 5fa8a9f51d08fac4eb687a64030b4d8e, type: 2}
   _networkManager: {fileID: 1028377064}
-  _gameConfig: {fileID: 11400000, guid: 21a9aae8b7220d1479c9456a1c7d1bf4, type: 2}
+  _gameVersionConfig: {fileID: 11400000, guid: e7a4e54cb5f022844b9ce9d5fa535b02, type: 2}
 --- !u!4 &896066700
 Transform:
   m_ObjectHideFlags: 0
