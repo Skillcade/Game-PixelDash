@@ -43,14 +43,14 @@
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       },
-      "hash": "5077298dcfbf18b11cd4cbaa4b083fef4710f8a5"
+      "hash": "c0ecafba680fa14aa5fc43f1eed2090271c50c43"
     },
     "com.skillcade.sdk-fishnet": {
       "version": "https://github.com/Skillcade/SkillcadeSDK-FishNet.git?path=Assets/Sources/SkillcadeSDK",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "7b23b46e9025c1cc9ad2856af703df93b9fb13e9"
+      "hash": "e7fb7ad0fc561756adba54432261cf937115be0d"
     },
     "com.unity.2d.tilemap": {
       "version": "1.0.0",

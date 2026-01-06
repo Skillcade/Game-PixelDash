@@ -1,11 +1,10 @@
 ﻿using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using VContainer.Unity;
 
 namespace Game.Replays
 {
-    public class ReplayCameraTarget : MonoBehaviour, IInitializable
+    public class ReplayCameraTarget : MonoBehaviour
     {
         [SerializeField] private float _speed;
         [SerializeField] private Vector2 _horizontalBounds;
@@ -15,25 +14,6 @@ namespace Game.Replays
         private PlayerControls _playerControls;
         
         private CinemachineCamera _targetCamera;
-        
-        public void Initialize()
-        {
-            SetupCamera();
-        }
-
-        public void SetupCamera()
-        {
-            if (_targetCamera == null)
-                _targetCamera = FindAnyObjectByType<CinemachineCamera>(FindObjectsInactive.Include);
-            
-            if (_targetCamera != null)
-            {
-                if (_targetCamera.Target.TrackingTarget != null)
-                    transform.position = _targetCamera.Target.TrackingTarget.transform.position;
-                
-                _targetCamera.Target.TrackingTarget = transform;
-            }
-        }
 
         private void OnEnable()
         {

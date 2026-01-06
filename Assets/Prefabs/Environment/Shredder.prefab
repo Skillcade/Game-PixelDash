@@ -518,6 +518,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabId: 4
   _targetObject: {fileID: 2192751021213653548}
+  _graphicsObject: {fileID: 4080393505302490916}
   _networkObject: {fileID: 5039122664999532716}
 --- !u!114 &4215356431117948582
 MonoBehaviour:

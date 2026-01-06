@@ -28,7 +28,7 @@ namespace Game.Player
         [SerializeField] private float _remoteDarkenMul = 0.7f;
         [SerializeField] private float _remoteAlpha = 0.9f;
 
-        [Inject] private readonly FishNetPlayersController _playersController;
+        [Inject] private readonly IObjectResolver _objectResolver;
 
         private string _nickname;
 
@@ -38,15 +38,15 @@ namespace Game.Player
             InitNickname();
             
             _movement.JumpFx += OnJumpFx;
-            if (_playersController != null)
-                _playersController.OnPlayerDataUpdated += OnPlayerUpdated;
+            if (_objectResolver.TryResolve(out FishNetPlayersController playersController))
+                playersController.OnPlayerDataUpdated += OnPlayerUpdated;
         }
 
         private void OnDisable()
         {
             _movement.JumpFx -= OnJumpFx;
-            if (_playersController != null)
-                _playersController.OnPlayerDataUpdated -= OnPlayerUpdated;
+            if (_objectResolver.TryResolve(out FishNetPlayersController playersController))
+                playersController.OnPlayerDataUpdated -= OnPlayerUpdated;
         }
 
         private void Start()
@@ -68,10 +68,10 @@ namespace Game.Player
             if (_movement == null || _movement.NetworkObject == null)
                 return;
             
-            if (_playersController == null)
+            if (!_objectResolver.TryResolve(out FishNetPlayersController playersController))
                 return;
             
-            if (!_playersController.TryGetPlayerData(_movement.OwnerId, out var playerData))
+            if (!playersController.TryGetPlayerData(_movement.OwnerId, out var playerData))
                 return;
 
             if (!PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))

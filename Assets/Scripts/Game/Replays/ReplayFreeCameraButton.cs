@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+﻿using SkillcadeSDK;
+using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 namespace Game.Replays
 {
     public class ReplayFreeCameraButton : MonoBehaviour
     {
         [SerializeField] private Button _freeCamButton;
-        [SerializeField] private ReplayCameraTarget _replayCameraTarget;
+
+        [Inject] private readonly ReplayCameraController _replayCameraController;
 
         private void Awake()
         {
@@ -15,7 +18,8 @@ namespace Game.Replays
 
         private void EnableFreeCam()
         {
-            _replayCameraTarget.SetupCamera();
+            this.InjectToMe();
+            _replayCameraController.SetFreeCamera();
         }
     }
 }

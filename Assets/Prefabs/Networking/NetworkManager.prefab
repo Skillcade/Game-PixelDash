@@ -56,7 +56,7 @@ MonoBehaviour:
   _dontDestroyOnLoad: 1
   _objectPool: {fileID: 0}
   _persistence: 0
-  _logging: {fileID: 0}
+  _logging: {fileID: 11400000, guid: c106a0ac7e18fa947a4f722f2bb0805d, type: 2}
   _spawnablePrefabs: {fileID: 11400000, guid: be46ff176ab1807448962ddcd6ea0b20, type: 2}
 --- !u!114 &4726032134448527420
 MonoBehaviour:
@@ -91,7 +91,7 @@ MonoBehaviour:
   _timingType: 1
   _allowTickDropping: 1
   _maximumFrameTicks: 5
-  _tickRate: 90
+  _tickRate: 20
   _pingInterval: 1
   _physicsMode: 1
 --- !u!114 &1618705665565809933
@@ -157,8 +157,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _authenticator: {fileID: 4801329532924595030}
-  _remoteClientTimeout: 2
-  _remoteClientTimeoutDuration: 60
+  _remoteClientTimeout: 0
+  _remoteClientTimeoutDuration: 1500
   _allowPredictedSpawning: 0
   _reservedObjectIds: 15
   _syncTypeRate: 0.1
@@ -167,7 +167,7 @@ MonoBehaviour:
     Rotation: 2
     Scale: 2
   _changeFrameRate: 1
-  _frameRate: 60
+  _frameRate: 30
   _shareIds: 1
   _startOnHeadless: 0
 --- !u!114 &5390835218289763325
@@ -182,8 +182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca43cf6f20e77c4f8fcc078fd85081f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _remoteServerTimeout: 2
-  _remoteServerTimeoutDuration: 60
+  _remoteServerTimeout: 0
+  _remoteServerTimeoutDuration: 1500
   _changeFrameRate: 1
   _frameRate: 500
 --- !u!114 &4801329532924595030

@@ -10,7 +10,8 @@ namespace Game.Replays
         
         public override void Install(IContainerBuilder builder)
         {
-            builder.RegisterInstance(_replayCameraTarget).AsImplementedInterfaces();
+            builder.RegisterInstance(_replayCameraTarget);
+            builder.Register<ReplayCameraController>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
         }
     }
 }
