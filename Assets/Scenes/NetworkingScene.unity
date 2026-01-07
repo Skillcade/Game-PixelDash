@@ -465,7 +465,7 @@ MonoBehaviour:
   _playersController: {fileID: 659747695}
   _playerSpawner: {fileID: 1514232424}
   _stateMachineSyncer: {fileID: 1836597217}
-  _replayWriteController: {fileID: 1337802085}
+  _replayWriteController: {fileID: 1337802088}
 --- !u!4 &1165856135
 Transform:
   m_ObjectHideFlags: 0
@@ -506,7 +506,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1337802087}
   - component: {fileID: 1337802086}
-  - component: {fileID: 1337802085}
+  - component: {fileID: 1337802088}
   m_Layer: 0
   m_Name: FishNetReplayWriteController
   m_TagString: Untagged
@@ -514,22 +514,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1337802085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1337802084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62716d4f7ff54fb3b4fec2a83870dd6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 1337802086}
-  _networkObjectCache: {fileID: 0}
-  _framesToSend: 10
 --- !u!114 &1337802086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -597,6 +581,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1337802088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337802084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4181343c0791aee4a931c4013151d455, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 1337802086}
+  _networkObjectCache: {fileID: 0}
 --- !u!1 &1514232421
 GameObject:
   m_ObjectHideFlags: 0

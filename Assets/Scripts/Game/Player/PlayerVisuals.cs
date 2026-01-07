@@ -80,6 +80,12 @@ namespace Game.Player
             _nickname = matchData.Nickname;
             _nicknameText.text = _nickname;
         }
+
+        public void SetNickname(string nickname) // For replays
+        {
+            _nickname = nickname;
+            _nicknameText.text = _nickname;
+        }
         
         private void Update()
         {
