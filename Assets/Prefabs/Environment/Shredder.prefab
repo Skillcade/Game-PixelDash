@@ -478,7 +478,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9008493408307000727}
-  - component: {fileID: 4280446690048807563}
+  - component: {fileID: 8296683027369418790}
   - component: {fileID: 4215356431117948582}
   m_Layer: 2
   m_Name: Shredder
@@ -504,7 +504,7 @@ Transform:
   - {fileID: 3244945930516696537}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4280446690048807563
+--- !u!114 &8296683027369418790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -513,13 +513,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 4365292111170567653}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb130e9c21924082abdce7a25b45804b, type: 3}
+  m_Script: {fileID: 11500000, guid: 80944225551645d0bae3f5997b282807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isReplaying: 0
+  _replayObjectId: 0
+  _replayWorldId: 0
   _prefabId: 4
   _targetObject: {fileID: 2192751021213653548}
   _graphicsObject: {fileID: 4080393505302490916}
   _networkObject: {fileID: 5039122664999532716}
+  _targetRenderers:
+  - {fileID: 2572560312893517348}
+  _targetGroups: []
 --- !u!114 &4215356431117948582
 MonoBehaviour:
   m_ObjectHideFlags: 0

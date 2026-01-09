@@ -365,7 +365,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7294861560698192311}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3d58ce2c1394ad392574f11c19b9f61, type: 3}
+  m_Script: {fileID: 11500000, guid: 80944225551645d0bae3f5997b282807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _isReplaying: 0
@@ -375,9 +375,9 @@ MonoBehaviour:
   _targetObject: {fileID: 7294861560698192311}
   _graphicsObject: {fileID: 1095091617149836846}
   _networkObject: {fileID: 4944023266038734634}
-  _renderers:
+  _targetRenderers:
   - {fileID: 5252079322890188045}
-  _canvasGroups:
+  _targetGroups:
   - {fileID: 7350306043402630726}
 --- !u!114 &4120784234525979764
 MonoBehaviour:
@@ -429,6 +429,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4963457859914228915}
     m_Modifications:
+    - target: {fileID: 1474460296591712576, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
+      propertyPath: _networkObject
+      value: 
+      objectReference: {fileID: 4944023266038734634}
+    - target: {fileID: 1474460296591712576, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
+      propertyPath: _replayObjectHandler
+      value: 
+      objectReference: {fileID: 1036819047472191368}
     - target: {fileID: 1509134482077141073, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
       propertyPath: m_Name
       value: Model
@@ -481,6 +489,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8221566878186941655, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
+      propertyPath: _networkObject
+      value: 
+      objectReference: {fileID: 4944023266038734634}
+    - target: {fileID: 8221566878186941655, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
+      propertyPath: _replayObjectHandler
+      value: 
+      objectReference: {fileID: 1036819047472191368}
     - target: {fileID: 8338453291196134784, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
       propertyPath: m_text
       value: Unknown_player
@@ -488,31 +504,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1509134482077141073, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7627926045069032104}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
 --- !u!1 &1095091617149836846 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1509134482077141073, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
   m_PrefabInstance: {fileID: 2000453477535913599}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7627926045069032104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1095091617149836846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7691cd83c10f4eb6b1f2843493efb7f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _replayObjectHandler: {fileID: 1036819047472191368}
-  _networkObject: {fileID: 4944023266038734634}
-  _nicknameText: {fileID: 7528658206669120511}
 --- !u!4 &5081052010537483841 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6719524802415552574, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
@@ -528,14 +526,3 @@ CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 9061948001279451193, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
   m_PrefabInstance: {fileID: 2000453477535913599}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7528658206669120511 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8338453291196134784, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
-  m_PrefabInstance: {fileID: 2000453477535913599}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

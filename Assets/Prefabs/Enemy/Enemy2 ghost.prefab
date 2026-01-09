@@ -118,7 +118,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 130802890564585193}
-  - component: {fileID: 3591628483439549399}
+  - component: {fileID: 9172855762243176552}
   - component: {fileID: 4951686740397577509}
   m_Layer: 0
   m_Name: Enemy2 ghost
@@ -147,7 +147,7 @@ Transform:
   - {fileID: 6758936861493103981}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3591628483439549399
+--- !u!114 &9172855762243176552
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -156,20 +156,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 3469379874709613770}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3d58ce2c1394ad392574f11c19b9f61, type: 3}
+  m_Script: {fileID: 11500000, guid: 80944225551645d0bae3f5997b282807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _isReplaying: 0
   _replayObjectId: 0
-  _replayClientId: 0
+  _replayWorldId: 0
   _prefabId: 2
   _targetObject: {fileID: 5669972979329020059}
   _graphicsObject: {fileID: 7317663553469941417}
   _networkObject: {fileID: 2637202103619406344}
-  _transparencyMultiplier: 0.5
-  _renderers:
+  _targetRenderers:
   - {fileID: 109148914490465163}
-  _canvasGroups: []
+  _targetGroups: []
 --- !u!114 &4951686740397577509
 MonoBehaviour:
   m_ObjectHideFlags: 0

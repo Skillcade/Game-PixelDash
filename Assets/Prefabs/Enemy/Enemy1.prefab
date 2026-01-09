@@ -119,7 +119,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 130802890564585193}
-  - component: {fileID: 7061026288211915107}
+  - component: {fileID: 8019754524564018319}
   - component: {fileID: 4601453385375913621}
   m_Layer: 0
   m_Name: Enemy1
@@ -146,7 +146,7 @@ Transform:
   - {fileID: 6758936861493103981}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7061026288211915107
+--- !u!114 &8019754524564018319
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,20 +155,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 3469379874709613770}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3d58ce2c1394ad392574f11c19b9f61, type: 3}
+  m_Script: {fileID: 11500000, guid: 80944225551645d0bae3f5997b282807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _isReplaying: 0
   _replayObjectId: 0
-  _replayClientId: 0
+  _replayWorldId: 0
   _prefabId: 1
   _targetObject: {fileID: 5669972979329020059}
   _graphicsObject: {fileID: 3058724900870457737}
   _networkObject: {fileID: 2637202103619406344}
-  _transparencyMultiplier: 0.5
-  _renderers:
+  _targetRenderers:
   - {fileID: 6239676355525953804}
-  _canvasGroups: []
+  _targetGroups: []
 --- !u!114 &4601453385375913621
 MonoBehaviour:
   m_ObjectHideFlags: 0

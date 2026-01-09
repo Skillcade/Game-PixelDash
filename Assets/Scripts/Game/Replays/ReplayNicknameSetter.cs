@@ -1,6 +1,7 @@
 ﻿using FishNet.Object;
 using SkillcadeSDK;
 using SkillcadeSDK.FishNetAdapter.Replays;
+using SkillcadeSDK.Replays;
 using SkillcadeSDK.Replays.Components;
 using TMPro;
 using UnityEngine;
@@ -40,8 +41,12 @@ namespace Game.Replays
             
             if (!TryGetPlayerData(out var playerData))
                 return;
+
+            string worldStr = _replayObjectHandler.WorldId == ReplayReadService.ServerWorldId
+                ? "Server"
+                : $"View_{_replayObjectHandler.WorldId}";
             
-            _nicknameText.text = $"[View_{_replayObjectHandler.WorldId}] {playerData.Nickname}";
+            _nicknameText.text = $"[{worldStr}] {playerData.Nickname}";
             _nicknameSet = true;
             enabled = false;
         }
