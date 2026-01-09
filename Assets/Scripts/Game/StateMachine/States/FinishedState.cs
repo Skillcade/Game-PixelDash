@@ -5,7 +5,7 @@ using SkillcadeSDK.StateMachine;
 using UnityEngine;
 using VContainer;
 
-#if UNITY_SERVER
+#if UNITY_SERVER || UNITY_EDITOR
 using SkillcadeSDK.WebRequests;
 #endif
 
@@ -38,7 +38,8 @@ namespace Game.StateMachine.States
         [Inject] private readonly PlayerSpawner _playerSpawner;
         [Inject] private readonly FishNetPlayersController _playersController;
 
-#if UNITY_SERVER
+#if UNITY_SERVER || UNITY_EDITOR
+        [Inject] private readonly WebBridge _webBridge;
         [Inject] private readonly WebRequester _webRequester;
 #endif
 
@@ -55,7 +56,7 @@ namespace Game.StateMachine.States
             
             if (IsServer)
             {
-#if UNITY_SERVER
+#if UNITY_SERVER || UNITY_EDITOR
                 SendWinnerToBackend(data.WinnerId);
 #endif
                 _playerSpawner.DespawnAllPlayers();
@@ -96,17 +97,23 @@ namespace Game.StateMachine.States
             _gameUi.FinishedPanel.SetUserState(_playersController.LocalPlayerId == data.WinnerId);
         }
 
-#if UNITY_SERVER
+#if UNITY_SERVER || UNITY_EDITOR
         private void SendWinnerToBackend(int winnerId)
         {
+            if (!_webBridge.UsePayload)
+                return;
+            
             if (winnerId == 0 || !_playersController.TryGetPlayerData(winnerId, out var playerData))
             {
                 Debug.Log($"Don't send winner, id: {winnerId}");
                 return;
             }
-            
+
+            Debug.Log($"[FinishedState] Winner is {winnerId}");
             if (PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
                 _webRequester.SendWinner(matchData.PlayerId);
+            else
+                Debug.Log("[FinishedState] Can't get winner player data");
         }
 #endif
     }

@@ -12,6 +12,7 @@ namespace Game.GUI
         public void SetTime(float remainingSeconds)
         {
             int seconds = Mathf.CeilToInt(remainingSeconds);
+            seconds = Mathf.Clamp(seconds, 0, int.MaxValue);
             if (seconds == _lastShownSeconds)
                 return;
 

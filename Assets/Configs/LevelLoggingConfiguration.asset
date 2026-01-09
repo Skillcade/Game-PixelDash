@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df69eddb58024b47ba33a4774cee9a70, type: 3}
-  m_Name: London-Max Connection Config
+  m_Script: {fileID: 11500000, guid: 925fc096350b81f4f82f4fe4ac0c4dda, type: 3}
+  m_Name: LevelLoggingConfiguration
   m_EditorClassIdentifier: 
-  ServerAddress: 144.126.233.149
-  ServerListenPort: 10912
-  WssConnectPort: 10112
-  WssServerName: skillcade.games
-  UseEncryption: 1
-  ReconnectDelay: 5
-  ReconnectAttempts: 3
+  IsEnabled: 1
+  _addLocalTick: 1
+  _addTimestamps: 1
+  _enableTimestampsInEditor: 1
+  _developmentLogging: 3
+  _guiLogging: 3
+  _headlessLogging: 1
