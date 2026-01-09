@@ -52,6 +52,12 @@
       "dependencies": {},
       "hash": "e7fb7ad0fc561756adba54432261cf937115be0d"
     },
+    "com.unity.2d.sprite": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
     "com.unity.2d.tilemap": {
       "version": "1.0.0",
       "depth": 0,
