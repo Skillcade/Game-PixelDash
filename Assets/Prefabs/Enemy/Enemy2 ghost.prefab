@@ -256,8 +256,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1795821857
-  m_SortingLayer: 1
+  m_SortingLayerID: 859394333
+  m_SortingLayer: 5
   m_SortingOrder: 5
   m_Sprite: {fileID: 1439481580, guid: c17d00c514554f744934d0fc67168b3e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -491,7 +491,7 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 2637202103619406344}
   _networkObjectCache: {fileID: 0}
-  _defaultFlipped: 0
+  _defaultFlipped: 1
   _spriteRenderer: {fileID: 852838995551047562}
   _frontHitbox: {fileID: 8785114379248891097}
   _animator: {fileID: 400377180572499432}

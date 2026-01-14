@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 2229645839795360059}
   - component: {fileID: 4157329822031842845}
   - component: {fileID: 3481866315551263833}
+  - component: {fileID: 6072855168975738073}
   m_Layer: 2
   m_Name: Saw
   m_TagString: Untagged
@@ -259,14 +260,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2192751021213653548}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10000
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -277,7 +278,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 2
 --- !u!114 &3481866315551263833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,6 +321,22 @@ MonoBehaviour:
     m_RotationOrder: 4
   _startPoint: {fileID: 8236016551163293386}
   _endPoint: {fileID: 4445089699791252933}
+--- !u!114 &6072855168975738073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2192751021213653548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb508372ead34463a7f0dec51cbbcb85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 5039122664999532716}
+  _networkObjectCache: {fileID: 0}
+  _rotationSpeed: 270
 --- !u!1 &3584268969437341264
 GameObject:
   m_ObjectHideFlags: 0
