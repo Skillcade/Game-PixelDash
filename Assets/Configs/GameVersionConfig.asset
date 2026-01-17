@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GameVersionConfig
   m_EditorClassIdentifier: 
   GameName: Pixel Dash
-  GameVersion: 1.3.5
+  GameVersion: 1.5.3
   UnityVersion: 6000.0.47f1

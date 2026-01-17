@@ -1,4 +1,6 @@
-﻿using Game.GUI;
+﻿using System;
+using Game.GUI;
+using SkillcadeSDK.Connection;
 using SkillcadeSDK.FishNetAdapter;
 using SkillcadeSDK.FishNetAdapter.Players;
 using SkillcadeSDK.StateMachine;
@@ -39,7 +41,7 @@ namespace Game.StateMachine.States
         [Inject] private readonly FishNetPlayersController _playersController;
 
 #if UNITY_SERVER || UNITY_EDITOR
-        [Inject] private readonly WebBridge _webBridge;
+        [Inject] private readonly ConnectionConfig _connectionConfig;
         [Inject] private readonly WebRequester _webRequester;
 #endif
 
@@ -98,9 +100,9 @@ namespace Game.StateMachine.States
         }
 
 #if UNITY_SERVER || UNITY_EDITOR
-        private void SendWinnerToBackend(int winnerId)
+        private async void SendWinnerToBackend(int winnerId)
         {
-            if (!_webBridge.UsePayload)
+            if (!_connectionConfig.SkillcadeHubIntegrated)
                 return;
             
             if (winnerId == 0 || !_playersController.TryGetPlayerData(winnerId, out var playerData))
@@ -110,10 +112,22 @@ namespace Game.StateMachine.States
             }
 
             Debug.Log($"[FinishedState] Winner is {winnerId}");
-            if (PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
-                _webRequester.SendWinner(matchData.PlayerId);
-            else
-                Debug.Log("[FinishedState] Can't get winner player data");
+            try
+            {
+                if (PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
+                {
+                    Debug.Log($"[FinishedState] Send winner {winnerId}");
+                    await _webRequester.SendWinner(matchData.PlayerId);
+                }
+                else
+                {
+                    Debug.Log("[FinishedState] Can't get winner player data");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[FinishedState] Error on sending winner: {e}");
+            }
         }
 #endif
     }

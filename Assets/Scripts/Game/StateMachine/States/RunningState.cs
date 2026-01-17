@@ -33,7 +33,7 @@ namespace Game.StateMachine.States
                 _respawnServiceProvider.TriggerRespawn();
             }
             
-            _replayWriteService.StartWrite();
+            // _replayWriteService.StartWrite();
         }
 
         public override void OnExit(GameStateType nextState)
@@ -46,7 +46,7 @@ namespace Game.StateMachine.States
             if (IsServer)
                 _finishLine.OnPlayerReachedFinish += OnPlayerFinished;
             
-            _replayWriteService.FinishWrite(IsServer);
+            // _replayWriteService.FinishWrite(IsServer);
         }
 
         private void OnPlayerFinished(int winnerId)

@@ -17,5 +17,6 @@ MonoBehaviour:
   WssConnectPort: 10902
   WssServerName: ec2-98-88-33-86.compute-1.amazonaws.com
   UseEncryption: 1
+  SkillcadeHubIntegrated: 1
   ReconnectDelay: 5
   ReconnectAttempts: 3

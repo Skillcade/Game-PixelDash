@@ -1838,7 +1838,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d372188900cc43d799e45aae48724bef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _useWebBridge: 0
 --- !u!4 &888954193
 Transform:
   m_ObjectHideFlags: 0
@@ -2892,6 +2891,7 @@ MonoBehaviour:
   _autoInjectGameObjects: []
   _webBridge: {fileID: 888954192}
   _gameVersionConfig: {fileID: 11400000, guid: e7a4e54cb5f022844b9ce9d5fa535b02, type: 2}
+  _connectionConfig: {fileID: 11400000, guid: 8471d1d5d9b0fc844837a7c2c0ad9566, type: 2}
 --- !u!114 &1699503130
 MonoBehaviour:
   m_ObjectHideFlags: 0
