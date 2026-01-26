@@ -20,3 +20,4 @@ MonoBehaviour:
   SkillcadeHubIntegrated: 1
   ReconnectDelay: 5
   ReconnectAttempts: 3
+  TargetPlayerCount: 2

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using FishNet.Object;
+using SkillcadeSDK.Common.Level;
 using SkillcadeSDK.FishNetAdapter;
 using UnityEngine;
 
 namespace DefaultNamespace.Collectables
 {
-    public class CollectablesRespawnService : NetworkBehaviour, ISpawnService
+    public class CollectablesRespawnService : NetworkBehaviour, IRespawnService
     {
         private struct SpawnPoint
         {

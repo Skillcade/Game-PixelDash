@@ -7,5 +7,6 @@ namespace Game.GUI
     {
         [SerializeField] public Button StartServerButton;
         [SerializeField] public Button ConnectButton;
+        [SerializeField] public Button SinglePlayerButton;
     }
 }

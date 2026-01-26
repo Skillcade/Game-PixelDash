@@ -12,15 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df69eddb58024b47ba33a4774cee9a70, type: 3}
   m_Name: LocalHost Connection Config
   m_EditorClassIdentifier: 
-  AutoConnectionMode: 0
   ServerAddress: 127.0.0.1
   ServerListenPort: 10902
   WssConnectPort: 0
   WssServerName: 
   UseEncryption: 0
+  SkillcadeHubIntegrated: 0
   ReconnectDelay: 5
   ReconnectAttempts: 3
-  SendRate: 30
-  TickRate: 30
-  ConnectionTimeout: 30
-  MaxPacketSize: 1024
+  TargetPlayerCount: 1

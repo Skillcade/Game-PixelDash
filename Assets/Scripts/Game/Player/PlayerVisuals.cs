@@ -1,5 +1,6 @@
 using System;
 using SkillcadeSDK;
+using SkillcadeSDK.Connection;
 using SkillcadeSDK.FishNetAdapter.Players;
 using TMPro;
 using Unity.Cinemachine;
@@ -51,6 +52,16 @@ namespace Game.Player
 
         private void Start()
         {
+            if (_objectResolver.TryResolve(out IConnectionController connectionController)
+                && connectionController.ConnectionState == ConnectionState.SinglePlayer)
+            {
+                var targetCamera = FindAnyObjectByType<CinemachineCamera>(FindObjectsInactive.Include);
+                if (targetCamera != null)
+                    targetCamera.Target.TrackingTarget = transform;
+                    
+                return;
+            }
+            
             if (_movement.NetworkObject.Owner.IsLocalClient)
             {
                 var targetCamera = FindAnyObjectByType<CinemachineCamera>(FindObjectsInactive.Include);

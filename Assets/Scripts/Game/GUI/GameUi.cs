@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game.GUI
 {
@@ -8,13 +9,15 @@ namespace Game.GUI
         [SerializeField] public CountdownPanel CountdownPanel;
         [SerializeField] public GameObject RunningPanel;
         [SerializeField] public FinishedPanel FinishedPanel;
+        [SerializeField] public Button StopSinglePlayerButton;
 
-        private void Start()
+        private void Awake()
         {
             WaitForPlayersPanel.gameObject.SetActive(false);
             CountdownPanel.gameObject.SetActive(false);
             RunningPanel.gameObject.SetActive(false);
             FinishedPanel.gameObject.SetActive(false);
+            StopSinglePlayerButton.gameObject.SetActive(false);
         }
     }
 }
