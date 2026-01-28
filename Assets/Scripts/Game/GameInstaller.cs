@@ -21,8 +21,8 @@ namespace Game
             builder.RegisterInstance(_gameConfig).As<ISkillcadeConfig>();
 
             // Game-specific handlers
-            builder.Register<GameUiHandler>(Lifetime.Singleton).AsSelf();
-            builder.Register<GameLogicHandler>(Lifetime.Singleton).AsSelf();
+            builder.Register<GameUiHandler>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<GameLogicHandler>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
         }
     }
 }

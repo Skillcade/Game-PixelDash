@@ -1,8 +1,10 @@
+using System;
 using Game.Level;
 using SkillcadeSDK.Events;
 using SkillcadeSDK.FishNetAdapter;
 using SkillcadeSDK.StateMachine;
 using VContainer;
+using VContainer.Unity;
 
 namespace Game.Handlers
 {
@@ -10,13 +12,12 @@ namespace Game.Handlers
     /// Handler for game logic events.
     /// Subscribes to RunningStartEvent and FinishLine events to transition to FinishedState.
     /// </summary>
-    public class GameLogicHandler
+    public class GameLogicHandler : IInitializable, IDisposable
     {
         [Inject] private readonly GameEventBus _eventBus;
         [Inject] private readonly FinishLine _finishLine;
         [Inject] private readonly SkillcadeGameStateMachine _stateMachine;
 
-        [Inject]
         public void Initialize()
         {
             _eventBus.Subscribe<RunningStartEvent>(OnRunningStart);

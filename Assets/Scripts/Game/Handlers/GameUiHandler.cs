@@ -1,9 +1,11 @@
+using System;
 using Game.GUI;
 using SkillcadeSDK.Connection;
 using SkillcadeSDK.Events;
 using SkillcadeSDK.FishNetAdapter.Players;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace Game.Handlers
 {
@@ -11,14 +13,13 @@ namespace Game.Handlers
     /// Handler for UI updates based on game state events from Event Bus.
     /// Subscribes to events and updates UI panels accordingly.
     /// </summary>
-    public class GameUiHandler
+    public class GameUiHandler : IInitializable, IDisposable
     {
         [Inject] private readonly GameEventBus _eventBus;
         [Inject] private readonly GameUi _gameUi;
         [Inject] private readonly FishNetPlayersController _playersController;
         [Inject] private readonly IConnectionController _connectionController;
-
-        [Inject]
+        
         public void Initialize()
         {
             _eventBus.Subscribe<WaitForPlayersEnterEvent>(OnWaitForPlayersEnter);

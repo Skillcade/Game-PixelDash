@@ -38,7 +38,6 @@ namespace Game.GUI
 
         private void OnReadyClick()
         {
-            UnityEngine.Debug.Log("[WaitForPlayersPanel] Ready click");
             _isReady = !_isReady;
             OnReadyStateChanged?.Invoke(_isReady);
         }
