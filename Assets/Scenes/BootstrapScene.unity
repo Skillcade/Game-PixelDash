@@ -3587,6 +3587,7 @@ GameObject:
   - component: {fileID: 1699503129}
   - component: {fileID: 1699503130}
   - component: {fileID: 1699503132}
+  - component: {fileID: 1699503133}
   m_Layer: 0
   m_Name: MainScope
   m_TagString: Untagged
@@ -3659,11 +3660,12 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _sceneNames:
   - LevelScene
-  - NetworkingScene-SinglePlayer
+  - NetworkingScene
   _rootInstallers:
   - {fileID: 1699503129}
   - {fileID: 1699503130}
   - {fileID: 1699503132}
+  - {fileID: 1699503133}
 --- !u!114 &1699503132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3674,6 +3676,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4b3f99721aa4562b139bf32168818d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _autoInjectGameObjects: []
+--- !u!114 &1699503133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699503125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50ff0920d0822147bea82e410dcb9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _autoInjectGameObjects: []
