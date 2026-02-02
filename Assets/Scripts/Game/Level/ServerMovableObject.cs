@@ -20,7 +20,7 @@ namespace Game.Level
 
         private void Update()
         {
-            if (!IsServerInitialized)
+            if (NetworkObject == null || !IsServerInitialized)
             {
                 return;
             }

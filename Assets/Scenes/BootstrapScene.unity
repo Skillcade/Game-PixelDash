@@ -3625,7 +3625,6 @@ MonoBehaviour:
   _autoInjectGameObjects: []
   _webBridge: {fileID: 888954192}
   _gameVersionConfig: {fileID: 11400000, guid: e7a4e54cb5f022844b9ce9d5fa535b02, type: 2}
-  _connectionConfig: {fileID: 11400000, guid: 4005b0ff013f89644a5e23e586d77277, type: 2}
 --- !u!114 &1699503130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3660,12 +3659,12 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _sceneNames:
   - LevelScene
-  - NetworkingScene
   _rootInstallers:
   - {fileID: 1699503129}
   - {fileID: 1699503130}
   - {fileID: 1699503132}
   - {fileID: 1699503133}
+  _connectionConfig: {fileID: 11400000, guid: 5fa8a9f51d08fac4eb687a64030b4d8e, type: 2}
 --- !u!114 &1699503132
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,15 +15,20 @@ namespace Game
         [SerializeField] private NetworkObject _prefab;
         [SerializeField] private Transform _spawnPoint;
 
-        [Inject] private readonly NetworkManager _networkManager;
-        [Inject] private readonly FishNetPlayersController _playersController;
+        [Inject] private readonly IObjectResolver _objectResolver;
+        
+        private NetworkManager _networkManager;
+        private FishNetPlayersController _playersController;
 
         private Dictionary<int, NetworkObject> _spawnedPlayers;
 
         private void Start()
         {
             _spawnedPlayers = new Dictionary<int, NetworkObject>();
-            _playersController.OnPlayerRemoved += OnPlayerRemoved;
+            if (_objectResolver.TryResolve(out _playersController))
+                _playersController.OnPlayerRemoved += OnPlayerRemoved;
+            
+            _objectResolver.TryResolve(out _networkManager);
         }
 
         public void EnsurePlayersSpawned()

@@ -817,13 +817,14 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Server: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS
-    Standalone: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS
-    WebGL: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS
+    Server: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO
+    Standalone: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO
+    WebGL: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
     Android: 1
+    Standalone: 0
   il2cppCompilerConfiguration: {}
   il2cppCodeGeneration: {}
   il2cppStacktraceInformation: {}

@@ -10,12 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df69eddb58024b47ba33a4774cee9a70, type: 3}
-  m_Name: London Connection Config
+  m_Name: London
   m_EditorClassIdentifier: 
   ServerAddress: 144.126.233.149
   ServerListenPort: 10902
   WssConnectPort: 10102
   WssServerName: skillcade.games
   UseEncryption: 1
+  SkillcadeHubIntegrated: 0
   ReconnectDelay: 5
   ReconnectAttempts: 3
+  TargetPlayerCount: 0
+  SceneNames:
+  - NetworkingScene

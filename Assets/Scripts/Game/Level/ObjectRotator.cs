@@ -9,7 +9,7 @@ namespace Game.Level
 
         private void Update()
         {
-            if (!IsServerInitialized)
+            if (NetworkObject == null || !IsServerInitialized)
                 return;
             
             transform.rotation *= Quaternion.Euler(0f, 0f, _rotationSpeed * Time.deltaTime);
