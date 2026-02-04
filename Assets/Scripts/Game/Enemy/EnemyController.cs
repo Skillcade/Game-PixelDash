@@ -38,7 +38,7 @@ namespace Game.Enemy
         
         public void OnFrontHit(PlayerMovement player)
         {
-            if (!IsServer)
+            if (!IsServerInitialized)
             {
                 return;
             }

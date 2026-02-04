@@ -23,7 +23,6 @@ namespace Game.Handlers
         public void Initialize()
         {
             _eventBus.Subscribe<WaitForPlayersEnterEvent>(OnWaitForPlayersEnter);
-            _eventBus.Subscribe<PlayerReadyEvent>(OnPlayerReady);
             _eventBus.Subscribe<AllPlayersReadyEvent>(OnAllPlayersReady);
             _eventBus.Subscribe<CountdownTickEvent>(OnCountdownTick);
             _eventBus.Subscribe<RunningStartEvent>(OnRunningStart);
@@ -31,12 +30,15 @@ namespace Game.Handlers
 
             // Subscribe to UI button click
             _gameUi.WaitForPlayersPanel.OnReadyStateChanged += OnReadyStateChanged;
+
+            _playersController.OnPlayerAdded += UpdatePlayersReadyState;
+            _playersController.OnPlayerDataUpdated += UpdatePlayersReadyState;
+            _playersController.OnPlayerRemoved += UpdatePlayersReadyState;
         }
 
         public void Dispose()
         {
             _eventBus.Unsubscribe<WaitForPlayersEnterEvent>(OnWaitForPlayersEnter);
-            _eventBus.Unsubscribe<PlayerReadyEvent>(OnPlayerReady);
             _eventBus.Unsubscribe<AllPlayersReadyEvent>(OnAllPlayersReady);
             _eventBus.Unsubscribe<CountdownTickEvent>(OnCountdownTick);
             _eventBus.Unsubscribe<RunningStartEvent>(OnRunningStart);
@@ -52,11 +54,6 @@ namespace Game.Handlers
             _gameUi.RunningPanel.gameObject.SetActive(false);
             _gameUi.FinishedPanel.gameObject.SetActive(false);
 
-            UpdateWaitForPlayersUi();
-        }
-
-        private void OnPlayerReady(PlayerReadyEvent evt)
-        {
             UpdateWaitForPlayersUi();
         }
 
@@ -90,6 +87,11 @@ namespace Game.Handlers
             _gameUi.WaitForPlayersPanel.SetReadyState(readyPlayers, totalPlayers, localReady);
         }
 
+        private void UpdatePlayersReadyState(int playerId, FishNetPlayerData data)
+        {
+            UpdateWaitForPlayersUi();
+        }
+
         private void OnReadyStateChanged(bool isReady)
         {
             if (!_playersController.TryGetPlayerData(_playersController.LocalPlayerId, out var playerData))
@@ -97,7 +99,7 @@ namespace Game.Handlers
                 Debug.LogError($"[GameUiHandler] Can't get local player data for id {_playersController.LocalPlayerId}");
                 return;
             }
-
+            
             if (!PlayerInGameData.TryGetFromPlayer(playerData, out var inGameData))
                 inGameData = new PlayerInGameData();
 
