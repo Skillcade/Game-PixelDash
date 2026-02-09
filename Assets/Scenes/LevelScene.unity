@@ -2610,6 +2610,7 @@ MonoBehaviour:
   _autoInjectGameObjects:
   - {fileID: 337552297}
   - {fileID: 1543381762}
+  - {fileID: 490252889}
   _playerSpawner: {fileID: 490252890}
   _finishLine: {fileID: 1543381764}
   _collectablesRespawnService: {fileID: 337552299}
