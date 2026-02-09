@@ -18,6 +18,7 @@ namespace Game
         {
             Debug.Log($"[{_gameVersionConfig.GameName}] Starting game, version: {_gameVersionConfig.GameVersion}");
             base.Initialize();
+            _gameUi.StopSinglePlayerButton.onClick.AddListener(QuitGame);
         }
 
         protected override void InitManualConnection()
@@ -26,12 +27,19 @@ namespace Game
             _lobbyUi.gameObject.SetActive(true);
             _lobbyUi.StartServerButton.onClick.AddListener(OnStartServer);
             _lobbyUi.ConnectButton.onClick.AddListener(OnStartClient);
+            _lobbyUi.SinglePlayerButton.onClick.AddListener(OnStartSinglePlayer);
+        }
+
+        private void QuitGame()
+        {
+            _webBridge.TriggerQuitSinglePlayer();
         }
 
         private void OnStartServer()
         {
             StartServer();
             _lobbyUi.gameObject.SetActive(false);
+            _gameUi.StopSinglePlayerButton.gameObject.SetActive(false);
         }
 
         private void OnStartClient()
@@ -39,12 +47,22 @@ namespace Game
             StartClient();
             _lobbyUi.gameObject.SetActive(false);
             _gameUi.gameObject.SetActive(true);
+            _gameUi.StopSinglePlayerButton.gameObject.SetActive(false);
+        }
+
+        private void OnStartSinglePlayer()
+        {
+            StartSinglePlayer();
+            _lobbyUi.gameObject.SetActive(false);
+            _gameUi.gameObject.SetActive(true);
+            _gameUi.StopSinglePlayerButton.gameObject.SetActive(true);
         }
 
         protected override void OnConnectionStarted(ConnectionMode mode)
         {
             _lobbyUi.gameObject.SetActive(false);
-            _gameUi.gameObject.SetActive(mode == ConnectionMode.Client);
+            _gameUi.gameObject.SetActive(mode is ConnectionMode.Client or ConnectionMode.SinglePlayer);
+            _gameUi.StopSinglePlayerButton.gameObject.SetActive(mode is ConnectionMode.SinglePlayer);
         }
     }
 }

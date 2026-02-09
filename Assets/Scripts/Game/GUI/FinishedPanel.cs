@@ -1,6 +1,6 @@
-﻿using TMPro;
+﻿using SkillcadeSDK.StateMachine;
+using TMPro;
 using UnityEngine;
-using FinishReason = Game.StateMachine.States.FinishReason;
 
 namespace Game.GUI
 {

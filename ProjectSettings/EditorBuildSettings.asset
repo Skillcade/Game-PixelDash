@@ -8,15 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BootstrapScene.unity
     guid: 11171620162054d4fa8b0edc8cc1c086
-  - enabled: 0
-    path: Assets/Scenes/ReplayScene.unity
-    guid: 8e588df600ecb6543ae81e5f245141fc
   - enabled: 1
     path: Assets/Scenes/LevelScene.unity
     guid: 3d27f412dc3a88549b8af05115013876
   - enabled: 1
     path: Assets/Scenes/NetworkingScene.unity
     guid: d8c151ad109fafb48ab4214ff8d587f5
+  - enabled: 1
+    path: Packages/com.skillcade.sdk-fishnet/Scenes/NetworkDebugScene.unity
+    guid: 4f66130faaa29bd45a2f74f26e798bc6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

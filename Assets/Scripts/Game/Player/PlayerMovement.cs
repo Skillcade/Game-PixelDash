@@ -2,8 +2,9 @@ using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using FishNet.Utility.Template;
 using Game.Level;
-using Game.StateMachine;
 using SkillcadeSDK;
+using SkillcadeSDK.FishNetAdapter;
+using SkillcadeSDK.StateMachine;
 using UnityEngine;
 using VContainer;
 
@@ -50,7 +51,7 @@ namespace Game.Player
         [SerializeField] private PlayerMovementConfig _playerMovementConfig;
         [SerializeField] private Collider2D _collider;
         
-        [Inject] private readonly GameStateMachine _gameStateMachine;
+        [Inject] private readonly SkillcadeGameStateMachine _gameStateMachine;
 
         private readonly SyncVar<float> _healthSync = new SyncVar<float>(new SyncTypeSettings(WritePermission.ServerOnly));
         private readonly SyncVar<Vector2> _velocitySync = new SyncVar<Vector2>(new SyncTypeSettings(WritePermission.ServerOnly));

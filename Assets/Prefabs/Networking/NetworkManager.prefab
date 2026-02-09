@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6465623768314185214}
   - component: {fileID: 5390835218289763325}
   - component: {fileID: 4801329532924595030}
+  - component: {fileID: 460708128832832270}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -70,11 +71,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e08bb003fce297d4086cf8cba5aa459a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dropExcessiveReplicates: 1
-  _maximumServerReplicates: 30
+  _reduceReconcilesWithFramerate: 1
+  _minimumClientReconcileFramerate: 50
   _createLocalStates: 1
   _stateInterpolation: 1
   _stateOrder: 0
+  _dropExcessiveReplicates: 1
+  _maximumServerReplicates: 30
 --- !u!114 &6248397851354379535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,3 +201,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec0a1c719eac4e7899177cc7b60c8dac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &460708128832832270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5991760196429670136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 756c28cd3141c4140ae776188ee26729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _runInRelease: 1
+  _networkTraffic:
+    _enableMode: 2
+    _updateClient: 1
+    _updateServer: 1

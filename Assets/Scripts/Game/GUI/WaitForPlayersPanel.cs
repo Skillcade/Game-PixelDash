@@ -12,10 +12,12 @@ namespace Game.GUI
         [SerializeField] private TMP_Text _othersReadyStateText;
         [SerializeField] private Button _readyButton;
         [SerializeField] private TMP_Text _readyButtonText;
+        [SerializeField] private GameObject _readyButtonPanel;
+        [SerializeField] private GameObject _waitForOthersPanel;
 
         private bool _isReady;
         
-        private void Start()
+        private void Awake()
         {
             _isReady = false;
             _readyButton.onClick.AddListener(OnReadyClick);
@@ -26,6 +28,12 @@ namespace Game.GUI
             _isReady = selfReady;
             _readyButtonText.text = selfReady ? "Not Ready" : "Ready";
             _othersReadyStateText.text = $"{ready.ToString()} / {total.ToString()}";
+        }
+
+        public void SetWaitForOthersState(bool value)
+        {
+            _readyButtonPanel.SetActive(!value);
+            _waitForOthersPanel.SetActive(value);
         }
 
         private void OnReadyClick()

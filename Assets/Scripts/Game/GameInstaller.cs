@@ -1,6 +1,6 @@
 ﻿using Game.GUI;
-using Game.StateMachine;
-using Game.StateMachine.States;
+using Game.Handlers;
+using SkillcadeSDK.Common;
 using SkillcadeSDK.DI;
 using UnityEngine;
 using VContainer;
@@ -12,18 +12,17 @@ namespace Game
         [SerializeField] private LobbyUi _lobbyUi;
         [SerializeField] private GameUi _gameUi;
         [SerializeField] private GameConfig _gameConfig;
-        
+
         public override void Install(IContainerBuilder builder)
         {
+            // Game-specific UI and config
             builder.RegisterInstance(_lobbyUi);
             builder.RegisterInstance(_gameUi);
-            builder.RegisterInstance(_gameConfig);
+            builder.RegisterInstance(_gameConfig).As<ISkillcadeConfig>();
 
-            builder.Register<GameStateMachine>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
-            builder.Register<WaitForPlayersState>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<CountdownState>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<RunningState>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<FinishedState>(Lifetime.Singleton).AsImplementedInterfaces();
+            // Game-specific handlers
+            builder.Register<GameUiHandler>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<GameLogicHandler>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
         }
     }
 }
