@@ -410,9 +410,11 @@ MonoBehaviour:
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
+  _initializedTimestamp: 0
   NetworkObserver: {fileID: 0}
   _enablePrediction: 0
   _predictionType: 0
+  _localReconcileCorrectionType: 2
   _graphicalObject: {fileID: 0}
   _detachGraphicalObject: 0
   _enableStateForwarding: 1
@@ -427,7 +429,7 @@ MonoBehaviour:
   <PrefabId>k__BackingField: 65535
   <SpawnableCollectionId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 0
-  <SceneId>k__BackingField: 0
+  SceneId: 0
   SerializedTransformProperties:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 0}
@@ -454,6 +456,7 @@ MonoBehaviour:
     Position: 1
     Rotation: 1
     Scale: 0
+  _useScaledTime: 1
   _interpolation: 2
   _extrapolation: 2
   _enableTeleport: 0
@@ -693,7 +696,7 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 2637202103619406344}
   _networkObjectCache: {fileID: 0}
-  Damage: 50
+  Damage: 100
 --- !u!114 &2327628211399249979
 MonoBehaviour:
   m_ObjectHideFlags: 0
