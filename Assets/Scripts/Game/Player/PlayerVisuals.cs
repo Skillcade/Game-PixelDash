@@ -88,14 +88,17 @@ namespace Game.Player
             if (!PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
                 return;
             
-            _nickname = matchData.Nickname;
-            _nicknameText.text = _nickname;
+            SetNickname(matchData.Nickname);
         }
 
         public void SetNickname(string nickname) // For replays
         {
             _nickname = nickname;
-            _nicknameText.text = _nickname;
+            
+            if (_movement.IsClientInitialized && _movement.IsOwner)
+                _nicknameText.text = $"[YOU] {_nickname}";
+            else
+                _nicknameText.text = _nickname;
         }
         
         private void Update()

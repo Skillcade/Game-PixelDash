@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 5390835218289763325}
   - component: {fileID: 4801329532924595030}
   - component: {fileID: 460708128832832270}
+  - component: {fileID: 2356585828229730589}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -94,7 +95,7 @@ MonoBehaviour:
   _timingType: 1
   _allowTickDropping: 1
   _maximumFrameTicks: 5
-  _tickRate: 20
+  _tickRate: 30
   _pingInterval: 1
   _physicsMode: 1
 --- !u!114 &1618705665565809933
@@ -115,6 +116,11 @@ MonoBehaviour:
     _enabled: 0
     _simulateHost: 1
     _latency: 100
+    _jitter: 0
+    _spikeIntervalMin: 0
+    _spikeIntervalMax: 0
+    _spikeAmountMin: 0
+    _spikeAmountMax: 0
     _outOfOrder: 0.10000000149011612
     _packetLoss: 0.05000000074505806
 --- !u!114 &2271500187710771536
@@ -170,7 +176,7 @@ MonoBehaviour:
     Rotation: 2
     Scale: 2
   _changeFrameRate: 1
-  _frameRate: 30
+  _frameRate: 60
   _shareIds: 1
   _startOnHeadless: 0
 --- !u!114 &5390835218289763325
@@ -218,3 +224,20 @@ MonoBehaviour:
     _enableMode: 2
     _updateClient: 1
     _updateServer: 1
+--- !u!114 &2356585828229730589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5991760196429670136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b185516acd802904383e2a5f1a666750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _boundingBoxLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  _maximumRollbackTime: 2
+  Interpolation: 2

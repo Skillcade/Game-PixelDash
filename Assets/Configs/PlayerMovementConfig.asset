@@ -26,5 +26,5 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 1
-  _maxHealth: 100
+  _maxHealth: 1
   _knockbackForce: 20

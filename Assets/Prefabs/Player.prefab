@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 2097062857943216485}
   - component: {fileID: 8853420040916459752}
   - component: {fileID: 4179726082534470876}
+  - component: {fileID: 7376226982775115018}
   - component: {fileID: 8340567812076309624}
   - component: {fileID: -9039423653466011732}
   - component: {fileID: 1036819047472191368}
@@ -301,6 +302,25 @@ MonoBehaviour:
   _componentIndexCache: 3
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
+--- !u!114 &7376226982775115018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7294861560698192311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 470f9b7434de468fa86b7428b476aa03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 4944023266038734634}
+  _networkObjectCache: {fileID: 0}
+  _tickCallbacks: 2
+  _checkRadius: 0.55
+  _checkOffset: {x: 0, y: 0.6}
+  _movement: {fileID: 8866073289841078330}
 --- !u!114 &8340567812076309624
 MonoBehaviour:
   m_ObjectHideFlags: 0

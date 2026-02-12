@@ -62,11 +62,15 @@ namespace Game.Player
         private float _coyoteTimer;
         private float _jumpTimer;
 
+        private Vector2 _spawnPoint;
+
         private PlayerInput _lastCreatedInput;
 
         public override void OnStartNetwork()
         {
             this.InjectToMe();
+
+            _spawnPoint = transform.position;
 
             _knockbackTimer = 0f;
             _healthSync.SetInitialValues(_playerMovementConfig._maxHealth);
@@ -126,7 +130,7 @@ namespace Game.Player
             else if (_knockbackTimer <= 0f && _healthSync.Value <= 0f)
             {
                 _rigidbody.linearVelocity = Vector2.zero;
-                _rigidbody.position = Vector2.zero;
+                _rigidbody.position = _spawnPoint;
                 RespawnServerRpc();
             }
         }
