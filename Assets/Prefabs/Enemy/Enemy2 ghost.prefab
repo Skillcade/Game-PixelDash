@@ -337,6 +337,7 @@ GameObject:
   - component: {fileID: 3608441422625415644}
   - component: {fileID: 388623077695782972}
   - component: {fileID: 2637202103619406344}
+  - component: {fileID: 596078866196328437}
   m_Layer: 0
   m_Name: SpriteRoot
   m_TagString: Untagged
@@ -551,6 +552,27 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 0}
     Scale: {x: 0, y: 0, z: 0}
     IsValid: 0
+--- !u!114 &596078866196328437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5669972979329020059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a271dd97d875347b0cea860df29a9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 2637202103619406344}
+  _networkObjectCache: {fileID: 0}
+  _boundingBox: 0
+  _physicsType: 1
+  _boundingBoxSize: {x: 3, y: 3, z: 3}
+  _colliderParents:
+  - {fileID: 7003218533295851632}
+  - {fileID: 2925670133907336686}
 --- !u!1 &6376225998756225442
 GameObject:
   m_ObjectHideFlags: 0

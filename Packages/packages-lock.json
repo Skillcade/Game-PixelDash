@@ -20,6 +20,15 @@
       },
       "hash": "fe7c540b806f7a77daefcbee655924cab1b98188"
     },
+    "com.skillcade.fishy-webrtc": {
+      "version": "https://github.com/KGonzalezASC/FishyWebRTC.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.webrtc": "3.0.0-pre.7"
+      },
+      "hash": "46bcb3fe1666cf23c1ad62b7eaf97b72cd668361"
+    },
     "com.skillcade.sdk": {
       "version": "https://github.com/Skillcade/SkillcadeSDK.git?path=Assets/Source/SkillcadeSDK",
       "depth": 0,
@@ -51,15 +60,6 @@
         "com.unity.modules.uielements": "1.0.0"
       }
     },
-    "com.unity.ai.navigation": {
-      "version": "2.0.9",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.ai": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.burst": {
       "version": "1.8.21",
       "depth": 2,
@@ -80,13 +80,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.collab-proxy": {
-      "version": "2.10.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.unity.collections": {
       "version": "2.5.1",
       "depth": 2,
@@ -97,6 +90,13 @@
         "com.unity.nuget.mono-cecil": "1.11.4",
         "com.unity.test-framework.performance": "3.0.3"
       },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.editorcoroutines": {
+      "version": "1.0.0",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.ext.nunit": {
@@ -138,14 +138,6 @@
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
-    },
-    "com.unity.multiplayer.center": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.uielements": "1.0.0"
-      }
     },
     "com.unity.multiplayer.playmode": {
       "version": "1.3.3",
@@ -283,18 +275,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.timeline": {
-      "version": "1.8.9",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.audio": "1.0.0",
-        "com.unity.modules.director": "1.0.0",
-        "com.unity.modules.animation": "1.0.0",
-        "com.unity.modules.particlesystem": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.toolchain.win-x86_64-linux-x86_64": {
       "version": "2.0.11",
       "depth": 0,
@@ -325,12 +305,13 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
-    "com.unity.visualscripting": {
-      "version": "1.9.8",
-      "depth": 0,
+    "com.unity.webrtc": {
+      "version": "3.0.0-pre.7",
+      "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.audio": "1.0.0",
+        "com.unity.editorcoroutines": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"

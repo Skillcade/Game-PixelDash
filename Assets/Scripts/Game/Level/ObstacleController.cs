@@ -13,8 +13,8 @@ namespace Game.Level
             if (!IsServerInitialized)
                 return;
             
-            if (obj.TryGetComponent(out PlayerMovement movement))
-                movement.TakeDamage(this);
+            // if (obj.TryGetComponent(out PlayerMovement movement))
+            //     movement.TakeDamage(this);
         }
     }
 }
