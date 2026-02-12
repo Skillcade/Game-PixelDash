@@ -318,7 +318,8 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 0}
   _tickCallbacks: 2
-  _checkRadius: 2
+  _checkRadius: 0.55
+  _checkOffset: {x: 0, y: 0.6}
   _movement: {fileID: 8866073289841078330}
 --- !u!114 &8340567812076309624
 MonoBehaviour:

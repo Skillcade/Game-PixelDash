@@ -11,6 +11,7 @@ namespace Game.Player
     public class PlayerDamageValidator : TickNetworkBehaviour
     {
         [SerializeField] private float _checkRadius;
+        [SerializeField] private Vector2 _checkOffset;
         [SerializeField] private PlayerMovement _movement;
 
         private List<Collider2D> _overlapColliders;
@@ -28,20 +29,16 @@ namespace Game.Player
         [ServerRpc(RequireOwnership = true)]
         private void ValidateObstaclesServerRpc(PreciseTick tick)
         {
-            Debug.Log($"[PlayerDamageValidator] Validate obstacles on tick {tick.Tick}, current: {TimeManager.Tick}");
             RollbackManager.Rollback(tick, RollbackPhysicsType.Physics2D, IsOwner);
             
             _overlapColliders ??= new List<Collider2D>();
-            int results = Physics2D.OverlapCircle(transform.position, _checkRadius, new ContactFilter2D().NoFilter(), _overlapColliders);
-
-            Debug.Log($"[PlayerDamageValidator] Overlap result: {results}");
+            Physics2D.OverlapCircle((Vector2)transform.position + _checkOffset, _checkRadius, new ContactFilter2D().NoFilter(), _overlapColliders);
+            
             foreach (var overlapCollider in _overlapColliders)
             {
-                Debug.Log($"[PlayerDamageValidator] Processing collider {overlapCollider.gameObject.name}");
                 if (!overlapCollider.TryGetComponent(out ObstacleController obstacleController))
                     continue;
 
-                Debug.Log($"[PlayerDamageValidator] Found obstacle with damage: {obstacleController.Damage}");
                 _movement.TakeDamage(obstacleController);
             }
             
@@ -49,5 +46,12 @@ namespace Game.Player
             
             RollbackManager.Return();
         }
+
+#if UNITY_EDITOR
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.DrawWireSphere(transform.position + (Vector3)_checkOffset, _checkRadius);
+        }
+#endif
     }
 }

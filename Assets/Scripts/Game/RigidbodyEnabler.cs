@@ -8,7 +8,7 @@ namespace Game
 
         private void FixedUpdate()
         {
-            _rigidbody.simulated = true;
+            //_rigidbody.simulated = true;
         }
     }
 }
