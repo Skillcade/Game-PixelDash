@@ -1,4 +1,4 @@
-﻿using DefaultNamespace.Collectables;
+﻿using Collectables;
 using Game.Level;
 using SkillcadeSDK.Common.Level;
 using SkillcadeSDK.Common.Players;

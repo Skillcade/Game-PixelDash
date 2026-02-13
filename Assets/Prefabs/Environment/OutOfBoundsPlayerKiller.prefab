@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 2519732386650945732}
   - component: {fileID: 1807878182781071902}
   - component: {fileID: 2102634124966026962}
-  m_Layer: 2
+  - component: {fileID: 228235760462130033}
+  m_Layer: 10
   m_Name: OutOfBoundsPlayerKiller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,9 +66,11 @@ MonoBehaviour:
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
+  _initializedTimestamp: 0
   NetworkObserver: {fileID: 0}
   _enablePrediction: 0
   _predictionType: 0
+  _localReconcileCorrectionType: 2
   _graphicalObject: {fileID: 0}
   _detachGraphicalObject: 0
   _enableStateForwarding: 1
@@ -82,7 +85,7 @@ MonoBehaviour:
   <PrefabId>k__BackingField: 65535
   <SpawnableCollectionId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 0
-  <SceneId>k__BackingField: 0
+  SceneId: 0
   SerializedTransformProperties:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 0}
@@ -191,3 +194,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rigidbodyType: 1
   _getInChildren: 0
+--- !u!114 &228235760462130033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6596757407867623371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a271dd97d875347b0cea860df29a9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 625970391742278330}
+  _networkObjectCache: {fileID: 0}
+  _boundingBox: 0
+  _physicsType: 1
+  _boundingBoxSize: {x: 3, y: 3, z: 3}
+  _colliderParents:
+  - {fileID: 6596757407867623371}

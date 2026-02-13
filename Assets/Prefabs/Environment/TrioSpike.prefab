@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6479914113577626269}
   - component: {fileID: 3013936314300115277}
-  m_Layer: 2
+  m_Layer: 10
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 2117515439504612277}
   - component: {fileID: 6219159926353558244}
   - component: {fileID: 309240296840958742}
-  m_Layer: 2
+  m_Layer: 10
   m_Name: TrioSpike
   m_TagString: Untagged
   m_Icon: {fileID: 0}

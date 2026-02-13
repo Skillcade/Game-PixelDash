@@ -1,4 +1,4 @@
-using DefaultNamespace.Collectables;
+using Collectables;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using Game.Player;

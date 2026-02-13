@@ -4,7 +4,7 @@ using SkillcadeSDK.Common.Level;
 using SkillcadeSDK.FishNetAdapter;
 using UnityEngine;
 
-namespace DefaultNamespace.Collectables
+namespace Collectables
 {
     public class CollectablesRespawnService : NetworkBehaviour, IRespawnService
     {

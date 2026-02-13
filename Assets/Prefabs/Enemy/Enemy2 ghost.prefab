@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4932341293595392804}
   - component: {fileID: 3940470145702303914}
   - component: {fileID: 1917503391707567969}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FrontHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,11 +332,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6758936861493103981}
+  - component: {fileID: 2637202103619406344}
   - component: {fileID: 5657729608577931585}
   - component: {fileID: 5512311860101850221}
   - component: {fileID: 3608441422625415644}
   - component: {fileID: 388623077695782972}
-  - component: {fileID: 2637202103619406344}
   - component: {fileID: 596078866196328437}
   m_Layer: 0
   m_Name: SpriteRoot
@@ -363,6 +363,60 @@ Transform:
   - {fileID: 283621675322815715}
   m_Father: {fileID: 130802890564585193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2637202103619406344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5669972979329020059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  WasActiveDuringEdit: 0
+  WasActiveDuringEdit_Set1: 1
+  <ComponentIndex>k__BackingField: 0
+  <PredictedSpawn>k__BackingField: {fileID: 0}
+  <PredictedOwner>k__BackingField: {fileID: 0}
+  NetworkBehaviours: []
+  InitializedParentNetworkBehaviour: {fileID: 0}
+  InitializedNestedNetworkObjects: []
+  RuntimeParentNetworkBehaviour: {fileID: 0}
+  RuntimeChildNetworkBehaviours: []
+  _isNetworked: 1
+  _isSpawnable: 1
+  _isGlobal: 0
+  _initializeOrder: 0
+  _preventDespawnOnDisconnect: 0
+  _defaultDespawnType: 0
+  _initializedTimestamp: 0
+  NetworkObserver: {fileID: 0}
+  _enablePrediction: 0
+  _predictionType: 0
+  _localReconcileCorrectionType: 2
+  _graphicalObject: {fileID: 0}
+  _detachGraphicalObject: 0
+  _enableStateForwarding: 1
+  _networkTransform: {fileID: 0}
+  _ownerInterpolation: 1
+  _ownerSmoothedProperties: 255
+  _adaptiveInterpolation: 3
+  _spectatorSmoothedProperties: 255
+  _spectatorInterpolation: 2
+  _enableTeleport: 0
+  _teleportThreshold: 1
+  <PrefabId>k__BackingField: 65535
+  <SpawnableCollectionId>k__BackingField: 0
+  <AssetPathHash>k__BackingField: 0
+  SceneId: 0
+  SerializedTransformProperties:
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
+    Scale: {x: 0, y: 0, z: 0}
+    IsValid: 0
 --- !u!114 &5657729608577931585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,8 +443,8 @@ MonoBehaviour:
   _extrapolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1
-  _clientAuthoritative: 1
-  _sendToOwner: 1
+  _clientAuthoritative: 0
+  _sendToOwner: 0
   _interval: 1
   _synchronizePosition: 1
   _positionSensitivity: 0.001
@@ -403,7 +457,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
-  _synchronizeScale: 1
+  _synchronizeScale: 0
   _scaleSensitivity: 0.001
   _scaleSnapping:
     X: 0
@@ -498,60 +552,6 @@ MonoBehaviour:
   _frontHitbox: {fileID: 8785114379248891097}
   _animator: {fileID: 400377180572499432}
   _platform: {fileID: 3608441422625415644}
---- !u!114 &2637202103619406344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5669972979329020059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <IsNested>k__BackingField: 0
-  WasActiveDuringEdit: 0
-  WasActiveDuringEdit_Set1: 1
-  <ComponentIndex>k__BackingField: 0
-  <PredictedSpawn>k__BackingField: {fileID: 0}
-  <PredictedOwner>k__BackingField: {fileID: 0}
-  NetworkBehaviours: []
-  InitializedParentNetworkBehaviour: {fileID: 0}
-  InitializedNestedNetworkObjects: []
-  RuntimeParentNetworkBehaviour: {fileID: 0}
-  RuntimeChildNetworkBehaviours: []
-  _isNetworked: 1
-  _isSpawnable: 1
-  _isGlobal: 0
-  _initializeOrder: 0
-  _preventDespawnOnDisconnect: 0
-  _defaultDespawnType: 0
-  _initializedTimestamp: 0
-  NetworkObserver: {fileID: 0}
-  _enablePrediction: 0
-  _predictionType: 0
-  _localReconcileCorrectionType: 2
-  _graphicalObject: {fileID: 0}
-  _detachGraphicalObject: 0
-  _enableStateForwarding: 1
-  _networkTransform: {fileID: 0}
-  _ownerInterpolation: 1
-  _ownerSmoothedProperties: 255
-  _adaptiveInterpolation: 3
-  _spectatorSmoothedProperties: 255
-  _spectatorInterpolation: 2
-  _enableTeleport: 0
-  _teleportThreshold: 1
-  <PrefabId>k__BackingField: 65535
-  <SpawnableCollectionId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 0
-  SceneId: 0
-  SerializedTransformProperties:
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 0}
-    Scale: {x: 0, y: 0, z: 0}
-    IsValid: 0
 --- !u!114 &596078866196328437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -615,8 +615,7 @@ GameObject:
   - component: {fileID: 3206006959242985993}
   - component: {fileID: 1151403377671968248}
   - component: {fileID: 6383531812740870515}
-  - component: {fileID: 2327628211399249979}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PhysicsRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -700,26 +699,6 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 2637202103619406344}
   _networkObjectCache: {fileID: 0}
   Damage: 100
---- !u!114 &2327628211399249979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7003218533295851632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a60424afcf0b5984dbe878a1f21c10b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 2637202103619406344}
-  _networkObjectCache: {fileID: 0}
-  MaximumSimultaneousHits: 16
-  AdditionalSize: 0.1
-  Layers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &7613617997803657853
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,4 @@
-using DefaultNamespace.Collectables;
+using Collectables;
 using UnityEngine;
 
 namespace Game.Buffs

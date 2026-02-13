@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6851787432771503882}
   - component: {fileID: 1674040647449191320}
   - component: {fileID: 2405369004300516086}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: SpeedBuff
   m_TagString: Untagged
   m_Icon: {fileID: 0}

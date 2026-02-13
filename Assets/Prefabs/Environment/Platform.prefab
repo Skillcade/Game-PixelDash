@@ -56,9 +56,7 @@ MonoBehaviour:
   _graphicsObject: {fileID: 6963108022184480121}
   _networkObject: {fileID: 3163456729119693188}
   _targetRenderers:
-  - {fileID: 0}
   - {fileID: 8202044100441441694}
-  - {fileID: 0}
   _targetGroups: []
 --- !u!114 &7249274537774501969
 MonoBehaviour:

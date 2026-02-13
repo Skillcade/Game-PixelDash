@@ -1,20 +1,18 @@
 ﻿using FishNet.Object;
 using Game.Player;
+using SkillcadeSDK.FishNetAdapter.ColliderRollback;
 using UnityEngine;
 
 namespace Game.Level
 {
-    public class ObstacleController : NetworkBehaviour
+    public class ObstacleController : RollbackTrigger
     {
         [SerializeField] public float Damage;
 
-        private void OnTriggerEnter2D(Collider2D obj)
+        protected override void HandleTriggerServer_Internal(NetworkObject playerNetworkObject)
         {
-            if (!IsServerInitialized)
-                return;
-            
-            // if (obj.TryGetComponent(out PlayerMovement movement))
-            //     movement.TakeDamage(this);
+            if (playerNetworkObject.TryGetComponent(out PlayerMovement movement))
+                movement.TakeDamage(this);
         }
     }
 }
