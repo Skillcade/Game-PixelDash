@@ -10,15 +10,17 @@ using VContainer;
 
 namespace Game.Player
 {
-    public struct PlayerInput
+        public struct PlayerInput
     {
         public float Movement;
         public bool Jump;
+        public bool JumpReleased;
 
         public void Reset()
         {
             Movement = 0f;
             Jump = false;
+            JumpReleased = false;
         }
     }
     
@@ -84,7 +86,12 @@ namespace Game.Player
             if (!IsOwner)
                 return default;
 
-            var input = new PlayerInput { Movement = _inputReader.Movement, Jump = _inputReader.Jump };
+            var input = new PlayerInput
+            {
+                Movement = _inputReader.Movement,
+                Jump = _inputReader.Jump,
+                JumpReleased = _inputReader.JumpReleased
+            };
             
             _inputReader.ClearInput();
             return input;
@@ -102,6 +109,7 @@ namespace Game.Player
 
             UpdateKnockback(dt);
             Move(input, dt);
+            ApplyJumpCut(input);
             
             UpdateGrounded();
 
@@ -244,6 +252,23 @@ namespace Game.Player
         private void TriggerJumpObserversRpc()
         {
             JumpFx?.Invoke();
+        }
+
+        private const float JUMP_CUT_MULTIPLIER = 0.5f; // lower = shorter tap jump, higher = less difference
+
+        private void ApplyJumpCut(PlayerInput input)
+        {
+            // Only the owning client is simulating physics here already.
+            if (!IsOwner)
+                return;
+
+            // If player released jump while still traveling upward, cut the upward velocity.
+            if (input.JumpReleased && _rigidbody.linearVelocity.y > 0f)
+            {
+                Vector2 v = _rigidbody.linearVelocity;
+                v.y *= JUMP_CUT_MULTIPLIER;
+                _rigidbody.linearVelocity = v;
+            }
         }
     }
 }
