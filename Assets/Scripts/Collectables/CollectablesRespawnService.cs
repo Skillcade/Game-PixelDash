@@ -44,10 +44,9 @@ namespace Collectables
             }
         }
 
-        [Server]
         public void Respawn()
         {
-            if (!IsServerInitialized)
+            if (NetworkObject == null || !IsServerInitialized)
             {
                 return;
             }

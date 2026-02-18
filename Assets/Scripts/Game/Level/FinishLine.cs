@@ -1,18 +1,18 @@
 ﻿using System;
+using FishNet.Object;
 using Game.Player;
-using UnityEngine;
+using SkillcadeSDK.FishNetAdapter.ColliderRollback;
 
 namespace Game.Level
 {
-    public class FinishLine : MonoBehaviour
+    public class FinishLine : RollbackTrigger
     {
         public event Action<int> OnPlayerReachedFinish;
 
-        private void OnTriggerEnter2D(Collider2D other)
+        protected override void HandleTriggerServer_Internal(NetworkObject playerNetworkObject)
         {
-            var movement = other.GetComponent<PlayerMovement>();
-            if (movement != null)
-                OnPlayerReachedFinish?.Invoke(movement.NetworkObject.OwnerId);
+            if (playerNetworkObject.TryGetComponent(out PlayerMovement _))
+                OnPlayerReachedFinish?.Invoke(playerNetworkObject.OwnerId);
         }
     }
 }

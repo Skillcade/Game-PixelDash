@@ -72,6 +72,7 @@ MonoBehaviour:
   - {fileID: 6550249093487379794}
   - {fileID: 2097062857943216485}
   - {fileID: 4179726082534470876}
+  - {fileID: 2742057014745948701}
   - {fileID: 8340567812076309624}
   - {fileID: 453140313811070760}
   InitializedParentNetworkBehaviour: {fileID: 0}
@@ -84,7 +85,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
-  _initializedTimestamp: -8584315551239406149
+  _initializedTimestamp: -8584301775431040107
   NetworkObserver: {fileID: 0}
   _enablePrediction: 0
   _predictionType: 2
@@ -314,9 +315,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f746d4751fb045f58cade6b65ffcca54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 4944023266038734634}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 4944023266038734634}
   _tickCallbacks: 2
   _checkRadius: 0.55
   _checkOffset: {x: 0, y: 0.6}
@@ -335,7 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 4
+  _componentIndexCache: 5
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
   _componentConfiguration: 3
@@ -444,7 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d71eef120d404037ac28cf560ee61ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 5
+  _componentIndexCache: 6
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
 --- !u!1001 &2000453477535913599
