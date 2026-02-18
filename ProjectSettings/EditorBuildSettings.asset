@@ -18,5 +18,6 @@ EditorBuildSettings:
     path: Packages/com.skillcade.sdk-fishnet/Scenes/NetworkDebugScene.unity
     guid: 4f66130faaa29bd45a2f74f26e798bc6
   m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 39ecac73840be2742a33af07e0eb4d8e, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
