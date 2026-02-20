@@ -194,7 +194,7 @@ MonoBehaviour:
   _remoteServerTimeout: 0
   _remoteServerTimeoutDuration: 1500
   _changeFrameRate: 1
-  _frameRate: 500
+  _frameRate: 60
 --- !u!114 &4801329532924595030
 MonoBehaviour:
   m_ObjectHideFlags: 0

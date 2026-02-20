@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 4120784234525979764}
   - component: {fileID: 5471002805277580519}
   - component: {fileID: 453140313811070760}
+  - component: {fileID: 3539612349710087890}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -85,7 +86,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
-  _initializedTimestamp: -8584301775431040107
+  _initializedTimestamp: -8584300990197063175
   NetworkObserver: {fileID: 0}
   _enablePrediction: 0
   _predictionType: 2
@@ -126,10 +127,11 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
   _tickCallbacks: 6
-  _rigidbody: {fileID: 890865572886444992}
+  _rigidbody: {fileID: 3539612349710087890}
   _inputReader: {fileID: 4785572566629901107}
   _playerMovementConfig: {fileID: 11400000, guid: 13dcf7b23d5d25b489e33bb3ce163f55, type: 2}
   _collider: {fileID: 2247135605099600173}
+  _visualsTransform: {fileID: 5081052010537483841}
 --- !u!50 &890865572886444992
 Rigidbody2D:
   serializedVersion: 5
@@ -153,7 +155,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -448,6 +450,21 @@ MonoBehaviour:
   _componentIndexCache: 6
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
+--- !u!114 &3539612349710087890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7294861560698192311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 890865572886444992}
+  _visualTransform: {fileID: 5081052010537483841}
+  _interpolationSettings: {fileID: 11400000, guid: eb3f9fb8a67c19b47a45dbe8a1dba394, type: 2}
 --- !u!1001 &2000453477535913599
 PrefabInstance:
   m_ObjectHideFlags: 0
