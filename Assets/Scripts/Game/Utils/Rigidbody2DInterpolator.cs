@@ -27,6 +27,7 @@ namespace Game.Utils
 
         [Header("Timeline")]
         [SerializeField] private SnapshotInterpolationSettings _interpolationSettings;
+        [SerializeField, Min(1)] private int _snapshotSendRate = 20;
 
         private Transform _visualsParent;
         private Vector2 _visualWorldOffset;
@@ -42,9 +43,10 @@ namespace Game.Utils
         private float _bufferTimeMultiplier;
         private ExponentalMovingAverage _driftEma;
         private ExponentalMovingAverage _deliveryTimeEma;
+        private float _sendTimer;
 
-        private float SendInterval => Time.fixedDeltaTime;
-        private int SendRate => Mathf.RoundToInt(1f / Time.fixedDeltaTime);
+        private float SendInterval => 1f / _snapshotSendRate;
+        private int SendRate => _snapshotSendRate;
         private float BufferTime => SendInterval * _bufferTimeMultiplier;
 
         public void AddForce(Vector2 force, ForceMode2D mode = ForceMode2D.Force)
@@ -95,6 +97,12 @@ namespace Game.Utils
 
         private void FixedUpdate()
         {
+            _sendTimer += Time.fixedDeltaTime;
+            if (_sendTimer < SendInterval)
+                return;
+
+            _sendTimer -= SendInterval;
+
             if (_interpolationSettings.DynamicAdjustment)
             {
                 _bufferTimeMultiplier = InterpolationUtils.DynamicAdjustment(
@@ -148,6 +156,7 @@ namespace Game.Utils
             _bufferTimeMultiplier = _interpolationSettings.BufferTimeMultiplier;
             _localTimeline = 0;
             _localTimescale = 1f;
+            _sendTimer = 0;
             _driftEma = new ExponentalMovingAverage(SendRate * _interpolationSettings.DriftEmaDuration);
             _deliveryTimeEma = new ExponentalMovingAverage(SendRate * _interpolationSettings.DeliveryTimeEmaDuration);
         }
@@ -158,6 +167,7 @@ namespace Game.Utils
             _positionBuffer.Clear();
             _localTimeline = 0;
             _localTimescale = 1f;
+            _sendTimer = 0;
             _bufferTimeMultiplier = _interpolationSettings.BufferTimeMultiplier;
             _driftEma = new ExponentalMovingAverage(SendRate * _interpolationSettings.DriftEmaDuration);
             _deliveryTimeEma = new ExponentalMovingAverage(SendRate * _interpolationSettings.DeliveryTimeEmaDuration);

@@ -19,7 +19,7 @@ MonoBehaviour:
   CatchupSpeed: 0.02
   SlowDownSpeed: 0.04
   DriftEmaDuration: 1
-  DynamicAdjustment: 1
+  DynamicAdjustment: 0
   DynamicAdjustmentTolerance: 1
   DeliveryTimeEmaDuration: 2
-  RemoteBufferOffset: 2
+  RemoteBufferOffset: 10
