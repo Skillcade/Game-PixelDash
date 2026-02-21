@@ -13,6 +13,10 @@ namespace Game.RigidbodyInterpolation
     [DisallowMultipleComponent]
     public class NetworkRigidbody2DInterpolator : TickNetworkBehaviour
     {
+        /// <summary>
+        /// Snapshot storing a rigidbody position at a specific point in time.
+        /// Implements <see cref="IInterpolateSnapshot"/> so it can be used with <see cref="InterpolationUtils"/>.
+        /// </summary>
         private struct PositionSnapshot : IInterpolateSnapshot
         {
             public float RemoteTime { get; set; }
@@ -31,7 +35,7 @@ namespace Game.RigidbodyInterpolation
         [SerializeField] private SnapshotInterpolationSettings _interpolationSettings;
 
         private float BufferTime => InterpolationUtils.SendInterval * _bufferTimeMultiplier;
-        
+
         private Transform _visualsParent;
         private Vector2 _visualWorldOffset;
         private float _visualZOffset;
@@ -47,11 +51,17 @@ namespace Game.RigidbodyInterpolation
         private ExponentalMovingAverage _driftEma;
         private ExponentalMovingAverage _deliveryTimeEma;
 
+        /// <summary>
+        /// Applies a force to the underlying Rigidbody2D.
+        /// </summary>
         public void AddForce(Vector2 force, ForceMode2D mode = ForceMode2D.Force)
         {
             _rigidbody.AddForce(force, mode);
         }
 
+        /// <summary>
+        /// Applies a force at a world position to the underlying Rigidbody2D.
+        /// </summary>
         public void AddForceAtPosition(Vector2 force, Vector2 position, ForceMode2D mode = ForceMode2D.Force)
         {
             _rigidbody.AddForceAtPosition(force, position, mode);
@@ -93,6 +103,12 @@ namespace Game.RigidbodyInterpolation
             _visualTransform.parent = _visualsParent;
         }
 
+        /// <summary>
+        /// Records the current rigidbody position as a new snapshot.
+        /// Inserts into both the time buffer (for timeline/timescale adjustment)
+        /// and the position buffer (for visual interpolation).
+        /// Should be called once per network tick from the owning script.
+        /// </summary>
         public void AddSnapshot()
         {
             if (_interpolationSettings.DynamicAdjustment)
@@ -122,11 +138,15 @@ namespace Game.RigidbodyInterpolation
             InterpolationUtils.InsertIfNotExists(_positionBuffer, _interpolationSettings.BufferLimit, posSnapshot);
         }
 
+        /// <summary>
+        /// Advances the local timeline by delta time scaled by the current timescale,
+        /// then interpolates the visual transform between the two surrounding snapshots.
+        /// </summary>
         private void Update()
         {
             if (!IsOwner)
                 return;
-            
+
             if (_timeBuffer.Count > 0)
             {
                 _localTimeline += Time.unscaledDeltaTime * _localTimescale;
@@ -147,6 +167,10 @@ namespace Game.RigidbodyInterpolation
             ApplyVisualPosition(interpolated);
         }
 
+        /// <summary>
+        /// Allocates fresh buffers and resets all timeline state to defaults.
+        /// Called on Awake and OnEnable to ensure a clean starting state.
+        /// </summary>
         private void InitializeBuffers()
         {
             _timeBuffer = new SortedList<float, TimeSnapshot>();
@@ -158,6 +182,10 @@ namespace Game.RigidbodyInterpolation
             _deliveryTimeEma = new ExponentalMovingAverage(InterpolationUtils.SendRate * _interpolationSettings.DeliveryTimeEmaDuration);
         }
 
+        /// <summary>
+        /// Clears existing buffers and resets timeline state without reallocating.
+        /// Used after teleports to prevent stale snapshots from causing interpolation artifacts.
+        /// </summary>
         private void ResetBuffers()
         {
             _timeBuffer.Clear();
@@ -169,6 +197,10 @@ namespace Game.RigidbodyInterpolation
             _deliveryTimeEma = new ExponentalMovingAverage(InterpolationUtils.SendRate * _interpolationSettings.DeliveryTimeEmaDuration);
         }
 
+        /// <summary>
+        /// Captures the world-space offset between the rigidbody and the visual transform
+        /// so the visual can be positioned correctly even when detached from the hierarchy.
+        /// </summary>
         private void CacheVisualOffsets()
         {
             Vector3 rigidbodyWorld = _rigidbody.transform.position;
@@ -178,6 +210,10 @@ namespace Game.RigidbodyInterpolation
             _visualZOffset = visualWorld.z - rigidbodyWorld.z;
         }
 
+        /// <summary>
+        /// Moves the detached visual transform to the given world position,
+        /// preserving the cached offset and Z depth.
+        /// </summary>
         private void ApplyVisualPosition(Vector2 worldPosition)
         {
             float z = _rigidbody.transform.position.z + _visualZOffset;

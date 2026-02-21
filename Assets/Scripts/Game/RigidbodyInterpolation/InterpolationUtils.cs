@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FishNet;
 using UnityEngine;
@@ -7,18 +7,18 @@ namespace Game.RigidbodyInterpolation
 {
     public static class InterpolationUtils
     {
-        // Интервал отправки сообщений. Фотон его не использует, у него свои вычисления.
-        // Фотон предоставляет нам частоту отправки - по ней можно вычислить интервал
+        // Send interval derived from the network tick rate.
         public static float SendInterval => 1f / InstanceFinder.TimeManager.TickRate;
         public static int SendRate => InstanceFinder.TimeManager.TickRate;
 
-        // Вычисляем фактическое время отставания (буферное время) в зависимости от того, как приходят снапшоты
-        // Т.е. мы запланировали, что будем отставать на интервал отправки 1 снапшота, а по факту отстаём на 1.1 или 0.9 от этого интервала
-        // Здесь вычисляется множитель этого отставания
+        // Computes the actual buffer time multiplier based on how snapshots are arriving.
+        // We planned to lag behind by exactly one send interval, but in practice the gap
+        // may be larger or smaller due to jitter. This calculates the multiplier that
+        // accounts for that delivery variance.
         public static float DynamicAdjustment(
-            float sendInterval, // Интервал между отправкой снапшотов
-            float jitterStandardDeviation, // Насколько интервал получения снапшотов в среднем отличается от запланированного интервала отправки 
-            float dynamicAdjustmentTolerance) // Насколько большое отклонение интервала получения от интервала отправки мы можем допустить
+            float sendInterval, // interval between snapshot sends
+            float jitterStandardDeviation, // how much delivery interval deviates from planned send interval on average
+            float dynamicAdjustmentTolerance) // how much deviation from the send interval we tolerate
         {
             float intervalWithJitter = sendInterval + jitterStandardDeviation;
             float multiples = intervalWithJitter / sendInterval;
@@ -27,12 +27,12 @@ namespace Game.RigidbodyInterpolation
             return safeZone;
         }
 
-        // Буфер сам сортирует снапшоты по их времени отправки (RemoteTime).
-        // SortedList это что-то типа словаря, который отсортирован по ключу
-        // Записываем новый снапшот в буфер с его временем отправки - если ВДРУГ такое время отправки уже есть, то просто обновляем данные
-        // Если количество снапшотов в буфере превышает лимит, все новые снапшоты игнорируются (возможно, зря - может, стоит выбрасывать самые старые? Надо протестить)
-        // Возвращаем true, если снапшот добавлен в буфер (при добавлении он сортирует автоматически)
-        // Возвращаем false, если буфер переполнен, или если уже был снапшот с таким RemoteTime, а новый его просто перезаписал
+        // The buffer automatically sorts snapshots by their send time (RemoteTime).
+        // SortedList is like a dictionary sorted by key.
+        // We insert a new snapshot keyed by its RemoteTime — if that key already exists, we just update the data.
+        // If the buffer is at capacity, new snapshots are ignored (might be worth evicting oldest instead — needs testing).
+        // Returns true if a new entry was added (sorted automatically on insert).
+        // Returns false if the buffer is full, or if a snapshot with this RemoteTime already existed and was overwritten.
         public static bool InsertIfNotExists<T>(
             SortedList<float, T> buffer, // snapshot buffer
             int bufferLimit, // don't grow infinitely
@@ -46,7 +46,7 @@ namespace Game.RigidbodyInterpolation
             return buffer.Count > before;
         }
 
-        // Добавляем новый снапшот в список и подгоняем локальное время
+        // Inserts a new snapshot into the buffer and adjusts the local timeline accordingly.
         public static void InsertAndAdjust<T>(
             SortedList<float, T> buffer, // snapshot buffer
             SnapshotInterpolationSettings interpolationSettings,
@@ -58,7 +58,8 @@ namespace Game.RigidbodyInterpolation
             ref ExponentalMovingAverage deliveryTimeEma) // for dynamic buffer time adjustment
             where T : IInterpolateSnapshot
         {
-            // Если буфер пустой, то жёстко устанавливаем локальное время равным отставанию буфера, чтобы синхронизировать таймлайны
+            // If the buffer is empty, hard-set local time to lag behind by exactly the buffer time
+            // to synchronize timelines on the very first snapshot.
             if (buffer.Count == 0)
                 localTimeline = snapshot.RemoteTime - bufferTime;
 
@@ -67,13 +68,14 @@ namespace Game.RigidbodyInterpolation
 
             if (buffer.Count >= 2)
             {
-                // Если снапшотов несколько, вычисляем последний интервал доставки
-                // и добавляем его в вычисление среднего времени доставки
+                // When we have multiple snapshots, compute the latest delivery interval
+                // and feed it into the delivery time EMA.
 
-                // Среднее время вычисляется по формуле Exponental Moving Average - среднее из нескольких последних значений, где у последних больше веса
+                // The EMA (Exponential Moving Average) gives more weight to recent values,
+                // smoothing out short-term fluctuations.
 
-                // Больше ни для чего LocalTime не используется, он нужен только для подгонки отставания буфера,
-                // на случай если вдруг снапшоты начнут приходить быстрее или медленнее
+                // LocalTime is only used here — its sole purpose is to track how fast
+                // snapshots arrive so buffer lag can be adjusted if they come faster or slower.
 
                 float previousLocalTime = buffer.Values[buffer.Count - 2].LocalTime;
                 float lastLocalTime = buffer.Values[buffer.Count - 1].LocalTime;
@@ -82,24 +84,24 @@ namespace Game.RigidbodyInterpolation
                 deliveryTimeEma.Add(localDeliveryTime);
             }
 
-            // Обрезаем локальное время под полученное RemoteTime, чтобы не сильно обгонять или отставать от хоста
+            // Clamp local time relative to the latest RemoteTime so it doesn't
+            // run too far ahead or fall too far behind the source.
             float latestRemoteTime = snapshot.RemoteTime;
             localTimeline = TimelineClamp(localTimeline, bufferTime, latestRemoteTime);
 
-            // Вычисляем отставание локального времени и добавляем в вычисление среднего отставания
+            // Compute how far local time lags behind remote time and feed into drift EMA.
             float timeDiff = latestRemoteTime - localTimeline;
             driftEma.Add(timeDiff);
 
-            // Вычисляем, насколько мы отстаём или опережаем нужное время
-            // Нужное время это время отставания буфера
-            // Наша цель, чтобы время отставания от RemoteTime было равно отставанию буфера
-            // Подстраиваем timeScale под это отставание
+            // Compute how far the actual lag deviates from the target buffer time.
+            // The goal is to keep the lag equal to bufferTime.
+            // Adjust the timescale to gradually correct the drift.
             float drift = driftEma.Value - bufferTime;
             localTimescale = Timescale(drift, interpolationSettings);
         }
 
-        // По буферу и текущему локальному времени вычисляем, по каким снапшотам мы сейчас интерполируемся и на какое значение
-        // Удаляем все снапшоты, которые более не используются 
+        // Given the buffer and current local time, finds the two surrounding snapshots
+        // and computes the interpolation ratio. Removes all snapshots that are no longer needed.
         public static void StepInterpolation<T>(
             SortedList<float, T> buffer, // snapshot buffer
             float localTimeline, // local interpolation time based on server time
@@ -111,8 +113,7 @@ namespace Game.RigidbodyInterpolation
             // check this in caller:
             // nothing to do if there are no snapshots at all yet
 
-            // sample snapshot buffer at local interpolation time
-            // Вычисляем индексы снапшотов, по которым интерполируем
+            // Sample the buffer to find which two snapshots bracket the local time.
             Sample(buffer, localTimeline, out int from, out int to, out t);
 
             // save from/to
@@ -133,7 +134,8 @@ namespace Game.RigidbodyInterpolation
             buffer.RemoveRange(from);
         }
 
-        // Вычисляем, между какими двумя снапшотами мы сейчас интерполируем
+        // Finds which two snapshots in the buffer bracket the given local time
+        // and computes the interpolation factor between them.
         private static void Sample<T>(
             SortedList<float, T> buffer, // snapshot buffer
             float localTimeline, // local interpolation time based on server time
@@ -176,8 +178,10 @@ namespace Game.RigidbodyInterpolation
             }
         }
 
-        // Смотрим, насколько локальное время отстаёт от вычисленного RemoteTime или обногяет его и вычисляем множитель локального времени
-        // Если отклонение от RemoteTime в пределах погрешности, то множитель локального времени - 1, локальное время не ускоряется и не замедляется 
+        // Checks how far the local timeline drifts from the target (RemoteTime - bufferTime)
+        // and returns a timescale multiplier.
+        // If drift is within the acceptable thresholds, timescale stays at 1.0 (no correction).
+        // If lagging too far behind, speed up slightly. If running too far ahead, slow down.
         private static float Timescale(float drift, SnapshotInterpolationSettings interpolationSettings)
         {
             if (drift > SendInterval * interpolationSettings.CatchupPositiveThreshold)
@@ -189,14 +193,14 @@ namespace Game.RigidbodyInterpolation
             return 1;
         }
 
-        // Этим методом мы ограничиваем, насколько локальное время может опережать или отставать от TargetTime
-        // TargetTime отстаёт от RemoteTime на размер буфера
-        // Если вдруг снапшоты перестали приходить, то локальное время не убежит вперёд
-        // Если после паузы пришли новые снапшоты, у которых RemoteTime убежало вперёд, будет скачок в локальном времени, чтобы быстро их догнать
+        // Clamps the local timeline so it can't run too far ahead or fall too far behind the target.
+        // Target = latestRemoteTime - bufferTime.
+        // If snapshots stop arriving, local time won't overshoot.
+        // If snapshots resume with a big RemoteTime jump after a pause, local time snaps forward to catch up.
         private static float TimelineClamp(
-            float localTimeline, // Локальное время
-            float bufferTime, // Искусственное отставание буфера для интерполяции
-            float latestRemoteTime) // Последнее RemoteTime время, которое пришло в снапшоте
+            float localTimeline, // local interpolation time
+            float bufferTime, // artificial lag for interpolation headroom
+            float latestRemoteTime) // most recent RemoteTime from a snapshot
         {
             float targetTime = latestRemoteTime - bufferTime;
             float lowerBound = targetTime - bufferTime; // how far behind we can get
@@ -205,6 +209,8 @@ namespace Game.RigidbodyInterpolation
             return Math.Clamp(localTimeline, lowerBound, upperBound);
         }
 
+        // Removes the first 'amount' entries from a sorted list.
+        // Used to evict old snapshots that are no longer needed for interpolation.
         private static void RemoveRange<T, U>(this SortedList<T, U> list, int amount)
         {
             for (int i = 0; i < amount && i < list.Count; ++i)
