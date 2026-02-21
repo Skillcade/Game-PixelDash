@@ -1,4 +1,5 @@
 using System;
+using Game.Camera;
 using SkillcadeSDK;
 using SkillcadeSDK.Connection;
 using SkillcadeSDK.FishNetAdapter.Players;
@@ -52,26 +53,27 @@ namespace Game.Player
 
         private void Start()
         {
-            if (_objectResolver.TryResolve(out IConnectionController connectionController)
-                && connectionController.ConnectionState == ConnectionState.SinglePlayer)
+            bool isLocal = _objectResolver.TryResolve(out IConnectionController connectionController)
+                && connectionController.ConnectionState == ConnectionState.SinglePlayer
+                || _movement.NetworkObject.Owner.IsLocalClient;
+
+            if (isLocal && _objectResolver.TryResolve(out GameCameraTarget cameraTarget))
             {
-                var targetCamera = FindAnyObjectByType<CinemachineCamera>(FindObjectsInactive.Include);
-                if (targetCamera != null)
-                    targetCamera.Target.TrackingTarget = transform;
-                    
-                return;
+                SetupLocalCamera(cameraTarget);
             }
-            
-            if (_movement.NetworkObject.Owner.IsLocalClient)
-            {
-                var targetCamera = FindAnyObjectByType<CinemachineCamera>(FindObjectsInactive.Include);
-                if (targetCamera != null)
-                    targetCamera.Target.TrackingTarget = transform;
-            }
-            else
+            else if (!isLocal)
             {
                 TryApplyNonLocalVisuals();
             }
+        }
+
+        private void SetupLocalCamera(GameCameraTarget cameraTarget)
+        {
+            cameraTarget.SetFollowTarget(_movement);
+
+            var targetCamera = FindAnyObjectByType<CinemachineCamera>(FindObjectsInactive.Include);
+            if (targetCamera != null)
+                targetCamera.Target.TrackingTarget = cameraTarget.transform;
         }
 
         private void InitNickname()

@@ -16,6 +16,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetworkManager-SinglePlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 6248397851354379535, guid: fd2504bba9d4fd34ba676c27142533f1, type: 3}
+      propertyPath: _tickRate
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248397851354379535, guid: fd2504bba9d4fd34ba676c27142533f1, type: 3}
+      propertyPath: _timingType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248397851354379535, guid: fd2504bba9d4fd34ba676c27142533f1, type: 3}
+      propertyPath: _updateOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248397851354379535, guid: fd2504bba9d4fd34ba676c27142533f1, type: 3}
+      propertyPath: _allowTickDropping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248397851354379535, guid: fd2504bba9d4fd34ba676c27142533f1, type: 3}
+      propertyPath: _maximumFrameTicks
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6853125649833945451, guid: fd2504bba9d4fd34ba676c27142533f1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -2,6 +2,7 @@ using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using FishNet.Utility.Template;
 using Game.Level;
+using Game.RigidbodyInterpolation;
 using SkillcadeSDK;
 using SkillcadeSDK.FishNetAdapter;
 using SkillcadeSDK.StateMachine;
@@ -10,7 +11,7 @@ using VContainer;
 
 namespace Game.Player
 {
-        public struct PlayerInput
+    public struct PlayerInput
     {
         public float Movement;
         public bool Jump;
@@ -37,22 +38,26 @@ namespace Game.Player
     
     public class PlayerMovement : TickNetworkBehaviour
     {
+        private const float JUMP_CUT_MULTIPLIER = 0.5f; // lower = shorter tap jump, higher = less difference
+        
         public event System.Action JumpFx;
 
-        public Vector2 VelocityVisual => IsOwner ? _rigidbody.linearVelocity : _velocitySync.Value;
+        public Vector2 VelocityVisual => IsOwner ? _rigidbody.Rigidbody.linearVelocity : _velocitySync.Value;
         public bool IsGroundedVisual => IsOwner ? _isGrounded : _isGroundedSync.Value;
         public float Health01 => Mathf.Clamp01(_healthSync.Value / _playerMovementConfig._maxHealth);
         private bool CanMove => _knockbackTimer <= 0 && _healthSync.Value > 0 && _gameStateMachine.CurrentStateType == GameStateType.Running;
+        public Transform VisualsTransform => _visualsTransform;
         
         public PlayerMovementConfig Config => _playerMovementConfig;
         
         public RuntimeMoveValues MoveValues { get; set; }
 
-        [SerializeField] private Rigidbody2D _rigidbody;
+        [SerializeField] private NetworkRigidbody2DInterpolator _rigidbody;
         [SerializeField] private PlayerInputReader _inputReader;
         [SerializeField] private PlayerMovementConfig _playerMovementConfig;
         [SerializeField] private Collider2D _collider;
-        
+        [SerializeField] private Transform _visualsTransform;
+
         [Inject] private readonly SkillcadeGameStateMachine _gameStateMachine;
 
         private readonly SyncVar<float> _healthSync = new SyncVar<float>(new SyncTypeSettings(WritePermission.ServerOnly));
@@ -119,7 +124,7 @@ namespace Game.Player
                 _coyoteTimer -= (float)TimeManager.TickDelta;
 
             CapFallVelocity();
-            SetMovementValuesServerRpc(_rigidbody.linearVelocity, _isGrounded);
+            SetMovementValuesServerRpc(_rigidbody.Rigidbody.linearVelocity, _isGrounded);
         }
 
         private void UpdateGrounded()
@@ -137,8 +142,7 @@ namespace Game.Player
             }
             else if (_knockbackTimer <= 0f && _healthSync.Value <= 0f)
             {
-                _rigidbody.linearVelocity = Vector2.zero;
-                _rigidbody.position = _spawnPoint;
+                _rigidbody.Teleport(_spawnPoint, resetVelocity: true);
                 RespawnServerRpc();
             }
         }
@@ -148,20 +152,20 @@ namespace Game.Player
             if (!CanMove)
                 input.Reset();
             
-            Vector2 currentVelocity = _rigidbody.linearVelocity;
+            Vector2 currentVelocity = _rigidbody.Rigidbody.linearVelocity;
             if (Mathf.Abs(input.Movement) > 0.01f)
             {
                 float targetSpeed = input.Movement * MoveValues.Speed;
 
                 float acceleration = _isGrounded ? _playerMovementConfig._groundAcceleration : _playerMovementConfig._airAcceleration;
                 float newX = Mathf.MoveTowards(currentVelocity.x, targetSpeed, acceleration * dt);
-                _rigidbody.linearVelocity = new Vector2(newX, currentVelocity.y);
+                _rigidbody.Rigidbody.linearVelocity = new Vector2(newX, currentVelocity.y);
             }
             else
             {
                 float deceleration = _isGrounded ? _playerMovementConfig._groundDeceleration : _playerMovementConfig._airDeceleration;
                 float newX = Mathf.MoveTowards(currentVelocity.x, 0f, deceleration * dt);
-                _rigidbody.linearVelocity = new Vector2(newX, currentVelocity.y);
+                _rigidbody.Rigidbody.linearVelocity = new Vector2(newX, currentVelocity.y);
             }
 
             if (input.Jump && (_isGrounded || _coyoteTimer > 0f) && _jumpTimer <= 0f)
@@ -173,20 +177,20 @@ namespace Game.Player
 
         private void CapFallVelocity()
         {
-            Vector2 velocity = _rigidbody.linearVelocity;
+            Vector2 velocity = _rigidbody.Rigidbody.linearVelocity;
             if (velocity.y < -_playerMovementConfig._maxFallSpeed)
             {
                 velocity.y = -_playerMovementConfig._maxFallSpeed;
-                _rigidbody.linearVelocity = velocity;
+                _rigidbody.Rigidbody.linearVelocity = velocity;
             }
         }
         
         private void Jump()
         {
-            float jumpForce = Mathf.Sqrt(Mathf.Abs(-2.0f * Physics.gravity.y * _playerMovementConfig._jumpHeight * _rigidbody.gravityScale));
-            if (_rigidbody.linearVelocity.y < 0f)
+            float jumpForce = Mathf.Sqrt(Mathf.Abs(-2.0f * Physics.gravity.y * _playerMovementConfig._jumpHeight * _rigidbody.Rigidbody.gravityScale));
+            if (_rigidbody.Rigidbody.linearVelocity.y < 0f)
             {
-                jumpForce -= _rigidbody.linearVelocity.y;
+                jumpForce -= _rigidbody.Rigidbody.linearVelocity.y;
             }
 
             JumpFx?.Invoke();
@@ -223,7 +227,7 @@ namespace Game.Player
             direction.y = Mathf.Abs(direction.y);
             direction.Normalize();
 
-            _rigidbody.linearVelocity = Vector2.zero;
+            _rigidbody.Rigidbody.linearVelocity = Vector2.zero;
             _rigidbody.AddForce(direction * _playerMovementConfig._knockbackForce, ForceMode2D.Impulse);
             _knockbackTimer = .5f;
         }
@@ -254,8 +258,6 @@ namespace Game.Player
             JumpFx?.Invoke();
         }
 
-        private const float JUMP_CUT_MULTIPLIER = 0.5f; // lower = shorter tap jump, higher = less difference
-
         private void ApplyJumpCut(PlayerInput input)
         {
             // Only the owning client is simulating physics here already.
@@ -263,11 +265,11 @@ namespace Game.Player
                 return;
 
             // If player released jump while still traveling upward, cut the upward velocity.
-            if (input.JumpReleased && _rigidbody.linearVelocity.y > 0f)
+            if (input.JumpReleased && _rigidbody.Rigidbody.linearVelocity.y > 0f)
             {
-                Vector2 v = _rigidbody.linearVelocity;
+                Vector2 v = _rigidbody.Rigidbody.linearVelocity;
                 v.y *= JUMP_CUT_MULTIPLIER;
-                _rigidbody.linearVelocity = v;
+                _rigidbody.Rigidbody.linearVelocity = v;
             }
         }
     }
