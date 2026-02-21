@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using PGP.Core.Game.Network;
+using FishNet.Object;
+using FishNet.Utility.Template;
 using UnityEngine;
 
-namespace Game.Utils
+namespace Game.RigidbodyInterpolation
 {
     /// <summary>
     /// Wraps Rigidbody2D and provides smooth visual interpolation for physics-driven objects.
@@ -10,7 +11,7 @@ namespace Game.Utils
     /// FixedUpdate "sends" snapshots, Update advances a local timeline and interpolates.
     /// </summary>
     [DisallowMultipleComponent]
-    public class Rigidbody2DInterpolator : MonoBehaviour
+    public class NetworkRigidbody2DInterpolator : TickNetworkBehaviour
     {
         private struct PositionSnapshot : IInterpolateSnapshot
         {
@@ -22,13 +23,15 @@ namespace Game.Utils
         public Rigidbody2D Rigidbody => _rigidbody;
 
         [Header("References")]
+        [SerializeField] private NetworkObject _networkObject;
         [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] private Transform _visualTransform;
 
         [Header("Timeline")]
         [SerializeField] private SnapshotInterpolationSettings _interpolationSettings;
-        [SerializeField, Min(1)] private int _snapshotSendRate = 20;
 
+        private float BufferTime => InterpolationUtils.SendInterval * _bufferTimeMultiplier;
+        
         private Transform _visualsParent;
         private Vector2 _visualWorldOffset;
         private float _visualZOffset;
@@ -43,11 +46,6 @@ namespace Game.Utils
         private float _bufferTimeMultiplier;
         private ExponentalMovingAverage _driftEma;
         private ExponentalMovingAverage _deliveryTimeEma;
-        private float _sendTimer;
-
-        private float SendInterval => 1f / _snapshotSendRate;
-        private int SendRate => _snapshotSendRate;
-        private float BufferTime => SendInterval * _bufferTimeMultiplier;
 
         public void AddForce(Vector2 force, ForceMode2D mode = ForceMode2D.Force)
         {
@@ -95,23 +93,21 @@ namespace Game.Utils
             _visualTransform.parent = _visualsParent;
         }
 
-        private void FixedUpdate()
+        public void AddSnapshot()
         {
-            _sendTimer += Time.fixedDeltaTime;
-            if (_sendTimer < SendInterval)
-                return;
-
-            _sendTimer -= SendInterval;
-
             if (_interpolationSettings.DynamicAdjustment)
             {
                 _bufferTimeMultiplier = InterpolationUtils.DynamicAdjustment(
-                    SendInterval,
+                    InterpolationUtils.SendInterval,
                     _deliveryTimeEma.StandardDeviation,
                     _interpolationSettings.DynamicAdjustmentTolerance);
             }
 
-            var timeSnapshot = new TimeSnapshot(Time.fixedTime, Time.unscaledTime);
+            var tick = _networkObject.TimeManager.LocalTick;
+            float remoteTime = (float)_networkObject.TimeManager.TicksToTime(tick);
+            float localTime = _networkObject.TimeManager.ClientUptime;
+
+            var timeSnapshot = new TimeSnapshot(remoteTime, localTime);
             InterpolationUtils.InsertAndAdjust(
                 _timeBuffer, _interpolationSettings, timeSnapshot,
                 ref _localTimeline, ref _localTimescale, BufferTime,
@@ -119,16 +115,18 @@ namespace Game.Utils
 
             var posSnapshot = new PositionSnapshot
             {
-                RemoteTime = Time.fixedTime,
-                LocalTime = Time.unscaledTime,
+                RemoteTime = remoteTime,
+                LocalTime = localTime,
                 Position = _rigidbody.position
             };
-            InterpolationUtils.InsertIfNotExists(
-                _positionBuffer, _interpolationSettings.BufferLimit, posSnapshot);
+            InterpolationUtils.InsertIfNotExists(_positionBuffer, _interpolationSettings.BufferLimit, posSnapshot);
         }
 
         private void Update()
         {
+            if (!IsOwner)
+                return;
+            
             if (_timeBuffer.Count > 0)
             {
                 _localTimeline += Time.unscaledDeltaTime * _localTimescale;
@@ -156,9 +154,8 @@ namespace Game.Utils
             _bufferTimeMultiplier = _interpolationSettings.BufferTimeMultiplier;
             _localTimeline = 0;
             _localTimescale = 1f;
-            _sendTimer = 0;
-            _driftEma = new ExponentalMovingAverage(SendRate * _interpolationSettings.DriftEmaDuration);
-            _deliveryTimeEma = new ExponentalMovingAverage(SendRate * _interpolationSettings.DeliveryTimeEmaDuration);
+            _driftEma = new ExponentalMovingAverage(InterpolationUtils.SendRate * _interpolationSettings.DriftEmaDuration);
+            _deliveryTimeEma = new ExponentalMovingAverage(InterpolationUtils.SendRate * _interpolationSettings.DeliveryTimeEmaDuration);
         }
 
         private void ResetBuffers()
@@ -167,10 +164,9 @@ namespace Game.Utils
             _positionBuffer.Clear();
             _localTimeline = 0;
             _localTimescale = 1f;
-            _sendTimer = 0;
             _bufferTimeMultiplier = _interpolationSettings.BufferTimeMultiplier;
-            _driftEma = new ExponentalMovingAverage(SendRate * _interpolationSettings.DriftEmaDuration);
-            _deliveryTimeEma = new ExponentalMovingAverage(SendRate * _interpolationSettings.DeliveryTimeEmaDuration);
+            _driftEma = new ExponentalMovingAverage(InterpolationUtils.SendRate * _interpolationSettings.DriftEmaDuration);
+            _deliveryTimeEma = new ExponentalMovingAverage(InterpolationUtils.SendRate * _interpolationSettings.DeliveryTimeEmaDuration);
         }
 
         private void CacheVisualOffsets()

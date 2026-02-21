@@ -1,37 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using FishNet.Managing;
+using FishNet;
 using UnityEngine;
 
-namespace PGP.Core.Game.Network
+namespace Game.RigidbodyInterpolation
 {
-    internal static class InterpolationUtils
+    public static class InterpolationUtils
     {
         // Интервал отправки сообщений. Фотон его не использует, у него свои вычисления.
         // Фотон предоставляет нам частоту отправки - по ней можно вычислить интервал
-        internal static float SendInterval => Time.fixedDeltaTime;
-        internal static int SendRate => Mathf.RoundToInt(1f / Time.fixedDeltaTime);
-
-        // Этим методом мы ограничиваем, насколько локальное время может опережать или отставать от TargetTime
-        // TargetTime отстаёт от RemoteTime на размер буфера
-        // Если вдруг снапшоты перестали приходить, то локальное время не убежит вперёд
-        // Если после паузы пришли новые снапшоты, у которых RemoteTime убежало вперёд, будет скачок в локальном времени, чтобы быстро их догнать
-        internal static float TimelineClamp(
-            float localTimeline, // Локальное время
-            float bufferTime, // Искусственное отставание буфера для интерполяции
-            float latestRemoteTime) // Последнее RemoteTime время, которое пришло в снапшоте
-        {
-            float targetTime = latestRemoteTime - bufferTime;
-            float lowerBound = targetTime - bufferTime; // how far behind we can get
-            float upperBound = targetTime + bufferTime; // how far ahead we can get
-
-            return Math.Clamp(localTimeline, lowerBound, upperBound);
-        }
+        public static float SendInterval => 1f / InstanceFinder.TimeManager.TickRate;
+        public static int SendRate => InstanceFinder.TimeManager.TickRate;
 
         // Вычисляем фактическое время отставания (буферное время) в зависимости от того, как приходят снапшоты
         // Т.е. мы запланировали, что будем отставать на интервал отправки 1 снапшота, а по факту отстаём на 1.1 или 0.9 от этого интервала
         // Здесь вычисляется множитель этого отставания
-        internal static float DynamicAdjustment(
+        public static float DynamicAdjustment(
             float sendInterval, // Интервал между отправкой снапшотов
             float jitterStandardDeviation, // Насколько интервал получения снапшотов в среднем отличается от запланированного интервала отправки 
             float dynamicAdjustmentTolerance) // Насколько большое отклонение интервала получения от интервала отправки мы можем допустить
@@ -43,26 +27,13 @@ namespace PGP.Core.Game.Network
             return safeZone;
         }
 
-        // Смотрим, насколько локальное время отстаёт от вычисленного RemoteTime или обногяет его и вычисляем множитель локального времени
-        // Если отклонение от RemoteTime в пределах погрешности, то множитель локального времени - 1, локальное время не ускоряется и не замедляется 
-        internal static float Timescale(float drift, SnapshotInterpolationSettings interpolationSettings)
-        {
-            if (drift > SendInterval * interpolationSettings.CatchupPositiveThreshold)
-                return 1 + interpolationSettings.CatchupSpeed;
-
-            if (drift < SendInterval * interpolationSettings.CatchupNegativeThreshold)
-                return 1 - interpolationSettings.SlowDownSpeed;
-
-            return 1;
-        }
-
         // Буфер сам сортирует снапшоты по их времени отправки (RemoteTime).
         // SortedList это что-то типа словаря, который отсортирован по ключу
         // Записываем новый снапшот в буфер с его временем отправки - если ВДРУГ такое время отправки уже есть, то просто обновляем данные
         // Если количество снапшотов в буфере превышает лимит, все новые снапшоты игнорируются (возможно, зря - может, стоит выбрасывать самые старые? Надо протестить)
         // Возвращаем true, если снапшот добавлен в буфер (при добавлении он сортирует автоматически)
         // Возвращаем false, если буфер переполнен, или если уже был снапшот с таким RemoteTime, а новый его просто перезаписал
-        internal static bool InsertIfNotExists<T>(
+        public static bool InsertIfNotExists<T>(
             SortedList<float, T> buffer, // snapshot buffer
             int bufferLimit, // don't grow infinitely
             T snapshot) // the newly received snapshot
@@ -76,7 +47,7 @@ namespace PGP.Core.Game.Network
         }
 
         // Добавляем новый снапшот в список и подгоняем локальное время
-        internal static void InsertAndAdjust<T>(
+        public static void InsertAndAdjust<T>(
             SortedList<float, T> buffer, // snapshot buffer
             SnapshotInterpolationSettings interpolationSettings,
             T snapshot, // the newly received snapshot
@@ -129,7 +100,7 @@ namespace PGP.Core.Game.Network
 
         // По буферу и текущему локальному времени вычисляем, по каким снапшотам мы сейчас интерполируемся и на какое значение
         // Удаляем все снапшоты, которые более не используются 
-        internal static void StepInterpolation<T>(
+        public static void StepInterpolation<T>(
             SortedList<float, T> buffer, // snapshot buffer
             float localTimeline, // local interpolation time based on server time
             out T fromSnapshot, // we interpolate 'from' this snapshot
@@ -163,7 +134,7 @@ namespace PGP.Core.Game.Network
         }
 
         // Вычисляем, между какими двумя снапшотами мы сейчас интерполируем
-        internal static void Sample<T>(
+        private static void Sample<T>(
             SortedList<float, T> buffer, // snapshot buffer
             float localTimeline, // local interpolation time based on server time
             out int from, // the snapshot <= time
@@ -205,7 +176,36 @@ namespace PGP.Core.Game.Network
             }
         }
 
-        internal static void RemoveRange<T, U>(this SortedList<T, U> list, int amount)
+        // Смотрим, насколько локальное время отстаёт от вычисленного RemoteTime или обногяет его и вычисляем множитель локального времени
+        // Если отклонение от RemoteTime в пределах погрешности, то множитель локального времени - 1, локальное время не ускоряется и не замедляется 
+        private static float Timescale(float drift, SnapshotInterpolationSettings interpolationSettings)
+        {
+            if (drift > SendInterval * interpolationSettings.CatchupPositiveThreshold)
+                return 1 + interpolationSettings.CatchupSpeed;
+
+            if (drift < SendInterval * interpolationSettings.CatchupNegativeThreshold)
+                return 1 - interpolationSettings.SlowDownSpeed;
+
+            return 1;
+        }
+
+        // Этим методом мы ограничиваем, насколько локальное время может опережать или отставать от TargetTime
+        // TargetTime отстаёт от RemoteTime на размер буфера
+        // Если вдруг снапшоты перестали приходить, то локальное время не убежит вперёд
+        // Если после паузы пришли новые снапшоты, у которых RemoteTime убежало вперёд, будет скачок в локальном времени, чтобы быстро их догнать
+        private static float TimelineClamp(
+            float localTimeline, // Локальное время
+            float bufferTime, // Искусственное отставание буфера для интерполяции
+            float latestRemoteTime) // Последнее RemoteTime время, которое пришло в снапшоте
+        {
+            float targetTime = latestRemoteTime - bufferTime;
+            float lowerBound = targetTime - bufferTime; // how far behind we can get
+            float upperBound = targetTime + bufferTime; // how far ahead we can get
+
+            return Math.Clamp(localTimeline, lowerBound, upperBound);
+        }
+
+        private static void RemoveRange<T, U>(this SortedList<T, U> list, int amount)
         {
             for (int i = 0; i < amount && i < list.Count; ++i)
                 list.RemoveAt(0);

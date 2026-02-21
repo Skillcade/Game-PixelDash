@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 
-namespace PGP.Core.Game.Network
+namespace Game.RigidbodyInterpolation
 {
-    internal struct ExponentalMovingAverage
+    public struct ExponentalMovingAverage
     {
-	    internal float Value;
-        internal float Variance;
-        internal float StandardDeviation;
+	    public float Value;
+        public float Variance;
+        public float StandardDeviation;
         
         private readonly float _alpha;
         private bool _initialized;
 
-        internal ExponentalMovingAverage(int n)
+        public ExponentalMovingAverage(int n)
         {
             _alpha = 2f / (n + 1);
             _initialized = false;
@@ -20,7 +20,7 @@ namespace PGP.Core.Game.Network
             StandardDeviation = 0;
         }
 
-        internal void Add(float value)
+        public void Add(float value)
         {
             if (!_initialized)
             {
@@ -34,7 +34,7 @@ namespace PGP.Core.Game.Network
             StandardDeviation = Mathf.Sqrt(Variance);
         }
 
-        internal void Clear()
+        public void Clear()
         {
             _initialized = false;
             Value = 0;

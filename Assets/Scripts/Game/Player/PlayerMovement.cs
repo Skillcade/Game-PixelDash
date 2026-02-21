@@ -2,7 +2,7 @@ using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using FishNet.Utility.Template;
 using Game.Level;
-using Game.Utils;
+using Game.RigidbodyInterpolation;
 using SkillcadeSDK;
 using SkillcadeSDK.FishNetAdapter;
 using SkillcadeSDK.StateMachine;
@@ -52,7 +52,7 @@ namespace Game.Player
         
         public RuntimeMoveValues MoveValues { get; set; }
 
-        [SerializeField] private Rigidbody2DInterpolator _rigidbody;
+        [SerializeField] private NetworkRigidbody2DInterpolator _rigidbody;
         [SerializeField] private PlayerInputReader _inputReader;
         [SerializeField] private PlayerMovementConfig _playerMovementConfig;
         [SerializeField] private Collider2D _collider;

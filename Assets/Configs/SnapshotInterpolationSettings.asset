@@ -22,4 +22,4 @@ MonoBehaviour:
   DynamicAdjustment: 0
   DynamicAdjustmentTolerance: 1
   DeliveryTimeEmaDuration: 2
-  RemoteBufferOffset: 10
+  RemoteBufferOffset: 2
