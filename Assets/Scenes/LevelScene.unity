@@ -7613,7 +7613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TrackerSettings:
     BindingMode: 4
-    PositionDamping: {x: 1, y: 1, z: 1}
+    PositionDamping: {x: 0.8, y: 1, z: 1}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
@@ -8551,8 +8551,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8984c7a779ded345b34e512d07908ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _horizontalBaseDistance: 0
-  _horizontalSpeedFactor: 0
+  _horizontalBaseDistance: 2
+  _horizontalSpeedFactor: 0.2
   _verticalBaseDistance: 0.5
   _verticalSpeedFactor: 0.02
   _verticalAirMultiplier: 0.2

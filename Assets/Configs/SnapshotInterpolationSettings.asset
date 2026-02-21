@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1294b7b1d3f01a4c9ccca33fe51addc, type: 3}
+  m_Script: {fileID: 11500000, guid: 157f81a66e46bb74c8ef8a8ba8a6c3b0, type: 3}
   m_Name: SnapshotInterpolationSettings
   m_EditorClassIdentifier: 
   BufferTimeMultiplier: 2
@@ -19,7 +19,7 @@ MonoBehaviour:
   CatchupSpeed: 0.02
   SlowDownSpeed: 0.04
   DriftEmaDuration: 1
-  DynamicAdjustment: 0
+  DynamicAdjustment: 1
   DynamicAdjustmentTolerance: 1
   DeliveryTimeEmaDuration: 2
   RemoteBufferOffset: 2

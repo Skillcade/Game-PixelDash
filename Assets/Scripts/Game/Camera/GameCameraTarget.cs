@@ -20,15 +20,8 @@ namespace Game.Camera
         [Header("Movement")]
         [SerializeField] private float _followSpeed = 15f;
 
-        [Header("Debug")]
-        [SerializeField] private bool _enableDebugLogging;
-        [SerializeField] private bool _enableVisualDebug = true;
-        [SerializeField, Min(1)] private int _logEveryNFrames = 30;
-        [SerializeField] private float _jitterThreshold = 0.05f;
-
         private PlayerMovement _followTarget;
         private float _lastFacing = 1f;
-        private int _frameCount;
 
         public void SetFollowTarget(PlayerMovement movement)
         {
@@ -78,36 +71,7 @@ namespace Game.Camera
             Vector3 target = playerPos + (Vector3)offset;
             target.z = transform.position.z;
 
-            Vector3 beforePosition = transform.position;
             transform.position = Vector3.MoveTowards(transform.position, target, _followSpeed * Time.deltaTime);
-            Vector3 afterPosition = transform.position;
-
-            if (_enableDebugLogging || _enableVisualDebug)
-                UpdateDebug(playerPos, target, beforePosition, afterPosition, vel);
-        }
-
-        private void UpdateDebug(Vector3 playerPos, Vector3 target, Vector3 beforePos, Vector3 afterPos, Vector2 vel)
-        {
-            float moveDelta = (afterPos - beforePos).magnitude;
-            bool possibleJitter = moveDelta > _jitterThreshold;
-
-            if (_enableVisualDebug)
-            {
-                // Debug.DrawLine(playerPos, target, Color.green, 1f);
-                // Debug.DrawLine(transform.position, target, Color.yellow, 1f);
-                // if (possibleJitter)
-                //     Debug.DrawLine(beforePos, afterPos, Color.red, 1f);
-            }
-
-            if (_enableDebugLogging && (possibleJitter || _frameCount % _logEveryNFrames == 0))
-            {
-                Debug.Log($"[GameCameraTarget] frame={Time.frameCount} " +
-                    $"playerPos={playerPos} target={target} " +
-                    $"posDelta={moveDelta:F4} vel={vel} " +
-                    $"{(possibleJitter ? " [JITTER?]" : "")}");
-            }
-
-            _frameCount++;
         }
     }
 }

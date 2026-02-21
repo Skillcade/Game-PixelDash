@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 4120784234525979764}
   - component: {fileID: 5471002805277580519}
   - component: {fileID: 453140313811070760}
-  - component: {fileID: 3615694081282585438}
+  - component: {fileID: 2862806053298498464}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -76,6 +76,7 @@ MonoBehaviour:
   - {fileID: 2742057014745948701}
   - {fileID: 8340567812076309624}
   - {fileID: 453140313811070760}
+  - {fileID: 0}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
   RuntimeParentNetworkBehaviour: {fileID: 0}
@@ -86,7 +87,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
-  _initializedTimestamp: -8584299439650483416
+  _initializedTimestamp: -8584299340501595612
   NetworkObserver: {fileID: 0}
   _enablePrediction: 0
   _predictionType: 2
@@ -126,8 +127,8 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
-  _tickCallbacks: 6
-  _rigidbody: {fileID: 3615694081282585438}
+  _tickCallbacks: 2
+  _rigidbody: {fileID: 2862806053298498464}
   _inputReader: {fileID: 4785572566629901107}
   _playerMovementConfig: {fileID: 11400000, guid: 13dcf7b23d5d25b489e33bb3ce163f55, type: 2}
   _collider: {fileID: 2247135605099600173}
@@ -450,7 +451,7 @@ MonoBehaviour:
   _componentIndexCache: 6
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
---- !u!114 &3615694081282585438
+--- !u!114 &2862806053298498464
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -459,14 +460,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7294861560698192311}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 637c12bb3f61cd7438620dd5402ef220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 4944023266038734634}
+  _networkObjectCache: {fileID: 0}
+  _tickCallbacks: 4
   _networkObject: {fileID: 4944023266038734634}
   _rigidbody: {fileID: 890865572886444992}
   _visualTransform: {fileID: 5081052010537483841}
   _interpolationSettings: {fileID: 11400000, guid: eb3f9fb8a67c19b47a45dbe8a1dba394, type: 2}
-  _snapshotSendRate: 20
 --- !u!1001 &2000453477535913599
 PrefabInstance:
   m_ObjectHideFlags: 0
