@@ -16,7 +16,7 @@ MonoBehaviour:
   SceneNames:
   - NetworkingScene
   - LevelScene
-  BuildFileName: PixelDash
+  BuildFileName: Game-PixelDash-Web
   BuildFolderName: Game-PixelDash-Web-London
   BuildTarget: 20
   BuildSubtarget: 0

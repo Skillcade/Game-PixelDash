@@ -51,6 +51,7 @@ namespace Game.Player
         public PlayerMovementConfig Config => _playerMovementConfig;
         
         public RuntimeMoveValues MoveValues { get; set; }
+        public float LookVerticalInput => IsOwner ? _inputReader.VerticalInput : 0f;
 
         [SerializeField] private NetworkRigidbody2DInterpolator _rigidbody;
         [SerializeField] private PlayerInputReader _inputReader;

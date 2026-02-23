@@ -8,6 +8,7 @@ namespace Game.Player
         private PlayerControls _playerControls;
 
         public float Movement { get; private set; }
+        public float VerticalInput { get; private set; }
 
         // One-tick pulse: jump was pressed
         public bool Jump { get; private set; }
@@ -54,7 +55,9 @@ namespace Game.Player
 
         private void OnMovePerformed(InputAction.CallbackContext ctx)
         {
-            Movement = ctx.ReadValue<Vector2>().x;
+            Vector2 value = ctx.ReadValue<Vector2>();
+            Movement = value.x;
+            VerticalInput = value.y;
         }
 
         private void OnJumpPerformed(InputAction.CallbackContext ctx)

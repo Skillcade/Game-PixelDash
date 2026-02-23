@@ -141,8 +141,7 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 0.1.0
-  preloadedAssets:
-  - {fileID: 11400000, guid: 39ecac73840be2742a33af07e0eb4d8e, type: 2}
+  preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -832,7 +831,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     Server: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO
     Standalone: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO;SKILLCADE_DEBUG
-    WebGL: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO;SKILLCADE_DEBUG
+    WebGL: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO
   additionalCompilerArguments:
     Server: []
   platformArchitecture: {}

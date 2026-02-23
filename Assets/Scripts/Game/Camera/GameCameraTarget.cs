@@ -5,14 +5,24 @@ namespace Game.Camera
 {
     public class GameCameraTarget : MonoBehaviour
     {
-        [Header("Go-ahead distances")]
-        [SerializeField] private float _horizontalBaseDistance = 1f;
-        [SerializeField] private float _horizontalSpeedFactor = 0.05f;
-        [SerializeField] private float _verticalBaseDistance = 0.5f;
-        [SerializeField] private float _verticalSpeedFactor = 0.02f;
+        [Header("Horizontal go-ahead")]
+        [SerializeField] private float _rightBaseDistance = 1f;
+        [SerializeField] private float _rightSpeedFactor = 0.05f;
+        [SerializeField] private float _leftBaseDistance = 1f;
+        [SerializeField] private float _leftSpeedFactor = 0.05f;
+
+        [Header("Vertical go-ahead")]
+        [SerializeField] private float _upBaseDistance = 0.5f;
+        [SerializeField] private float _upSpeedFactor = 0.02f;
+        [SerializeField] private float _downBaseDistance = 0.5f;
+        [SerializeField] private float _downSpeedFactor = 0.02f;
 
         [Header("Vertical when airborne")]
         [SerializeField, Range(0f, 1f)] private float _verticalAirMultiplier = 0.2f;
+
+        [Header("Look input")]
+        [SerializeField] private float _lookUpDistance = 2f;
+        [SerializeField] private float _lookDownDistance = 2f;
 
         [Header("Orientation")]
         [SerializeField] private float _velocityThreshold = 0.01f;
@@ -57,15 +67,32 @@ namespace Game.Camera
             float facing = Mathf.Abs(vel.x) > _velocityThreshold ? Mathf.Sign(vel.x) : _lastFacing;
             _lastFacing = facing;
 
-            float horizontalDistance = _horizontalBaseDistance + _horizontalSpeedFactor * Mathf.Abs(vel.x);
-            float verticalDistanceRaw = _verticalBaseDistance + _verticalSpeedFactor * Mathf.Abs(vel.y);
+            // Horizontal: pick right or left distances based on facing
+            float hBase = facing > 0f ? _rightBaseDistance : _leftBaseDistance;
+            float hFactor = facing > 0f ? _rightSpeedFactor : _leftSpeedFactor;
+            float horizontalDistance = hBase + hFactor * Mathf.Abs(vel.x);
+
+            // Vertical velocity-based offset
+            float verticalSign = Mathf.Abs(vel.y) > _velocityThreshold ? Mathf.Sign(vel.y) : 0f;
+            float vBase = verticalSign > 0f ? _upBaseDistance : _downBaseDistance;
+            float vFactor = verticalSign > 0f ? _upSpeedFactor : _downSpeedFactor;
+            float verticalDistanceRaw = vBase + vFactor * Mathf.Abs(vel.y);
             float verticalDistance = verticalDistanceRaw * (isGrounded ? 1f : _verticalAirMultiplier);
 
-            float verticalSign = Mathf.Abs(vel.y) > _velocityThreshold ? Mathf.Sign(vel.y) : 0f;
+            // Look input offset (only on ground)
+            float lookOffset = 0f;
+            if (isGrounded)
+            {
+                float lookInput = _followTarget.LookVerticalInput;
+                if (lookInput > 0f)
+                    lookOffset = lookInput * _lookUpDistance;
+                else if (lookInput < 0f)
+                    lookOffset = lookInput * _lookDownDistance;
+            }
 
             Vector2 offset = new Vector2(
                 facing * horizontalDistance,
-                verticalSign * verticalDistance
+                verticalSign * verticalDistance + lookOffset
             );
 
             Vector3 target = playerPos + (Vector3)offset;
