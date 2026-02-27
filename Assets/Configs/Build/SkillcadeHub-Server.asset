@@ -23,4 +23,5 @@ MonoBehaviour:
   ExtraBuildScenes: []
   ExtraDefines:
   - EDGEGAP_PLUGIN_SERVERS
+  - SKILLCADE_HUB
   DevelopmentBuild: 0

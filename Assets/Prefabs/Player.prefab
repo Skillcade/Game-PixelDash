@@ -76,7 +76,7 @@ MonoBehaviour:
   - {fileID: 2742057014745948701}
   - {fileID: 8340567812076309624}
   - {fileID: 453140313811070760}
-  - {fileID: 0}
+  - {fileID: 2862806053298498464}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
   RuntimeParentNetworkBehaviour: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
-  _initializedTimestamp: -8584299340501595612
+  _initializedTimestamp: -8584295980143225553
   NetworkObserver: {fileID: 0}
   _enablePrediction: 0
   _predictionType: 2
@@ -351,7 +351,7 @@ MonoBehaviour:
   _useScaledTime: 1
   _interpolation: 2
   _extrapolation: 2
-  _enableTeleport: 0
+  _enableTeleport: 1
   _teleportThreshold: 1
   _clientAuthoritative: 1
   _sendToOwner: 1
@@ -367,7 +367,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
-  _synchronizeScale: 1
+  _synchronizeScale: 0
   _scaleSensitivity: 0.001
   _scaleSnapping:
     X: 0
@@ -463,13 +463,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 637c12bb3f61cd7438620dd5402ef220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 7
   _addedNetworkObject: {fileID: 4944023266038734634}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 4944023266038734634}
   _tickCallbacks: 4
   _networkObject: {fileID: 4944023266038734634}
   _rigidbody: {fileID: 890865572886444992}
   _visualTransform: {fileID: 5081052010537483841}
+  _detachVisuals: 0
   _interpolationSettings: {fileID: 11400000, guid: eb3f9fb8a67c19b47a45dbe8a1dba394, type: 2}
 --- !u!1001 &2000453477535913599
 PrefabInstance:

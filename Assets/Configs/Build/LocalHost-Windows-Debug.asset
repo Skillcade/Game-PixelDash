@@ -19,7 +19,7 @@ MonoBehaviour:
   BuildFileName: PixelDash.exe
   BuildFolderName: Game-PixelDash-Windows-LocalHost
   BuildTarget: 5
-  BuildSubtarget: 0
+  BuildSubtarget: 2
   ExtraBuildScenes:
   - NetworkingDebugScene
   ExtraDefines:
