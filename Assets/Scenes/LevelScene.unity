@@ -8551,11 +8551,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8984c7a779ded345b34e512d07908ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _horizontalBaseDistance: 2
-  _horizontalSpeedFactor: 0.2
-  _verticalBaseDistance: 0.5
-  _verticalSpeedFactor: 0.02
+  _rightBaseDistance: 1
+  _rightSpeedFactor: 0.05
+  _leftBaseDistance: 1
+  _leftSpeedFactor: 0.05
+  _upBaseDistance: 0.5
+  _upSpeedFactor: 0.02
+  _downBaseDistance: 0.5
+  _downSpeedFactor: 0.02
   _verticalAirMultiplier: 0.2
+  _lookUpDistance: 2
+  _lookDownDistance: 2
   _velocityThreshold: 0.01
   _followSpeed: 300
 --- !u!1 &918512072
@@ -9306,7 +9312,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10.2, y: 5.12}
+    oldSize: {x: 10.199999, y: 5.1398435}
     newSize: {x: 1.28, y: 0.64}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

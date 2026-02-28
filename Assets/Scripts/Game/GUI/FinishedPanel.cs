@@ -6,9 +6,27 @@ namespace Game.GUI
 {
     public class FinishedPanel : MonoBehaviour
     {
+        public enum FinishPanelMode
+        {
+            Default,
+            SinglePlayer,
+            SkillcadeHub
+        }
+        
+        [SerializeField] private GameObject _defaultWinPanel;
+        [SerializeField] private GameObject _singlePlayerWinPanel;
+        [SerializeField] private GameObject _skillcadeHubWinPanel;
+        
         [SerializeField] private TMP_Text _technicalWinText;
         [SerializeField] private TMP_Text _winnerText;
-        [SerializeField] private TMP_Text _userStateText;
+        [SerializeField] private TMP_Text[] _userStateTexts;
+
+        public void SetMode(FinishPanelMode mode)
+        {
+            _defaultWinPanel.SetActive(mode == FinishPanelMode.Default);
+            _singlePlayerWinPanel.SetActive(mode == FinishPanelMode.SinglePlayer);
+            _skillcadeHubWinPanel.SetActive(mode == FinishPanelMode.SkillcadeHub);
+        }
 
         public void SetWinner(string winnerName, FinishReason reason)
         {
@@ -18,7 +36,10 @@ namespace Game.GUI
 
         public void SetUserState(bool state)
         {
-            _userStateText.text = state ? "You won!" : "You lost!";
+            foreach (var userStateText in _userStateTexts)
+            {
+                userStateText.text = state ? "You won!" : "You lost!";
+            }
         }
     }
 }

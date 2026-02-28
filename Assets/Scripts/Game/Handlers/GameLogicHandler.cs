@@ -1,5 +1,6 @@
 using System;
 using Game.Level;
+using SkillcadeSDK.Connection;
 using SkillcadeSDK.Events;
 using SkillcadeSDK.FishNetAdapter;
 using SkillcadeSDK.StateMachine;
@@ -17,6 +18,7 @@ namespace Game.Handlers
         [Inject] private readonly GameEventBus _eventBus;
         [Inject] private readonly FinishLine _finishLine;
         [Inject] private readonly SkillcadeGameStateMachine _stateMachine;
+        [Inject] private readonly IConnectionController _connectionController;
 
         public void Initialize()
         {
@@ -36,7 +38,7 @@ namespace Game.Handlers
 
         private void OnPlayerFinished(int winnerId)
         {
-            if (_stateMachine.IsServer)
+            if (_stateMachine.IsServer || _connectionController.ConnectionState == ConnectionState.SinglePlayer)
                 _stateMachine.SetStateServer(GameStateType.Finished, new FinishedStateData(winnerId, FinishReason.CompletedGoal));
         }
     }

@@ -21,5 +21,6 @@ MonoBehaviour:
   BuildTarget: 20
   BuildSubtarget: 0
   ExtraBuildScenes: []
-  ExtraDefines: []
+  ExtraDefines:
+  - SKILLCADE_DEBUG
   DevelopmentBuild: 0

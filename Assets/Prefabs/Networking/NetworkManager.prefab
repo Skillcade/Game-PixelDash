@@ -132,7 +132,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5991760196429670136}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cdcee4396754c63a1574492499cffc8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c72c21304bc0e5419ee1d34141fca39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ProtocolType: 0
@@ -142,12 +142,12 @@ MonoBehaviour:
   m_MaxPayloadSize: 6144
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
-  m_MaxConnectAttempts: 5
-  m_DisconnectTimeoutMS: 5000
+  m_MaxConnectAttempts: 1
+  m_DisconnectTimeoutMS: 30000
   ConnectionData:
     Address: 127.0.0.1
-    Port: 10102
-    ServerListenAddress: 0.0.0.0
+    Port: 10902
+    ServerListenAddress: 
   DebugSimulator:
     PacketDelayMS: 0
     PacketJitterMS: 0

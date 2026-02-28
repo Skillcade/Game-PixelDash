@@ -122,6 +122,14 @@ namespace Game.Handlers
         private void OnGameFinished(GameFinishedEvent evt)
         {
             _gameUi.RunningPanel.gameObject.SetActive(false);
+            
+            var mode = _connectionController.ConnectionState == ConnectionState.SinglePlayer
+                ? FinishedPanel.FinishPanelMode.SinglePlayer
+                : _connectionController.ActiveConfig.IsSkillcadeHub
+                    ? FinishedPanel.FinishPanelMode.SkillcadeHub
+                    : FinishedPanel.FinishPanelMode.Default;
+            
+            _gameUi.FinishedPanel.SetMode(mode);
             _gameUi.FinishedPanel.gameObject.SetActive(true);
             
             if (!_playersController.TryGetPlayerData(evt.WinnerId, out var playerData))
