@@ -31,6 +31,7 @@ namespace Game.Player
         [SerializeField] private float _remoteAlpha = 0.9f;
 
         [Inject] private readonly IObjectResolver _objectResolver;
+        [Inject] private readonly PlayerCharactersConfig _playerCharactersConfig;
 
         private string _nickname;
 
@@ -40,6 +41,7 @@ namespace Game.Player
             InitNickname();
             
             _movement.JumpFx += OnJumpFx;
+            _movement.OnCharacterNameChanged += InitializeCharacterName;
             if (_objectResolver.TryResolve(out FishNetPlayersController playersController))
                 playersController.OnPlayerDataUpdated += OnPlayerUpdated;
         }
@@ -47,6 +49,7 @@ namespace Game.Player
         private void OnDisable()
         {
             _movement.JumpFx -= OnJumpFx;
+            _movement.OnCharacterNameChanged -= InitializeCharacterName;
             if (_objectResolver.TryResolve(out FishNetPlayersController playersController))
                 playersController.OnPlayerDataUpdated -= OnPlayerUpdated;
         }
@@ -147,6 +150,25 @@ namespace Game.Player
             c *= _remoteDarkenMul;
             c.a = _remoteAlpha;
             _spriteRenderer.color = c;
+        }
+
+        private void InitializeCharacterName()
+        {
+            var characterName = _movement.CharacterName;
+            Debug.Log($"[PlayerVisuals] Initializing character {characterName}");
+            foreach (var characterContainer in _playerCharactersConfig.Characters)
+            {
+                if (string.Equals(characterContainer.CharacterName, characterName))
+                {
+                    Debug.Log("[PlayerVisuals] Found character");
+                    _animator.runtimeAnimatorController = characterContainer.OverrideController;
+                    return;
+                }
+            }
+
+            Debug.Log($"[PlayerVisuals] Didn't find character {characterName}");
+            var characterId = _movement.OwnerId % _playerCharactersConfig.Characters.Length;
+            _animator.runtimeAnimatorController = _playerCharactersConfig.Characters[characterId].OverrideController;
         }
 
         private void OnPlayerUpdated(int clientId, FishNetPlayerData data)

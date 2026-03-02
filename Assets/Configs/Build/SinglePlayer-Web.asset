@@ -16,8 +16,8 @@ MonoBehaviour:
   SceneNames:
   - NetworkingScene-SinglePlayer
   - LevelScene
-  BuildFileName: PixelDash
-  BuildFolderName: Game-PixelDash-Web-London
+  BuildFileName: Game-PixelDash-Web
+  BuildFolderName: Game-PixelDash-Web-SkillcadeHub
   BuildTarget: 20
   BuildSubtarget: 0
   ExtraBuildScenes: []

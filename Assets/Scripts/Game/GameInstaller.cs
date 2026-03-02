@@ -1,5 +1,6 @@
 ﻿using Game.GUI;
 using Game.Handlers;
+using Game.Player;
 using SkillcadeSDK.Common;
 using SkillcadeSDK.DI;
 using UnityEngine;
@@ -12,12 +13,14 @@ namespace Game
         [SerializeField] private LobbyUi _lobbyUi;
         [SerializeField] private GameUi _gameUi;
         [SerializeField] private GameConfig _gameConfig;
+        [SerializeField] private PlayerCharactersConfig _charactersConfig;
 
         public override void Install(IContainerBuilder builder)
         {
             // Game-specific UI and config
             builder.RegisterInstance(_lobbyUi);
             builder.RegisterInstance(_gameUi);
+            builder.RegisterInstance(_charactersConfig);
             builder.RegisterInstance(_gameConfig).As<ISkillcadeConfig>();
 
             // Game-specific handlers

@@ -21,7 +21,7 @@ MonoBehaviour:
   BuildTarget: 5
   BuildSubtarget: 2
   ExtraBuildScenes:
-  - NetworkingDebugScene
+  - NetworkDebugScene
   ExtraDefines:
   - SKILLCADE_DEBUG
   DevelopmentBuild: 1

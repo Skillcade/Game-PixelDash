@@ -41,12 +41,14 @@ namespace Game.Player
         private const float JUMP_CUT_MULTIPLIER = 0.5f; // lower = shorter tap jump, higher = less difference
         
         public event System.Action JumpFx;
+        public event System.Action OnCharacterNameChanged;
 
         public Vector2 VelocityVisual => IsOwner ? _rigidbody.Rigidbody.linearVelocity : _velocitySync.Value;
         public bool IsGroundedVisual => IsOwner ? _isGrounded : _isGroundedSync.Value;
         public float Health01 => Mathf.Clamp01(_healthSync.Value / _playerMovementConfig._maxHealth);
         private bool CanMove => _knockbackTimer <= 0 && _healthSync.Value > 0 && _gameStateMachine.CurrentStateType == GameStateType.Running;
         public Transform VisualsTransform => _visualsTransform;
+        public string CharacterName => _characterName.Value;
         
         public PlayerMovementConfig Config => _playerMovementConfig;
         
@@ -61,9 +63,10 @@ namespace Game.Player
 
         [Inject] private readonly SkillcadeGameStateMachine _gameStateMachine;
 
-        private readonly SyncVar<float> _healthSync = new SyncVar<float>(new SyncTypeSettings(WritePermission.ServerOnly));
-        private readonly SyncVar<Vector2> _velocitySync = new SyncVar<Vector2>(new SyncTypeSettings(WritePermission.ServerOnly));
-        private readonly SyncVar<bool> _isGroundedSync = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ServerOnly));
+        private readonly SyncVar<float> _healthSync = new(new SyncTypeSettings(WritePermission.ServerOnly));
+        private readonly SyncVar<Vector2> _velocitySync = new(new SyncTypeSettings(WritePermission.ServerOnly));
+        private readonly SyncVar<bool> _isGroundedSync = new(new SyncTypeSettings(WritePermission.ServerOnly));
+        private readonly SyncVar<string> _characterName = new(new SyncTypeSettings(WritePermission.ServerOnly));
         
         private bool _isGrounded;
         private float _knockbackTimer;
@@ -71,11 +74,13 @@ namespace Game.Player
         private float _jumpTimer;
 
         private Vector2 _spawnPoint;
-
+        private string _characterNameToSet;
+        
         private PlayerInput _lastCreatedInput;
 
         public override void OnStartNetwork()
         {
+            base.OnStartNetwork();
             this.InjectToMe();
 
             _spawnPoint = transform.position;
@@ -83,8 +88,34 @@ namespace Game.Player
             _knockbackTimer = 0f;
             _healthSync.SetInitialValues(_playerMovementConfig._maxHealth);
             MoveValues.ResetToConfig(_playerMovementConfig);
+            
+            _characterName.OnChange += HandleCharacterNameChanged;
+
+            if (IsServerInitialized)
+            {
+                if (_characterName.Value != _characterNameToSet)
+                    _characterName.Value = _characterNameToSet;
+            }
         }
-        
+
+        public override void OnStopNetwork()
+        {
+            base.OnStopNetwork();
+            _characterName.OnChange -= HandleCharacterNameChanged;
+        }
+
+        public void SetCharacterName(string characterName)
+        {
+            Debug.Log($"[PlayerCharacter] Player {OwnerId} set character name: {characterName}");
+            if (!IsServerInitialized)
+            {
+                _characterNameToSet = characterName;
+                return;
+            }
+            
+            _characterName.Value = characterName;
+        }
+
         protected override void TimeManager_OnTick() => SimulateInputs(GetInput());
 
         private PlayerInput GetInput()
@@ -102,7 +133,7 @@ namespace Game.Player
             _inputReader.ClearInput();
             return input;
         }
-        
+
         private void SimulateInputs(PlayerInput input)
         {
             if (!IsOwner)
@@ -185,7 +216,7 @@ namespace Game.Player
                 _rigidbody.Rigidbody.linearVelocity = velocity;
             }
         }
-        
+
         private void Jump()
         {
             float jumpForce = Mathf.Sqrt(Mathf.Abs(-2.0f * Physics.gravity.y * _playerMovementConfig._jumpHeight * _rigidbody.Rigidbody.gravityScale));
@@ -200,7 +231,7 @@ namespace Game.Player
             _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             _isGrounded = false;
         }
-        
+
         public void TakeDamage(ObstacleController obstacleController)
         {
             if (!IsServerInitialized)
@@ -212,7 +243,7 @@ namespace Game.Player
             
             KnockbackClientRpc(obstacleController.transform.position);
         }
-        
+
         [ObserversRpc]
         private void KnockbackClientRpc(Vector3 attackerPosition)
         {
@@ -272,6 +303,11 @@ namespace Game.Player
                 v.y *= JUMP_CUT_MULTIPLIER;
                 _rigidbody.Rigidbody.linearVelocity = v;
             }
+        }
+
+        private void HandleCharacterNameChanged(string prev, string next, bool asServer)
+        {
+            OnCharacterNameChanged?.Invoke();
         }
     }
 }

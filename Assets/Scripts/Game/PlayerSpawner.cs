@@ -8,6 +8,11 @@ using SkillcadeSDK.FishNetAdapter.Players;
 using UnityEngine;
 using VContainer;
 
+#if UNITY_SERVER || UNITY_EDITOR
+using Game.Player;
+using SkillcadeSDK.ServerValidation;
+#endif
+
 namespace Game
 {
     public class PlayerSpawner : MonoBehaviour, IPlayerSpawner
@@ -16,6 +21,10 @@ namespace Game
         [SerializeField] private Transform _spawnPoint;
 
         [Inject] private readonly IObjectResolver _objectResolver;
+        
+#if UNITY_SERVER || UNITY_EDITOR
+        [Inject] private readonly ServerPayloadController _serverPayloadController;
+#endif
         
         private NetworkManager _networkManager;
         private FishNetPlayersController _playersController;
@@ -47,9 +56,28 @@ namespace Game
                 if (_spawnedPlayers.ContainsKey(playerData.PlayerNetworkId))
                     continue;
                 
+#if UNITY_SERVER || UNITY_EDITOR
+                PlayerCharacterData characterData = null;
+                if (_serverPayloadController.Payload != null &&
+                    _serverPayloadController.Payload.CharacterByPlayerIds != null)
+                {
+                    if (!PlayerCharacterData.TryGetFromPlayer(playerData, out characterData))
+                        continue;
+                }
+#endif
+                
                 try
                 {
-                    var instance = _networkManager.ServerManager.InstantiateAndSpawn(_prefab, _spawnPoint.position, Quaternion.identity, connection);
+                    var instance = _networkManager.ServerManager.InstantiateAndSpawn(
+                        _prefab,
+                        _spawnPoint.position,
+                        Quaternion.identity,
+                        connection);
+                    
+#if UNITY_SERVER || UNITY_EDITOR
+                    if (characterData != null && instance.TryGetComponent(out PlayerMovement movement))
+                        movement.SetCharacterName(characterData.CharacterName);
+#endif
                     _spawnedPlayers[playerData.PlayerNetworkId] = instance;
                 }
                 catch (Exception e)

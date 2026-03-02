@@ -125,7 +125,7 @@ namespace Game.Handlers
             
             var mode = _connectionController.ConnectionState == ConnectionState.SinglePlayer
                 ? FinishedPanel.FinishPanelMode.SinglePlayer
-                : _connectionController.ActiveConfig.IsSkillcadeHub
+                : _connectionController.ActiveConfig.SkillcadeHubIntegrated
                     ? FinishedPanel.FinishPanelMode.SkillcadeHub
                     : FinishedPanel.FinishPanelMode.Default;
             
