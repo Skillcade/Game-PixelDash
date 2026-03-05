@@ -18,8 +18,7 @@ MonoBehaviour:
   WssServerName: ec2-98-88-33-86.compute-1.amazonaws.com
   UseEncryption: 1
   SkillcadeHubIntegrated: 1
-  ReconnectDelay: 5
-  ReconnectAttempts: 3
+  ReconnectDelay: 1
   TargetPlayerCount: 2
   SceneNames:
   - NetworkingScene

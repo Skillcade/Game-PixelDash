@@ -18,8 +18,7 @@ MonoBehaviour:
   WssServerName: skillcade.games
   UseEncryption: 1
   SkillcadeHubIntegrated: 0
-  ReconnectDelay: 5
-  ReconnectAttempts: 3
+  ReconnectDelay: 1
   TargetPlayerCount: 0
   SceneNames:
   - NetworkingScene
