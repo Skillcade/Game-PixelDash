@@ -2741,6 +2741,7 @@ MonoBehaviour:
   _finishLine: {fileID: 1543381764}
   _collectablesRespawnService: {fileID: 337552299}
   gameCameraTarget: {fileID: 910000003}
+  _charactersConfig: {fileID: 11400000, guid: d8779a513ca97b1419dfe24bed4f26a4, type: 2}
 --- !u!4 &333015395
 Transform:
   m_ObjectHideFlags: 0
