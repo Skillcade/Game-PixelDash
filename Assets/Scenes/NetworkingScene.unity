@@ -319,7 +319,7 @@ MonoBehaviour:
   RuntimeChildNetworkBehaviours: []
   _isNetworked: 1
   _isSpawnable: 0
-  _isGlobal: 1
+  _isGlobal: 0
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
@@ -617,7 +617,6 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 1337802086}
   _networkObjectCache: {fileID: 0}
-  _framesToSend: 0
 --- !u!114 &1337802089
 MonoBehaviour:
   m_ObjectHideFlags: 0

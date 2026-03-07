@@ -1692,7 +1692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aecc9c32dba3ed445beee0cdff0bb756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tickRate: 50
+  _tickRate: 30
   _defaultWorldTransparency: 0.5
   _currentTime: 0
   _totalTime: 0
