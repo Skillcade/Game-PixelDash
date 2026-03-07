@@ -8,19 +8,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BootstrapScene.unity
     guid: 11171620162054d4fa8b0edc8cc1c086
+  - enabled: 0
+    path: Assets/Scenes/ReplayScene.unity
+    guid: 8e588df600ecb6543ae81e5f245141fc
   - enabled: 1
     path: Assets/Scenes/LevelScene.unity
     guid: 3ddeb4a8a7775524ca02724a812f5ac1
   - enabled: 1
     path: Assets/Scenes/NetworkingScene.unity
     guid: d8c151ad109fafb48ab4214ff8d587f5
-  - enabled: 1
-    path: Assets/Scenes/ReplayScene.unity
-    guid: 8e588df600ecb6543ae81e5f245141fc
   - enabled: 0
     path: Assets/Scenes/NetworkingScene-SinglePlayer.unity
     guid: 484298943d8b6ce48a147a537e1906df
-  - enabled: 1
+  - enabled: 0
     path: Packages/com.skillcade.sdk-fishnet/Scenes/NetworkDebugScene.unity
     guid: 4f66130faaa29bd45a2f74f26e798bc6
   m_configObjects:

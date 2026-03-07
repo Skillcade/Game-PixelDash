@@ -3978,7 +3978,6 @@ MonoBehaviour:
   _lobbyUi: {fileID: 56701718}
   _gameUi: {fileID: 773952960}
   _gameConfig: {fileID: 11400000, guid: 21a9aae8b7220d1479c9456a1c7d1bf4, type: 2}
-  _charactersConfig: {fileID: 11400000, guid: d8779a513ca97b1419dfe24bed4f26a4, type: 2}
 --- !u!114 &1699503131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4002,7 +4001,7 @@ MonoBehaviour:
   - {fileID: 1699503130}
   - {fileID: 1699503132}
   - {fileID: 1699503133}
-  _connectionConfig: {fileID: 11400000, guid: 4005b0ff013f89644a5e23e586d77277, type: 2}
+  _connectionConfig: {fileID: 11400000, guid: 5fa8a9f51d08fac4eb687a64030b4d8e, type: 2}
 --- !u!114 &1699503132
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,9 +17,9 @@ MonoBehaviour:
   - NetworkingScene-SinglePlayer
   - LevelScene
   BuildFileName: Game-PixelDash-Web
-  BuildFolderName: Game-PixelDash-Web-SkillcadeHub
+  BuildFolderName: Game-PixelDash-Web-SinglePlayer
   BuildTarget: 20
   BuildSubtarget: 0
   ExtraBuildScenes: []
-  ExtraDefines: []
+  UseSkillcadeDebug: 0
   DevelopmentBuild: 0
