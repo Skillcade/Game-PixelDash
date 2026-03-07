@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/NetworkingScene-SinglePlayer.unity
     guid: 484298943d8b6ce48a147a537e1906df
-  - enabled: 0
+  - enabled: 1
     path: Packages/com.skillcade.sdk-fishnet/Scenes/NetworkDebugScene.unity
     guid: 4f66130faaa29bd45a2f74f26e798bc6
   m_configObjects:
