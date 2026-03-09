@@ -22,12 +22,12 @@ GameObject:
   - component: {fileID: 2742057014745948701}
   - component: {fileID: 8967029132607935660}
   - component: {fileID: 8340567812076309624}
-  - component: {fileID: -9039423653466011732}
   - component: {fileID: 1036819047472191368}
   - component: {fileID: 4120784234525979764}
   - component: {fileID: 5471002805277580519}
   - component: {fileID: 453140313811070760}
   - component: {fileID: 2862806053298498464}
+  - component: {fileID: 1427533385231131571}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -74,8 +74,8 @@ MonoBehaviour:
   - {fileID: 6550249093487379794}
   - {fileID: 2097062857943216485}
   - {fileID: 4179726082534470876}
-  - {fileID: 2742057014745948701}
-  - {fileID: 8967029132607935660}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 8340567812076309624}
   - {fileID: 453140313811070760}
   - {fileID: 2862806053298498464}
@@ -320,15 +320,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f746d4751fb045f58cade6b65ffcca54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 4
-  _addedNetworkObject: {fileID: 4944023266038734634}
-  _networkObjectCache: {fileID: 4944023266038734634}
-  _tickCallbacks: 2
   _checkRadius: 0.55
   _checkOffset: {x: 0, y: 0.6}
-  _checkLayer:
-    serializedVersion: 2
-    m_Bits: 1024
+  _networkObject: {fileID: 4944023266038734634}
+  _rollbackSource: {fileID: 1427533385231131571}
 --- !u!114 &8967029132607935660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,10 +336,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 472531caeeb354c47b46fc9719e44fe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 5
-  _addedNetworkObject: {fileID: 4944023266038734634}
-  _networkObjectCache: {fileID: 4944023266038734634}
-  _tickCallbacks: 2
+  _networkObject: {fileID: 4944023266038734634}
+  _rollbackSource: {fileID: 1427533385231131571}
 --- !u!114 &8340567812076309624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,19 +384,6 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
---- !u!114 &-9039423653466011732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7294861560698192311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0c6cc1309d34036bad08d6cc58d2263, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 890865572886444992}
 --- !u!114 &1036819047472191368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,6 +420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 890865572886444992}
+  _colliderRollback: {fileID: 0}
 --- !u!114 &5471002805277580519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +471,23 @@ MonoBehaviour:
   _visualTransform: {fileID: 5081052010537483841}
   _detachVisuals: 0
   _interpolationSettings: {fileID: 11400000, guid: eb3f9fb8a67c19b47a45dbe8a1dba394, type: 2}
+--- !u!114 &1427533385231131571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7294861560698192311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 182bcf5957c94b2b9aaf22db1a9c223e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 4944023266038734634}
+  _networkObjectCache: {fileID: 0}
+  _tickCallbacks: 2
+  _tickDivisor: 1
 --- !u!1001 &2000453477535913599
 PrefabInstance:
   m_ObjectHideFlags: 0

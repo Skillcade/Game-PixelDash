@@ -853,13 +853,13 @@ PlayerSettings:
   platformArchitecture: {}
   scriptingBackend:
     Android: 1
-    Server: 0
+    Server: 1
     Standalone: 0
   il2cppCompilerConfiguration: {}
   il2cppCodeGeneration:
     WebGL: 1
   il2cppStacktraceInformation:
-    Server: 1
+    Server: 0
     Standalone: 1
   managedStrippingLevel:
     WebGL: 1

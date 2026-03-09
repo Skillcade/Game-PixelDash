@@ -9,7 +9,6 @@ namespace Collectables
         Unknown = 0
     }
     
-    [RequireComponent(typeof(Collider2D))]
     public class CollectableBase : RollbackTrigger
     {
         public CollectableType Type => _type;

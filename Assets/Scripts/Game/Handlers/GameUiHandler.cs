@@ -69,7 +69,7 @@ namespace Game.Handlers
                 _gameUi.WaitForPlayersPanel.SetWaitForOthersState(true);
                 return;
             }
-
+            
             _gameUi.WaitForPlayersPanel.SetWaitForOthersState(false);
             bool localReady = _playersController.TryGetPlayerData(_playersController.LocalPlayerId, out var data) &&
                               PlayerInGameData.TryGetFromPlayer(data, out var inGameData) &&

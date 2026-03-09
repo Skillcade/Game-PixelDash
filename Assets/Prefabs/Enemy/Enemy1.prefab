@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 5512311860101850221}
+  _colliderRollback: {fileID: 0}
 --- !u!1 &4767784925725578143
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,6 +321,9 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 2637202103619406344}
   _networkObjectCache: {fileID: 0}
+  _shape: 1
+  _triggerRadius: 0
+  _triggerHalfExtents: {x: 0.15, y: 0.27}
   Damage: 100
 --- !u!1 &5669972979329020059
 GameObject:
