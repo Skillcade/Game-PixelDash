@@ -8,5 +8,6 @@ namespace Game
     {
         [field: SerializeField] public float StartGameCountdownSeconds { get; private set; }
         [field: SerializeField] public float WaitAfterFinishSeconds { get; private set; }
+        [field: SerializeField] public bool UseReplaysV1 { get; private set; }
     }
 }
