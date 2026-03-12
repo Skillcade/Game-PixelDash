@@ -438,7 +438,7 @@ GameObject:
   - component: {fileID: 1165856135}
   - component: {fileID: 1165856134}
   - component: {fileID: 1165856136}
-  - component: {fileID: 1165856138}
+  - component: {fileID: 1165856137}
   m_Layer: 0
   m_Name: NetworkingInstaller
   m_TagString: Untagged
@@ -500,7 +500,7 @@ MonoBehaviour:
   _autoInjectGameObjects:
   - {fileID: 896066698}
   _networkStarter: {fileID: 896066699}
---- !u!114 &1165856138
+--- !u!114 &1165856137
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
