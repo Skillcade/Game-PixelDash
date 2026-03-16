@@ -357,23 +357,23 @@ MonoBehaviour:
   _synchronizeParent: 1
   _packing:
     Position: 1
-    Rotation: 1
-    Scale: 0
+    Rotation: 2
+    Scale: 2
   _useScaledTime: 1
-  _interpolation: 2
-  _extrapolation: 2
+  _interpolation: 4
+  _extrapolation: 4
   _enableTeleport: 1
   _teleportThreshold: 1
   _clientAuthoritative: 1
   _sendToOwner: 1
-  _interval: 1
+  _interval: 2
   _synchronizePosition: 1
   _positionSensitivity: 0.001
   _positionSnapping:
     X: 0
     Y: 0
     Z: 0
-  _synchronizeRotation: 1
+  _synchronizeRotation: 0
   _rotationSnapping:
     X: 0
     Y: 0

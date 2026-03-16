@@ -43,8 +43,8 @@ namespace Game.Player
         public event System.Action JumpFx;
         public event System.Action OnCharacterNameChanged;
 
-        public Vector2 VelocityVisual => IsOwner ? _rigidbody.Rigidbody.linearVelocity : _velocitySync.Value;
-        public bool IsGroundedVisual => IsOwner ? _isGrounded : _isGroundedSync.Value;
+        public Vector2 VelocityVisual => IsOwner ? _rigidbody.Rigidbody.linearVelocity : _derivedVelocity;
+        public bool IsGroundedVisual => IsOwner ? _isGrounded : _derivedIsGrounded;
         public float Health01 => Mathf.Clamp01(_healthSync.Value / _playerMovementConfig._maxHealth);
         private bool CanMove => _knockbackTimer <= 0 && _healthSync.Value > 0 && _gameStateMachine.CurrentStateType == GameStateType.Running;
         public Transform VisualsTransform => _visualsTransform;
@@ -64,10 +64,8 @@ namespace Game.Player
         [Inject] private readonly SkillcadeGameStateMachine _gameStateMachine;
 
         private readonly SyncVar<float> _healthSync = new(new SyncTypeSettings(WritePermission.ServerOnly));
-        private readonly SyncVar<Vector2> _velocitySync = new(new SyncTypeSettings(WritePermission.ServerOnly));
-        private readonly SyncVar<bool> _isGroundedSync = new(new SyncTypeSettings(WritePermission.ServerOnly));
         private readonly SyncVar<string> _characterName = new(new SyncTypeSettings(WritePermission.ServerOnly));
-        
+
         private bool _isGrounded;
         private float _knockbackTimer;
         private float _coyoteTimer;
@@ -75,6 +73,11 @@ namespace Game.Player
 
         private Vector2 _spawnPoint;
         private string _characterNameToSet;
+
+        // Derived state for remote clients — computed from NetworkTransform position, no extra network traffic
+        private Vector3 _prevPosition;
+        private Vector2 _derivedVelocity;
+        private bool _derivedIsGrounded;
         
         private PlayerInput _lastCreatedInput;
 
@@ -84,6 +87,7 @@ namespace Game.Player
             this.InjectToMe();
 
             _spawnPoint = transform.position;
+            _prevPosition = transform.position;
 
             _knockbackTimer = 0f;
             _healthSync.SetInitialValues(_playerMovementConfig._maxHealth);
@@ -116,7 +120,22 @@ namespace Game.Player
             _characterName.Value = characterName;
         }
 
-        protected override void TimeManager_OnTick() => SimulateInputs(GetInput());
+        protected override void TimeManager_OnTick()
+        {
+            if (IsOwner)
+            {
+                SimulateInputs(GetInput());
+            }
+            else
+            {
+                Vector3 currentPos = transform.position;
+                _derivedVelocity = (currentPos - _prevPosition) / (float)TimeManager.TickDelta;
+                _prevPosition = currentPos;
+                var origin = currentPos + Vector3.up * _playerMovementConfig._groundCheckOffset;
+                _derivedIsGrounded = Physics2D.Raycast(origin, Vector2.down,
+                    _playerMovementConfig._groundCheckDistance, _playerMovementConfig._groundMask);
+            }
+        }
 
         private PlayerInput GetInput()
         {
@@ -156,7 +175,6 @@ namespace Game.Player
                 _coyoteTimer -= (float)TimeManager.TickDelta;
 
             CapFallVelocity();
-            SetMovementValuesServerRpc(_rigidbody.Rigidbody.linearVelocity, _isGrounded);
         }
 
         private void UpdateGrounded()
@@ -268,13 +286,6 @@ namespace Game.Player
         private void RespawnServerRpc()
         {
             _healthSync.Value = _playerMovementConfig._maxHealth;
-        }
-
-        [ServerRpc(RequireOwnership = true)]
-        private void SetMovementValuesServerRpc(Vector2 velocity, bool isGrounded)
-        {
-            _velocitySync.Value = velocity;
-            _isGroundedSync.Value = isGrounded;
         }
 
         [ServerRpc(RequireOwnership = true)]

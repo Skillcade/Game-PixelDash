@@ -579,6 +579,9 @@ PlayerSettings:
   - serializedVersion: 3
     m_BuildTarget: WebGL
     m_Formats: 05000000
+  - serializedVersion: 3
+    m_BuildTarget: iOS
+    m_Formats: 03000000
   playModeTestRunnerEnabled: 0
   runPlayModeTestAsEditModeTest: 0
   actionOnDotNetUnhandledException: 1
@@ -847,16 +850,21 @@ PlayerSettings:
   scriptingDefineSymbols:
     Server: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO;SKILLCADE_DEBUG;SKILLCADE_UTP
     Standalone: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO;SKILLCADE_DEBUG;SKILLCADE_UTP
-    WebGL: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO;SKILLCADE_DEBUG
+    WebGL: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO;SKILLCADE_DEBUG;SKILLCADE_UTP
   additionalCompilerArguments:
+    Android:
+    - SKILLCADE_UTP
     Server: []
+    iPhone:
+    - SKILLCADE_UTP
   platformArchitecture: {}
   scriptingBackend:
     Android: 1
     Server: 1
-    Standalone: 0
+    Standalone: 1
   il2cppCompilerConfiguration: {}
   il2cppCodeGeneration:
+    Standalone: 1
     WebGL: 1
   il2cppStacktraceInformation:
     Server: 0

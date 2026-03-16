@@ -304,7 +304,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.14865685, y: 0.609517}
+  m_Size: {x: 0.2, y: 0.609517}
   m_EdgeRadius: 0
 --- !u!114 &7467715560128504238
 MonoBehaviour:
@@ -323,7 +323,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 0}
   _shape: 1
   _triggerRadius: 0
-  _triggerHalfExtents: {x: 0.15, y: 0.27}
+  _triggerHalfExtents: {x: 0.1, y: 0.27}
   Damage: 100
 --- !u!1 &5669972979329020059
 GameObject:
@@ -428,8 +428,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 2637202103619406344}
   _networkObjectCache: {fileID: 0}
@@ -437,23 +437,23 @@ MonoBehaviour:
   _synchronizeParent: 0
   _packing:
     Position: 1
-    Rotation: 1
-    Scale: 0
+    Rotation: 2
+    Scale: 2
   _useScaledTime: 1
-  _interpolation: 2
-  _extrapolation: 2
-  _enableTeleport: 0
+  _interpolation: 4
+  _extrapolation: 4
+  _enableTeleport: 1
   _teleportThreshold: 1
   _clientAuthoritative: 0
   _sendToOwner: 0
-  _interval: 1
+  _interval: 3
   _synchronizePosition: 1
   _positionSensitivity: 0.001
   _positionSnapping:
     X: 0
     Y: 0
     Z: 0
-  _synchronizeRotation: 1
+  _synchronizeRotation: 0
   _rotationSnapping:
     X: 0
     Y: 0

@@ -1,4 +1,5 @@
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using UnityEngine;
 
 namespace Game.Level
@@ -9,34 +10,53 @@ namespace Game.Level
         [SerializeField] private AnimationCurve _oneSideMoveCurve;
         [SerializeField] private Transform _startPoint;
         [SerializeField] private Transform _endPoint;
-        
-        private double _startMoveTime;
-        
-        public override void OnStartServer()
+
+        private readonly SyncVar<uint> _startTick = new(new SyncTypeSettings(WritePermission.ServerOnly));
+
+        private float _localElapsed;
+        private bool _started;
+
+        public override void OnStartNetwork()
         {
-            base.OnStartServer();
-            _startMoveTime = Time.timeAsDouble;
+            base.OnStartNetwork();
+            _startTick.OnChange += OnStartTickChanged;
+
+            if (IsServerInitialized)
+                _startTick.Value = TimeManager.Tick;
+        }
+
+        public override void OnStopNetwork()
+        {
+            base.OnStopNetwork();
+            _startTick.OnChange -= OnStartTickChanged;
+        }
+
+        private void OnStartTickChanged(uint prev, uint next, bool asServer)
+        {
+            _localElapsed = (TimeManager.Tick - next) * (float)TimeManager.TickDelta;
+            _started = true;
         }
 
         private void Update()
         {
-            if (NetworkObject == null || !IsServerInitialized)
-            {
+            if (!_started)
                 return;
-            }
-            
-            double now = Time.timeAsDouble;
-            float passedTime = (float)(now - _startMoveTime);
 
+            _localElapsed += Time.deltaTime;
+
+            // Gently correct toward authoritative server tick time to prevent long-term drift
+            float authoritative = (TimeManager.Tick - _startTick.Value) * (float)TimeManager.TickDelta;
+            _localElapsed = Mathf.MoveTowards(_localElapsed, authoritative, Time.deltaTime * 0.1f);
+
+            float passedTime = _localElapsed;
             int completedTrips = Mathf.FloorToInt(passedTime / _oneSideMoveTime);
-            float timeSinceLastRoundTrip = passedTime - completedTrips * _oneSideMoveTime;
+            float timeSinceLastTrip = passedTime - completedTrips * _oneSideMoveTime;
             bool isGoingForward = completedTrips % 2 == 0;
 
             var startPoint = isGoingForward ? _startPoint : _endPoint;
             var endPoint = isGoingForward ? _endPoint : _startPoint;
 
-            float t = timeSinceLastRoundTrip / _oneSideMoveTime;
-            
+            float t = timeSinceLastTrip / _oneSideMoveTime;
             t = t > 1 ? t - 1 : t;
             t = _oneSideMoveCurve.Evaluate(t);
 

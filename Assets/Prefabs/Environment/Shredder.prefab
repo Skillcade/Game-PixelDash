@@ -202,16 +202,16 @@ MonoBehaviour:
   _synchronizeParent: 0
   _packing:
     Position: 1
-    Rotation: 1
-    Scale: 0
+    Rotation: 2
+    Scale: 2
   _useScaledTime: 1
-  _interpolation: 2
-  _extrapolation: 2
+  _interpolation: 4
+  _extrapolation: 4
   _enableTeleport: 0
   _teleportThreshold: 1
   _clientAuthoritative: 0
   _sendToOwner: 0
-  _interval: 1
+  _interval: 3
   _synchronizePosition: 1
   _positionSensitivity: 0.001
   _positionSnapping:
