@@ -848,7 +848,7 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Server: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO;SKILLCADE_DEBUG;SKILLCADE_UTP
+    Server: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO;SKILLCADE_UTP;SKILLCADE_DEBUG
     Standalone: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO;SKILLCADE_DEBUG;SKILLCADE_UTP
     WebGL: FISHNET;FISHNET_V4;EDGEGAP_PLUGIN_SERVERS;FISHNET_PRO;SKILLCADE_DEBUG;SKILLCADE_UTP
   additionalCompilerArguments:
@@ -860,7 +860,7 @@ PlayerSettings:
   platformArchitecture: {}
   scriptingBackend:
     Android: 1
-    Server: 1
+    Server: 0
     Standalone: 1
   il2cppCompilerConfiguration: {}
   il2cppCodeGeneration:

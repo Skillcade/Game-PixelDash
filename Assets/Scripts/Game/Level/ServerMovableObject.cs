@@ -13,8 +13,9 @@ namespace Game.Level
 
         private readonly SyncVar<uint> _startTick = new(new SyncTypeSettings(WritePermission.ServerOnly));
 
-        private float _localElapsed;
-        private bool _started;
+        [Header("Debug")]
+        [SerializeField] private float _localElapsed;
+        [SerializeField] private bool _started;
 
         public override void OnStartNetwork()
         {
@@ -22,7 +23,10 @@ namespace Game.Level
             _startTick.OnChange += OnStartTickChanged;
 
             if (IsServerInitialized)
+            {
                 _startTick.Value = TimeManager.Tick;
+                _started = true;
+            }
         }
 
         public override void OnStopNetwork()

@@ -238,7 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _runInRelease: 1
   _networkTraffic:
-    _enableMode: 2
+    _enableMode: 1
     _updateClient: 1
     _updateServer: 1
 --- !u!114 &2356585828229730589
