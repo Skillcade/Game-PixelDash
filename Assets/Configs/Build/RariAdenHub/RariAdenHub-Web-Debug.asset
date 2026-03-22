@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11a6c158ae1d54d40a6ae01c437a4561, type: 3}
+  m_Name: RariAdenHub-Web-Debug
+  m_EditorClassIdentifier: 
+  ConnectionConfig: {fileID: 11400000, guid: 4def44019d0ebe74b8de22f334bc2f66, type: 2}
+  SceneNames:
+  - NetworkingScene
+  - LevelScene
+  BuildFileName: Game-PixelDash-Web
+  BuildFolderName: Game-PixelDash-Web-RariAdenHub
+  BuildTarget: 20
+  BuildSubtarget: 0
+  ExtraBuildScenes:
+  - NetworkDebugScene
+  UseSkillcadeDebug: 1
+  DevelopmentBuild: 0
