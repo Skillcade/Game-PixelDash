@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11a6c158ae1d54d40a6ae01c437a4561, type: 3}
+  m_Script: {fileID: 11500000, guid: 617994be94fa92943b13cdd28ef883a9, type: 3}
   m_Name: SkillcadeHub-Web-Debug
   m_EditorClassIdentifier: 
-  ConnectionConfig: {fileID: 11400000, guid: 5d3237476a32c854d859adc2f532ac6e, type: 2}
+  ConnectionConfig: {fileID: 0}
   SceneNames:
   - NetworkingScene
   - LevelScene

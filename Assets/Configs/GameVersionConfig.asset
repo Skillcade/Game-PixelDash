@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc2de855b53b4a9190bacbbf9cabfc36, type: 3}
+  m_Script: {fileID: 11500000, guid: 55f41728addb5d2439d73b68c6dbda43, type: 3}
   m_Name: GameVersionConfig
   m_EditorClassIdentifier: 
-  GameName: Pixel Dash
-  GameVersion: 1.5.7
-  UnityVersion: 6000.0.47f1
+  GameName: Game-PixelDash
+  GameVersion: 1.6.9
+  UnityVersion: 6000.0.68f1

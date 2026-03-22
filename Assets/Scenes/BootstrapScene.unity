@@ -2546,7 +2546,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 888954191}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d372188900cc43d799e45aae48724bef, type: 3}
+  m_Script: {fileID: 11500000, guid: 74148432fc83b4b468b10727450d2c60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &888954193
@@ -4134,7 +4134,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1699503125}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca7d04c1a64e4ec4ac3b5b5bdd439149, type: 3}
+  m_Script: {fileID: 11500000, guid: 2cf20c755d73ba84792334627467508e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _autoInjectGameObjects: []
@@ -4165,22 +4165,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1699503125}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a72044b028f7439c8a52fc6e029e24f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 3905669cff0e5fe4a8fdf50c9c3beda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
     TypeName: 
   autoRun: 1
-  autoInjectGameObjects: []
+  autoInjectGameObjects:
+  - {fileID: 888954191}
+  - {fileID: 823921866}
   _sceneNames:
   - LevelScene
-  _rootInstallers:
-  - {fileID: 1699503129}
-  - {fileID: 1699503130}
-  - {fileID: 1699503132}
-  - {fileID: 1699503133}
-  - {fileID: 1699503134}
-  _connectionConfig: {fileID: 11400000, guid: 4def44019d0ebe74b8de22f334bc2f66, type: 2}
+  _connectionConfig: {fileID: 11400000, guid: 8471d1d5d9b0fc844837a7c2c0ad9566, type: 2}
 --- !u!114 &1699503132
 MonoBehaviour:
   m_ObjectHideFlags: 0

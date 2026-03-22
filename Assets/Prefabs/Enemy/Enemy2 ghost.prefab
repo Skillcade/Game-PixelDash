@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 5512311860101850221}
-  _colliderRollback: {fileID: 0}
+  _colliderRollback: {fileID: 596078866196328437}
 --- !u!1 &3798707744326611142
 GameObject:
   m_ObjectHideFlags: 0
