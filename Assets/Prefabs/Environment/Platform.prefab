@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 4114137360437025529}
   - component: {fileID: 1748959626818576942}
   - component: {fileID: 1957085061284429708}
+  - component: {fileID: 4361109032315405374}
   m_Layer: 0
   m_Name: PlatformNetworkObject
   m_TagString: Untagged
@@ -234,6 +235,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   _startPoint: {fileID: 7627849541704970}
   _endPoint: {fileID: 2946821399218262888}
+  _localElapsed: 0
+  _started: 0
 --- !u!114 &1748959626818576942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,6 +272,27 @@ MonoBehaviour:
   _boundingBoxSize: {x: 3, y: 3, z: 3}
   _colliderParents:
   - {fileID: 8617325004856715412}
+--- !u!114 &4361109032315405374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274593300539092038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637c12bb3f61cd7438620dd5402ef220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 3163456729119693188}
+  _networkObjectCache: {fileID: 0}
+  _tickCallbacks: 4
+  _networkObject: {fileID: 3163456729119693188}
+  _rigidbody: {fileID: 7708937912395519445}
+  _visualTransform: {fileID: 1551337445953160360}
+  _detachVisuals: 0
+  _interpolationSettings: {fileID: 11400000, guid: eb3f9fb8a67c19b47a45dbe8a1dba394, type: 2}
 --- !u!1 &5640061688148572173
 GameObject:
   m_ObjectHideFlags: 0

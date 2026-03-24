@@ -360,13 +360,13 @@ MonoBehaviour:
     Rotation: 2
     Scale: 2
   _useScaledTime: 1
-  _interpolation: 4
-  _extrapolation: 4
+  _interpolation: 3
+  _extrapolation: 3
   _enableTeleport: 1
   _teleportThreshold: 1
   _clientAuthoritative: 1
   _sendToOwner: 1
-  _interval: 2
+  _interval: 1
   _synchronizePosition: 1
   _positionSensitivity: 0.001
   _positionSnapping:
