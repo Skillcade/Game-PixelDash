@@ -1691,15 +1691,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1747,7 +1747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2637202103619406344, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: WasActiveDuringEdit
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2637202103619406344, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: <SceneId>k__BackingField
@@ -10596,26 +10596,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 639897434}
     m_Modifications:
-    - target: {fileID: -3745991838715497275, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
-      propertyPath: WasActiveDuringEdit
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -3745991838715497275, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
-      propertyPath: <SceneId>k__BackingField
-      value: 2143289084
-      objectReference: {fileID: 0}
-    - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalPosition.x
       value: -15.659454
@@ -10662,23 +10642,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2637202103619406344, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: WasActiveDuringEdit
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2637202103619406344, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
-      propertyPath: <SceneId>k__BackingField
-      value: 4286560253
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3469379874709613770, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_Name
       value: Enemy1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5954602376813850089, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
-      propertyPath: WasActiveDuringEdit
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5954602376813850089, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
-      propertyPath: <SceneId>k__BackingField
-      value: 1608515324
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -191448,15 +191416,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalPosition.x
@@ -191504,7 +191472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2637202103619406344, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: WasActiveDuringEdit
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2637202103619406344, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: <SceneId>k__BackingField
@@ -193409,15 +193377,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 130802890564585193, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: m_LocalPosition.x
@@ -193465,7 +193433,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2637202103619406344, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: WasActiveDuringEdit
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2637202103619406344, guid: b8518e5dcdb68a64c8496e3778218720, type: 3}
       propertyPath: <SceneId>k__BackingField
