@@ -1,5 +1,74 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5193597332526181046
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3127812318177275756}
+  - component: {fileID: 8367320915738945800}
+  m_Layer: 10
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3127812318177275756
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5193597332526181046}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4963457859914228915}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &8367320915738945800
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5193597332526181046}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 59079b41938c58648b67527cdab6ef16, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.03, y: 0.6}
+  m_Size: {x: 0.8, y: 1.2}
+  m_Direction: 0
 --- !u!1 &7294861560698192311
 GameObject:
   m_ObjectHideFlags: 0
@@ -20,7 +89,6 @@ GameObject:
   - component: {fileID: 8853420040916459752}
   - component: {fileID: 4179726082534470876}
   - component: {fileID: 2742057014745948701}
-  - component: {fileID: 8967029132607935660}
   - component: {fileID: 8340567812076309624}
   - component: {fileID: 1036819047472191368}
   - component: {fileID: 4120784234525979764}
@@ -28,6 +96,8 @@ GameObject:
   - component: {fileID: 453140313811070760}
   - component: {fileID: 2862806053298498464}
   - component: {fileID: 1427533385231131571}
+  - component: {fileID: 6274731532900462022}
+  - component: {fileID: 8154023137903858760}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -49,6 +119,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5081052010537483841}
+  - {fileID: 3127812318177275756}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4944023266038734634
@@ -74,11 +145,12 @@ MonoBehaviour:
   - {fileID: 6550249093487379794}
   - {fileID: 2097062857943216485}
   - {fileID: 4179726082534470876}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 8340567812076309624}
   - {fileID: 453140313811070760}
   - {fileID: 2862806053298498464}
+  - {fileID: 1427533385231131571}
+  - {fileID: 6274731532900462022}
+  - {fileID: 8154023137903858760}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
   RuntimeParentNetworkBehaviour: {fileID: 0}
@@ -89,7 +161,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
-  _initializedTimestamp: -8584287302850692647
+  _initializedTimestamp: -8584262198899540817
   NetworkObserver: {fileID: 0}
   _enablePrediction: 0
   _predictionType: 2
@@ -169,7 +241,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7294861560698192311}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 59079b41938c58648b67527cdab6ef16, type: 2}
@@ -324,20 +396,6 @@ MonoBehaviour:
   _checkOffset: {x: 0, y: 0.6}
   _networkObject: {fileID: 4944023266038734634}
   _rollbackSource: {fileID: 1427533385231131571}
---- !u!114 &8967029132607935660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7294861560698192311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 472531caeeb354c47b46fc9719e44fe9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _networkObject: {fileID: 4944023266038734634}
-  _rollbackSource: {fileID: 1427533385231131571}
 --- !u!114 &8340567812076309624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,7 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 6
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
   _componentConfiguration: 3
@@ -360,8 +418,8 @@ MonoBehaviour:
     Rotation: 2
     Scale: 2
   _useScaledTime: 1
-  _interpolation: 3
-  _extrapolation: 3
+  _interpolation: 1
+  _extrapolation: 0
   _enableTeleport: 1
   _teleportThreshold: 1
   _clientAuthoritative: 1
@@ -420,7 +478,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 890865572886444992}
-  _colliderRollback: {fileID: 0}
+  _playerRollbackSource: {fileID: 1427533385231131571}
+  _colliderRollback: {fileID: 6274731532900462022}
 --- !u!114 &5471002805277580519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,7 +506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d71eef120d404037ac28cf560ee61ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 7
+  _componentIndexCache: 5
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
 --- !u!114 &2862806053298498464
@@ -462,14 +521,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 637c12bb3f61cd7438620dd5402ef220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 8
+  _componentIndexCache: 6
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
   _tickCallbacks: 4
   _networkObject: {fileID: 4944023266038734634}
   _rigidbody: {fileID: 890865572886444992}
   _visualTransform: {fileID: 5081052010537483841}
-  _detachVisuals: 0
   _interpolationSettings: {fileID: 11400000, guid: eb3f9fb8a67c19b47a45dbe8a1dba394, type: 2}
 --- !u!114 &1427533385231131571
 MonoBehaviour:
@@ -483,11 +541,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 182bcf5957c94b2b9aaf22db1a9c223e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 7
   _addedNetworkObject: {fileID: 4944023266038734634}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 4944023266038734634}
   _tickCallbacks: 2
   _tickDivisor: 1
+--- !u!114 &6274731532900462022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7294861560698192311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a271dd97d875347b0cea860df29a9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 8
+  _addedNetworkObject: {fileID: 4944023266038734634}
+  _networkObjectCache: {fileID: 4944023266038734634}
+  _boundingBox: 0
+  _physicsType: 1
+  _boundingBoxSize: {x: 3, y: 3, z: 3}
+  _colliderParents:
+  - {fileID: 5193597332526181046}
+--- !u!114 &8154023137903858760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7294861560698192311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e227f313824273b87bca6779fbfd5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 9
+  _addedNetworkObject: {fileID: 4944023266038734634}
+  _networkObjectCache: {fileID: 4944023266038734634}
+  _rollbackSource: {fileID: 1427533385231131571}
 --- !u!1001 &2000453477535913599
 PrefabInstance:
   m_ObjectHideFlags: 0

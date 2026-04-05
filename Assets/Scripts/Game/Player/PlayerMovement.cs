@@ -238,10 +238,7 @@ namespace Game.Player
         private void Jump()
         {
             float jumpForce = Mathf.Sqrt(Mathf.Abs(-2.0f * Physics.gravity.y * _playerMovementConfig._jumpHeight * _rigidbody.Rigidbody.gravityScale));
-            if (_rigidbody.Rigidbody.linearVelocity.y < 0f)
-            {
-                jumpForce -= _rigidbody.Rigidbody.linearVelocity.y;
-            }
+            jumpForce -= _rigidbody.Rigidbody.linearVelocity.y;
 
             JumpFx?.Invoke();
             TriggerJumpServerRpc();

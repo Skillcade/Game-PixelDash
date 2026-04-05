@@ -71,7 +71,7 @@ namespace Game.Handlers
             }
             
             _gameUi.WaitForPlayersPanel.SetWaitForOthersState(false);
-            bool localReady = _playersController.TryGetPlayerData(_playersController.LocalPlayerId, out var data) &&
+            bool localReady = _playersController.TryGetLocalPlayerData(out var data) &&
                               PlayerInGameData.TryGetFromPlayer(data, out var inGameData) &&
                               inGameData.IsReady;
 
@@ -94,7 +94,7 @@ namespace Game.Handlers
 
         private void OnReadyStateChanged(bool isReady)
         {
-            if (!_playersController.TryGetPlayerData(_playersController.LocalPlayerId, out var playerData))
+            if (!_playersController.TryGetLocalPlayerData(out var playerData))
             {
                 Debug.LogError($"[GameUiHandler] Can't get local player data for id {_playersController.LocalPlayerId}");
                 return;

@@ -41,29 +41,29 @@ namespace Game.Buffs
         private void Update()
         {
             if (!IsServerInitialized)
-            {
                 return;
-            }
-            
-            float now = Time.time;
+
+            uint currentTick = TimeManager.Tick;
             for (int i = _activeBuffs.Count - 1; i >= 0; i--)
             {
-                if (_activeBuffs[i].IsExpired(now))
-                {
+                if (_activeBuffs[i].IsExpired(currentTick))
                     _activeBuffs.RemoveAt(i);
-                }
             }
         }
 
-        private void OnCollectedServer(PlayerCollector collector, CollectableBase collectable, CollectableType type)
+        private void OnCollectedServer(PlayerCollector collector, CollectableBase collectable)
         {
             if (collectable is not SpeedBuffPickup pickup)
-            {
                 return;
-            }
-            
-            var data = new SpeedBuffData(pickup.BuffType, pickup.Value, pickup.Duration, Time.time);
-            
+
+            var data = new SpeedBuffData
+            {
+                BuffType = pickup.BuffType,
+                Value = pickup.Value,
+                StartTick = TimeManager.Tick,
+                DurationTicks = (uint)(pickup.Duration * TimeManager.TickRate)
+            };
+
             _activeBuffs.Add(data);
         }
 

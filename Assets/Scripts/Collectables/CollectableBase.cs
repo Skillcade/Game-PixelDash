@@ -4,18 +4,11 @@ using UnityEngine;
 
 namespace Collectables
 {
-    public enum CollectableType
-    {
-        Unknown = 0
-    }
-    
     public class CollectableBase : RollbackTrigger
     {
-        public CollectableType Type => _type;
         public NetworkObject RespawnPrefab => _respawnPrefab;
         public bool Collected { get; private set; }
-        
-        [SerializeField] private CollectableType _type = CollectableType.Unknown;
+
         [SerializeField] private NetworkObject _respawnPrefab;
 
         public bool TryCollectServer(PlayerCollector playerCollector)
