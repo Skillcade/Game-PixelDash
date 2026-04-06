@@ -71,6 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 7708937912395519445}
+  _playerRollbackSource: {fileID: 0}
   _colliderRollback: {fileID: 1957085061284429708}
 --- !u!1 &1274593300539092038
 GameObject:
@@ -291,7 +292,6 @@ MonoBehaviour:
   _networkObject: {fileID: 3163456729119693188}
   _rigidbody: {fileID: 7708937912395519445}
   _visualTransform: {fileID: 1551337445953160360}
-  _detachVisuals: 0
   _interpolationSettings: {fileID: 11400000, guid: eb3f9fb8a67c19b47a45dbe8a1dba394, type: 2}
 --- !u!1 &5640061688148572173
 GameObject:
@@ -519,7 +519,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 3, y: 1}
+  m_Size: {x: 2.95, y: 0.95}
   m_EdgeRadius: 0
 --- !u!1 &8617325004856715412
 GameObject:

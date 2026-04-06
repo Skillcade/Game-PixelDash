@@ -295,6 +295,9 @@ namespace Game.Player
         [ObserversRpc(ExcludeOwner = true)]
         private void TriggerJumpObserversRpc()
         {
+            if (IsOwner)
+                return;
+            
             JumpFx?.Invoke();
         }
 

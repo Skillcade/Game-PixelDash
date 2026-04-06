@@ -67,7 +67,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: -0.03, y: 0.6}
-  m_Size: {x: 0.8, y: 1.2}
+  m_Size: {x: 0.8, y: 1.08}
   m_Direction: 0
 --- !u!1 &7294861560698192311
 GameObject:
@@ -81,7 +81,6 @@ GameObject:
   - component: {fileID: 4944023266038734634}
   - component: {fileID: 8866073289841078330}
   - component: {fileID: 890865572886444992}
-  - component: {fileID: 2247135605099600173}
   - component: {fileID: 675147628821742720}
   - component: {fileID: 4785572566629901107}
   - component: {fileID: 6550249093487379794}
@@ -205,7 +204,7 @@ MonoBehaviour:
   _rigidbody: {fileID: 2862806053298498464}
   _inputReader: {fileID: 4785572566629901107}
   _playerMovementConfig: {fileID: 11400000, guid: 13dcf7b23d5d25b489e33bb3ce163f55, type: 2}
-  _collider: {fileID: 2247135605099600173}
+  _collider: {fileID: 0}
   _visualsTransform: {fileID: 5081052010537483841}
 --- !u!50 &890865572886444992
 Rigidbody2D:
@@ -234,43 +233,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!70 &2247135605099600173
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7294861560698192311}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 59079b41938c58648b67527cdab6ef16, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: -0.03, y: 0.6}
-  m_Size: {x: 0.8, y: 1.2}
-  m_Direction: 0
 --- !u!114 &675147628821742720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,6 +342,7 @@ MonoBehaviour:
   _componentIndexCache: 3
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
+  _rigidbodyInterpolator: {fileID: 2862806053298498464}
 --- !u!114 &2742057014745948701
 MonoBehaviour:
   m_ObjectHideFlags: 0

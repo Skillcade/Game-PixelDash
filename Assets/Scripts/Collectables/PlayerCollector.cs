@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Collectables
 {
-    [RequireComponent(typeof(Collider2D))]
     public class PlayerCollector : NetworkBehaviour
     {
         public event Action<PlayerCollector, CollectableBase> OnCollectedServer;
