@@ -136,7 +136,6 @@ namespace Game.Player
         
         private void OnJumpFx()
         {
-            Debug.Log("[PlayerVisuals] set jump trigger");
             _animator.SetTrigger(JumpTrigger);
         }
         

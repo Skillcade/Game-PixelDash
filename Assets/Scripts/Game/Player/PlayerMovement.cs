@@ -132,8 +132,12 @@ namespace Game.Player
                 _derivedVelocity = (currentPos - _prevPosition) / (float)TimeManager.TickDelta;
                 _prevPosition = currentPos;
                 var origin = currentPos + Vector3.up * _playerMovementConfig._groundCheckOffset;
+                
+                bool hitTriggers = Physics2D.queriesHitTriggers;
+                Physics2D.queriesHitTriggers = false;
                 _derivedIsGrounded = Physics2D.Raycast(origin, Vector2.down,
                     _playerMovementConfig._groundCheckDistance, _playerMovementConfig._groundMask);
+                Physics2D.queriesHitTriggers = hitTriggers;
             }
         }
 
@@ -179,9 +183,12 @@ namespace Game.Player
 
         private void UpdateGrounded()
         {
+            bool hitTriggers = Physics2D.queriesHitTriggers;
+            Physics2D.queriesHitTriggers = false;
             var origin = transform.position + Vector3.up * _playerMovementConfig._groundCheckOffset;
             _isGrounded = Physics2D.Raycast(origin, Vector2.down, _playerMovementConfig._groundCheckDistance,
                 _playerMovementConfig._groundMask);
+            Physics2D.queriesHitTriggers = hitTriggers;
         }
 
         private void UpdateKnockback(float dt)
