@@ -184,7 +184,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b96d45f34d654c07b8525419794b6b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _debug: 0
+  _useOverridePosition: 0
   _rigidbody: {fileID: 5512311860101850221}
+  _playerRollbackSource: {fileID: 0}
   _colliderRollback: {fileID: 0}
 --- !u!1 &3798707744326611142
 GameObject:
@@ -341,7 +344,7 @@ GameObject:
   - component: {fileID: 3608441422625415644}
   - component: {fileID: 388623077695782972}
   - component: {fileID: 596078866196328437}
-  - component: {fileID: 8634023244453274341}
+  - component: {fileID: 7556527224540540408}
   m_Layer: 0
   m_Name: SpriteRoot
   m_TagString: Untagged
@@ -446,7 +449,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 2
 --- !u!114 &3608441422625415644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,6 +465,7 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 2637202103619406344}
   _networkObjectCache: {fileID: 0}
+  _useNetTransformForSync: 1
   _oneSideMoveTime: 2
   _oneSideMoveCurve:
     serializedVersion: 2
@@ -531,7 +535,7 @@ MonoBehaviour:
   _boundingBoxSize: {x: 3, y: 3, z: 3}
   _colliderParents:
   - {fileID: 2925670133907336686}
---- !u!114 &8634023244453274341
+--- !u!114 &7556527224540540408
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -540,18 +544,43 @@ MonoBehaviour:
   m_GameObject: {fileID: 5669972979329020059}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637c12bb3f61cd7438620dd5402ef220, type: 3}
+  m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 2637202103619406344}
   _networkObjectCache: {fileID: 0}
-  _tickCallbacks: 4
-  _networkObject: {fileID: 2637202103619406344}
-  _rigidbody: {fileID: 5512311860101850221}
-  _visualTransform: {fileID: 283621675322815715}
-  _detachVisuals: 0
-  _interpolationSettings: {fileID: 11400000, guid: eb3f9fb8a67c19b47a45dbe8a1dba394, type: 2}
+  _componentConfiguration: 0
+  _synchronizeParent: 0
+  _packing:
+    Position: 0
+    Rotation: 2
+    Scale: 2
+  _useScaledTime: 1
+  _interpolation: 3
+  _extrapolation: 0
+  _enableTeleport: 1
+  _teleportThreshold: 1
+  _clientAuthoritative: 0
+  _sendToOwner: 1
+  _interval: 2
+  _synchronizePosition: 1
+  _positionSensitivity: 0.001
+  _positionSnapping:
+    X: 0
+    Y: 0
+    Z: 0
+  _synchronizeRotation: 0
+  _rotationSnapping:
+    X: 0
+    Y: 0
+    Z: 0
+  _synchronizeScale: 0
+  _scaleSensitivity: 0.001
+  _scaleSnapping:
+    X: 0
+    Y: 0
+    Z: 0
 --- !u!1 &6376225998756225442
 GameObject:
   m_ObjectHideFlags: 0

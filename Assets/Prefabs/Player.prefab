@@ -150,6 +150,8 @@ MonoBehaviour:
   - {fileID: 1427533385231131571}
   - {fileID: 6274731532900462022}
   - {fileID: 8154023137903858760}
+  - {fileID: 0}
+  - {fileID: 0}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
   RuntimeParentNetworkBehaviour: {fileID: 0}
@@ -160,7 +162,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
-  _initializedTimestamp: -8584262198899540817
+  _initializedTimestamp: -8584255811079863354
   NetworkObserver: {fileID: 0}
   _enablePrediction: 0
   _predictionType: 2
@@ -204,7 +206,7 @@ MonoBehaviour:
   _rigidbody: {fileID: 2862806053298498464}
   _inputReader: {fileID: 4785572566629901107}
   _playerMovementConfig: {fileID: 11400000, guid: 13dcf7b23d5d25b489e33bb3ce163f55, type: 2}
-  _collider: {fileID: 0}
+  _collider: {fileID: 8367320915738945800}
   _visualsTransform: {fileID: 5081052010537483841}
 --- !u!50 &890865572886444992
 Rigidbody2D:
@@ -343,6 +345,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4944023266038734634}
   _networkObjectCache: {fileID: 4944023266038734634}
   _rigidbodyInterpolator: {fileID: 2862806053298498464}
+  _attachedToPlatform: {fileID: 0}
 --- !u!114 &2742057014745948701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,7 +384,7 @@ MonoBehaviour:
     Rotation: 2
     Scale: 2
   _useScaledTime: 1
-  _interpolation: 1
+  _interpolation: 3
   _extrapolation: 0
   _enableTeleport: 1
   _teleportThreshold: 1
@@ -440,6 +443,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b96d45f34d654c07b8525419794b6b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _debug: 0
+  _useOverridePosition: 1
   _rigidbody: {fileID: 890865572886444992}
   _playerRollbackSource: {fileID: 1427533385231131571}
   _colliderRollback: {fileID: 6274731532900462022}

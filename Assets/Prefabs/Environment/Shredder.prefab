@@ -100,7 +100,6 @@ GameObject:
   - component: {fileID: 3244945930516696537}
   - component: {fileID: 5039122664999532716}
   - component: {fileID: 2071940006847187129}
-  - component: {fileID: 8155658178347754107}
   - component: {fileID: 4157329822031842845}
   - component: {fileID: 3481866315551263833}
   - component: {fileID: 6072855168975738073}
@@ -205,13 +204,13 @@ MonoBehaviour:
     Rotation: 2
     Scale: 2
   _useScaledTime: 1
-  _interpolation: 4
-  _extrapolation: 4
+  _interpolation: 3
+  _extrapolation: 0
   _enableTeleport: 0
   _teleportThreshold: 1
   _clientAuthoritative: 0
   _sendToOwner: 0
-  _interval: 3
+  _interval: 2
   _synchronizePosition: 1
   _positionSensitivity: 0.001
   _positionSnapping:
@@ -229,26 +228,6 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
---- !u!114 &8155658178347754107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2192751021213653548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a60424afcf0b5984dbe878a1f21c10b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 5039122664999532716}
-  _networkObjectCache: {fileID: 0}
-  MaximumSimultaneousHits: 4
-  AdditionalSize: 0.1
-  Layers:
-    serializedVersion: 2
-    m_Bits: 960
 --- !u!50 &4157329822031842845
 Rigidbody2D:
   serializedVersion: 5
@@ -291,6 +270,7 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 5039122664999532716}
   _networkObjectCache: {fileID: 0}
+  _useNetTransformForSync: 1
   _oneSideMoveTime: 2
   _oneSideMoveCurve:
     serializedVersion: 2
@@ -318,6 +298,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   _startPoint: {fileID: 8236016551163293386}
   _endPoint: {fileID: 4445089699791252933}
+  _localElapsed: 0
+  _started: 0
 --- !u!114 &6072855168975738073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -572,7 +554,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b96d45f34d654c07b8525419794b6b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _debug: 0
+  _useOverridePosition: 0
   _rigidbody: {fileID: 4157329822031842845}
+  _playerRollbackSource: {fileID: 0}
   _colliderRollback: {fileID: 4607441072004431435}
 --- !u!1 &4473987581717625681
 GameObject:

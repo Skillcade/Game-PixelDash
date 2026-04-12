@@ -256,5 +256,5 @@ MonoBehaviour:
   _boundingBoxLayer:
     serializedVersion: 2
     m_Bits: 1024
-  _maximumRollbackTime: 2
-  Interpolation: 3
+  _maximumRollbackTime: 5
+  Interpolation: 6

@@ -6,6 +6,7 @@ namespace Game.Level
 {
     public class ServerMovableObject : NetworkBehaviour
     {
+        [SerializeField] private bool _useNetTransformForSync;
         [SerializeField] private float _oneSideMoveTime;
         [SerializeField] private AnimationCurve _oneSideMoveCurve;
         [SerializeField] private Transform _startPoint;
@@ -43,7 +44,7 @@ namespace Game.Level
 
         private void Update()
         {
-            if (!_started)
+            if (!_started || (_useNetTransformForSync && !IsServerInitialized))
                 return;
 
             _localElapsed += Time.deltaTime;

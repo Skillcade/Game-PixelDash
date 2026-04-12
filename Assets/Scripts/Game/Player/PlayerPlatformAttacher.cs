@@ -8,8 +8,7 @@ namespace Game.Player
     public class PlayerPlatformAttacher : NetworkBehaviour
     {
         [SerializeField] private NetworkRigidbody2DInterpolator _rigidbodyInterpolator;
-        
-        private Platform _attachedToPlatform;
+        [SerializeField] private Platform _attachedToPlatform;
         
         private void OnTriggerEnter2D(Collider2D other)
         {
@@ -22,7 +21,7 @@ namespace Game.Player
 
             if (_attachedToPlatform != null)
                 return;
-            
+
             _attachedToPlatform = platform;
             NetworkObject.SetParent(platform);
             
