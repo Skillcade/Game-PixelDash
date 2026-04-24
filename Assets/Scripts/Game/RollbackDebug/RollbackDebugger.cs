@@ -3,6 +3,7 @@ using FishNet.Component.ColliderRollback;
 using FishNet.Managing.Timing;
 using FishNet.Object;
 using FishNet.Utility.Template;
+using SkillcadeSDK.FishNetAdapter.ColliderRollback;
 using UnityEngine;
 
 namespace Game.RollbackDebug
@@ -12,6 +13,10 @@ namespace Game.RollbackDebug
     /// Press the configured key to snapshot client positions and request server rollback positions.
     /// Press again to clear and request a fresh snapshot.
     /// Positions are visualized via OnDrawGizmos (Scene view only).
+    ///
+    /// Targets that also have a <see cref="TickBasedMoveBehaviour"/> are resolved via
+    /// <see cref="TickBasedMoveBehaviour.GetPositionAtTick"/> on the server instead of
+    /// FishNet's ColliderRollback history, matching the path used by PlayerRollbackSource.
     /// </summary>
     public class RollbackDebugger : TickNetworkBehaviour
     {
@@ -54,9 +59,22 @@ namespace Game.RollbackDebug
             _sendRequest = false;
             ClearPositions();
 
+            Debug.Log("[RollbackDebugger] Start request position");
+
             // Capture current world positions of all marked targets
             foreach (var target in RollbackDebugTarget.All)
             {
+                // TickBasedMoveBehaviour targets: client already sees the tick-synced
+                // transform position (ServerMovableObject.Update writes it from the same
+                // tick the rollback uses), so transform.position is the correct snapshot.
+                if (target.TryGetComponent(out TickBasedMoveBehaviour _))
+                {
+                    _clientPositions[target.ObjectId] = target.transform.position;
+                    if (target.Debug)
+                        Debug.Log($"[RollbackDebugger] tick-based client pos {target.transform.position}");
+                    continue;
+                }
+
                 if (!target.TryGetComponent(out ColliderRollback cr))
                     continue;
 
@@ -67,7 +85,7 @@ namespace Game.RollbackDebug
                     _clientPositions.Add(target.ObjectId, target.transform.position);
                     continue;
                 }
-                
+
                 foreach (var position in cr.RollingCollidersPositions)
                 {
                     _clientPositions[target.ObjectId] = position;
@@ -86,44 +104,52 @@ namespace Game.RollbackDebug
         private void RequestRollbackPositionsServerRpc(PreciseTick tick)
         {
             Debug.Log($"[RollbackDebugger] Rollback positions for tick {tick.Tick}, current: {TimeManager.Tick}");
-            // RollbackManager.Rollback(tick, RollbackPhysicsType.Physics2D, IsOwner);
-            var results = new List<(ColliderRollback colliderRollback, Vector3 position)>();
-            RollbackManager.QueryRollbackPositions(tick, IsOwner, results);
 
-            // Map query results back to RollbackDebugTarget objects by matching their
-            // ColliderRollback component (targets without ColliderRollback use transform position).
             var serverPositions = new Dictionary<int, Vector3>();
+
+            // Partition targets: tick-based vs ColliderRollback-driven.
+            var colliderRollbackTargets = new List<(RollbackDebugTarget target, ColliderRollback cr)>();
             foreach (var target in RollbackDebugTarget.All)
             {
-                if (!target.TryGetComponent<ColliderRollback>(out var cr))
+                if (target.TryGetComponent(out TickBasedMoveBehaviour tmb))
                 {
-                    // No rollback component — use current transform position as fallback
+                    if (target.Debug)
+                    {
+                        // 
+                    }
+                    Vector2 pos = tmb.GetPositionAtTick(tick);
+                    serverPositions[target.ObjectId] = pos;
+                    if (target.Debug)
+                        Debug.Log($"[RollbackDebugger] tick-based server pos {pos} for target at tick {tick.Tick}");
                     continue;
                 }
 
-                foreach (var result in results)
-                {
-                    if (result.colliderRollback != cr)
-                        continue;
-                    
-                    serverPositions[target.ObjectId] = result.position;
-                    if (target.Debug)
-                        Debug.Log($"[RollbackDebugger] get rollback position for target, result: {result.position}, root pos: {target.transform.position}");
-                }
-                
-                // if (cr.RollingCollidersPositions == null)
-                //     continue;
-                //
-                // foreach (var position in cr.RollingCollidersPositions)
-                // {
-                //     serverPositions[target.ObjectId] = position;
-                //     if (target.Debug)
-                //         Debug.Log($"[RollbackDebugger] get rollback position for target, result: {position}, root pos: {target.transform.position}");
-                // }
+                if (target.TryGetComponent(out ColliderRollback cr))
+                    colliderRollbackTargets.Add((target, cr));
             }
 
-            // RollbackManager.Return();
-            RollbackManager.RevertRollbackPositions();
+            // Fall back to FishNet ColliderRollback for non-tick-based targets.
+            if (colliderRollbackTargets.Count > 0)
+            {
+                var results = new List<(ColliderRollback colliderRollback, Vector3 position)>();
+                RollbackManager.QueryRollbackPositions(tick, IsOwner, results);
+
+                foreach (var (target, cr) in colliderRollbackTargets)
+                {
+                    foreach (var result in results)
+                    {
+                        if (result.colliderRollback != cr)
+                            continue;
+
+                        serverPositions[target.ObjectId] = result.position;
+                        if (target.Debug)
+                            Debug.Log($"[RollbackDebugger] collider-rollback server pos {result.position}, root pos: {target.transform.position}");
+                    }
+                }
+
+                RollbackManager.RevertRollbackPositions();
+            }
+
             ReceiveRollbackPositionsTargetRpc(Owner, serverPositions);
         }
 

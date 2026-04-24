@@ -8,6 +8,7 @@ namespace Game.Player
     {
         public string CharacterName;
         public AnimatorOverrideController OverrideController;
+        public Sprite Icon;
     }
     
     [CreateAssetMenu(fileName = "PlayerCharactersConfig", menuName = "Configs/Player Characters")]

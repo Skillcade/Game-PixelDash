@@ -108,6 +108,12 @@ namespace Game.Player
         
         private void Update()
         {
+            if (_movement.IsClientInitialized && !_movement.IsOwner)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+            
             Vector2 vel = _movement.VelocityVisual;
             _animator.SetFloat(SpeedX, GetAbsWithThreshold(vel.x));
             _animator.SetFloat(VelY, GetAbsWithThreshold(vel.y));

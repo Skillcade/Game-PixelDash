@@ -1,71 +1,66 @@
-using FishNet.Object;
-using FishNet.Object.Synchronizing;
+using FishNet.Managing.Timing;
+using SkillcadeSDK.FishNetAdapter.ColliderRollback;
 using UnityEngine;
 
 namespace Game.Level
 {
-    public class ServerMovableObject : NetworkBehaviour
+    public class ServerMovableObject : TickBasedMoveBehaviour
     {
-        [SerializeField] private bool _useNetTransformForSync;
+        [SerializeField] private bool _debug;
         [SerializeField] private float _oneSideMoveTime;
         [SerializeField] private AnimationCurve _oneSideMoveCurve;
         [SerializeField] private Transform _startPoint;
         [SerializeField] private Transform _endPoint;
 
-        private readonly SyncVar<uint> _startTick = new(new SyncTypeSettings(WritePermission.ServerOnly));
-
-        [Header("Debug")]
-        [SerializeField] private float _localElapsed;
-        [SerializeField] private bool _started;
-
         public override void OnStartNetwork()
         {
             base.OnStartNetwork();
-            _startTick.OnChange += OnStartTickChanged;
-
-            if (IsServerInitialized)
-            {
-                _startTick.Value = TimeManager.Tick;
-                _started = true;
-            }
+            TimeManager.OnTick += OnTick;
         }
 
         public override void OnStopNetwork()
         {
             base.OnStopNetwork();
-            _startTick.OnChange -= OnStartTickChanged;
+            TimeManager.OnTick -= OnTick;
         }
 
-        private void OnStartTickChanged(uint prev, uint next, bool asServer)
+        private void OnTick()
         {
-            _localElapsed = (TimeManager.Tick - next) * (float)TimeManager.TickDelta;
-            _started = true;
-        }
-
-        private void Update()
-        {
-            if (!_started || (_useNetTransformForSync && !IsServerInitialized))
+            if (GlobalTickTimer.Instance == null || !GlobalTickTimer.Instance.IsReady)
                 return;
 
-            _localElapsed += Time.deltaTime;
+            // Drive visuals from the same tick the server uses during rollback so
+            // the algorithm is identical in both paths.
+            var pt = TimeManager.GetPreciseTick(TickType.Tick);
+            transform.position = GetPositionAtTick(pt);
+        }
 
-            // Gently correct toward authoritative server tick time to prevent long-term drift
-            float authoritative = (TimeManager.Tick - _startTick.Value) * (float)TimeManager.TickDelta;
-            _localElapsed = Mathf.MoveTowards(_localElapsed, authoritative, Time.deltaTime * 0.1f);
+        public override Vector2 GetPositionAtTick(PreciseTick pt)
+        {
+            if (GlobalTickTimer.Instance == null || !GlobalTickTimer.Instance.IsReady)
+                return transform.position;
 
-            float passedTime = _localElapsed;
-            int completedTrips = Mathf.FloorToInt(passedTime / _oneSideMoveTime);
-            float timeSinceLastTrip = passedTime - completedTrips * _oneSideMoveTime;
+            float elapsed = GlobalTickTimer.Instance.GetElapsedSeconds(pt);
+            var position = ComputePosition(elapsed);
+            if (_debug)
+                Debug.Log($"[ServerMovableObject] Calculated position {position} at tick {pt.Tick}, elapsed: {elapsed}, start tick: {GlobalTickTimer.Instance.StartTick}");
+            return position;
+        }
+
+        private Vector3 ComputePosition(float elapsedSeconds)
+        {
+            int completedTrips = Mathf.FloorToInt(elapsedSeconds / _oneSideMoveTime);
+            float timeSinceLastTrip = elapsedSeconds - completedTrips * _oneSideMoveTime;
             bool isGoingForward = completedTrips % 2 == 0;
 
             var startPoint = isGoingForward ? _startPoint : _endPoint;
-            var endPoint = isGoingForward ? _endPoint : _startPoint;
+            var endPoint   = isGoingForward ? _endPoint   : _startPoint;
 
             float t = timeSinceLastTrip / _oneSideMoveTime;
-            t = t > 1 ? t - 1 : t;
+            if (t > 1f) t -= 1f;
             t = _oneSideMoveCurve.Evaluate(t);
 
-            transform.position = Vector3.Lerp(startPoint.position, endPoint.position, t);
+            return Vector3.Lerp(startPoint.position, endPoint.position, t);
         }
     }
 }
