@@ -4995,8 +4995,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _markerPrefab: {fileID: 7459816974194988666, guid: 22b31f6c4d2ddb74390008f2c98c9271, type: 3}
   _markersContainer: {fileID: 1174978948}
-  _minX: -25
-  _maxX: 232
+  _bufferTime: 0.1
+  _snapBackwardThreshold: 0.05
   _charactersConfig: {fileID: 11400000, guid: d8779a513ca97b1419dfe24bed4f26a4, type: 2}
 --- !u!1 &1239746423
 GameObject:

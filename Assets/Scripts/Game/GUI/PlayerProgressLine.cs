@@ -1,6 +1,9 @@
-using System;
 using System.Collections.Generic;
+using FishNet;
+using FishNet.Transporting;
+using Game.Level;
 using Game.Player;
+using Game.RigidbodyInterpolation;
 using SkillcadeSDK;
 using SkillcadeSDK.FishNetAdapter.Players;
 using UnityEngine;
@@ -12,17 +15,27 @@ namespace Game.GUI
     {
         [SerializeField] private PlayerProgressMarker _markerPrefab;
         [SerializeField] private RectTransform _markersContainer;
-        [SerializeField] private float _minX;
-        [SerializeField] private float _maxX;
+        // Should match ProgressSyncController._syncInterval so the buffer always has two snapshots to interpolate between.
+        [SerializeField] private float _bufferTime = 0.35f;
+        [SerializeField] private float _snapBackwardThreshold = 0.05f;
         [SerializeField] private PlayerCharactersConfig _charactersConfig;
 
         [Inject] private readonly FishNetPlayersController _playersController;
 
+        private struct ProgressSnapshot : IInterpolateSnapshot
+        {
+            public float RemoteTime { get; set; }
+            public float LocalTime { get; set; }
+            public float Progress;
+        }
+
         private class MarkerEntry
         {
             public PlayerProgressMarker Marker;
-            public PlayerMovement Movement;
             public int OwnerId;
+            public float CurrentProgress;
+            public readonly SortedList<float, ProgressSnapshot> Buffer = new();
+            public float LocalTimeline = -1f;
         }
 
         private readonly Dictionary<int, MarkerEntry> _entries = new();
@@ -30,6 +43,8 @@ namespace Game.GUI
         private void Start()
         {
             this.InjectToMe();
+
+            InstanceFinder.ClientManager.RegisterBroadcast<PlayerProgressBroadcast>(OnProgressReceived);
 
             _playersController.OnPlayerAdded += OnPlayerAdded;
             _playersController.OnPlayerDataUpdated += OnPlayerDataUpdated;
@@ -41,6 +56,9 @@ namespace Game.GUI
 
         private void OnDestroy()
         {
+            if (InstanceFinder.ClientManager != null)
+                InstanceFinder.ClientManager.UnregisterBroadcast<PlayerProgressBroadcast>(OnProgressReceived);
+
             if (_playersController == null)
                 return;
 
@@ -53,14 +71,49 @@ namespace Game.GUI
         {
             foreach (var entry in _entries.Values)
             {
-                if (entry.Movement == null)
-                    entry.Movement = FindMovementForOwner(entry.OwnerId);
-
-                if (entry.Movement == null)
+                if (entry.LocalTimeline < 0f || entry.Buffer.Count == 0)
                     continue;
 
-                float t = Mathf.InverseLerp(_minX, _maxX, entry.Movement.transform.position.x);
-                entry.Marker.SetProgress(t);
+                entry.LocalTimeline += Time.unscaledDeltaTime;
+
+                InterpolationUtils.StepInterpolation(
+                    entry.Buffer, entry.LocalTimeline,
+                    out var from, out var to, out float t);
+
+                entry.CurrentProgress = Mathf.Lerp(from.Progress, to.Progress, t);
+                entry.Marker.SetProgress(entry.CurrentProgress);
+            }
+        }
+
+        private void OnProgressReceived(PlayerProgressBroadcast broadcast, Channel channel)
+        {
+            foreach (var progressEntry in broadcast.Entries)
+            {
+                if (!_entries.TryGetValue(progressEntry.PlayerId, out var entry))
+                    continue;
+
+                float now = Time.time;
+
+                if (entry.Buffer.Count > 0)
+                {
+                    var last = entry.Buffer.Values[entry.Buffer.Count - 1];
+                    if (progressEntry.Progress < last.Progress - _snapBackwardThreshold)
+                    {
+                        entry.Buffer.Clear();
+                        entry.CurrentProgress = progressEntry.Progress;
+                        entry.LocalTimeline = -1f;
+                    }
+                }
+
+                InterpolationUtils.InsertIfNotExists(entry.Buffer, 10, new ProgressSnapshot
+                {
+                    RemoteTime = now,
+                    LocalTime = now,
+                    Progress = progressEntry.Progress
+                });
+
+                if (entry.LocalTimeline < 0f)
+                    entry.LocalTimeline = now - _bufferTime;
             }
         }
 
@@ -120,18 +173,6 @@ namespace Game.GUI
                 if (c.CharacterName == characterName)
                     return c.Icon;
             }
-
-            return null;
-        }
-
-        private PlayerMovement FindMovementForOwner(int ownerId)
-        {
-            foreach (var movement in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
-            {
-                if (movement.OwnerId == ownerId)
-                    return movement;
-            }
-
             return null;
         }
     }
