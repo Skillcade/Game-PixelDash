@@ -1,0 +1,78 @@
+name: Alpha — Client Build & Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch, tag, or commit SHA to deploy (e.g. main, v1.8.0)'
+        required: false
+        default: ''
+      environment:
+        description: 'Target alpha environment'
+        required: true
+        type: choice
+        options:
+          - alpha-london
+          - alpha-rariaden
+      build_config:
+        description: 'Build config asset path override (optional, leave blank to use vars.CLIENT_BUILD_CONFIG)'
+        required: false
+        default: ''
+
+concurrency:
+  group: unity-build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
+
+      - name: Build WebGL client (Unity)
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          unityVersion: 6000.0.68f1
+          targetPlatform: WebGL
+          buildMethod: SkillcadeSDK.Editor.BuildScript.BuildFromCommandLine
+          customParameters: -buildConfig ${{ inputs.build_config || vars.CLIENT_BUILD_CONFIG }}
+
+      - name: Upload build output on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output-${{ github.run_id }}-${{ github.run_attempt }}
+          path: Builds/
+          if-no-files-found: warn
+
+      - name: Archive build
+        run: |
+          cd "Builds/${{ vars.CLIENT_BUILD_FOLDER }}/Game-PixelDash-Web"
+          zip -r ../../../client.zip . \
+            -x "*DoNotShip*" -x "*DontShipItWithYourGame*"
+
+      - name: Upload archive to VPS
+        env:
+          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
+        run: |
+          sshpass -p "$VPS_PASSWORD" scp -o StrictHostKeyChecking=no \
+            client.zip "${{ vars.VPS_USER }}@${{ vars.VPS_HOST }}:${{ vars.VPS_UPLOAD_PATH }}/client.zip"
+
+      - name: Deploy on VPS
+        env:
+          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
+        run: |
+          sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no \
+            "${{ vars.VPS_USER }}@${{ vars.VPS_HOST }}" "
+              cd ${{ vars.VPS_CLIENT_PATH }} &&
+              sudo rm -rf * &&
+              sudo unzip ${{ vars.VPS_UPLOAD_PATH }}/client.zip -d ./
+            "
