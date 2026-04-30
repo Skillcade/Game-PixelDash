@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using FishNet.Object;
 using FishNet.Transporting;
 using Game.Player;
+using SkillcadeSDK;
 using SkillcadeSDK.FishNetAdapter.Players;
 using UnityEngine;
 using VContainer;
@@ -14,14 +15,14 @@ namespace Game.Level
         [SerializeField] private float _minX;
         [SerializeField] private float _maxX;
 
-        [Inject] private readonly FishNetPlayersController _playersController;
-
+        [Inject] private FishNetPlayersController _playersController;
         private float _syncTimer;
         private readonly List<PlayerProgressEntry> _entries = new();
 
         public override void OnStartNetwork()
         {
             base.OnStartNetwork();
+            this.InjectToMe();
 
             if (IsServerInitialized)
                 TimeManager.OnTick += OnTick;
