@@ -51,12 +51,23 @@ jobs:
         run: |
           echo "=== GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
           echo "=== pwd: $(pwd)"
+          echo "=== SERVER_BUILD_FOLDER var: ${{ vars.SERVER_BUILD_FOLDER }}"
+          echo ""
           echo "=== workspace root:"
           ls -la
-          echo "=== Builds/ (if exists):"
-          ls -la Builds/ || echo "Builds/ not found"
-          echo "=== Builds/ tree (depth 2):"
-          find Builds/ -maxdepth 2 2>/dev/null || echo "nothing under Builds/"
+          echo ""
+          echo "=== Builds/ contents (if exists):"
+          ls -la Builds/ || echo "Builds/ NOT FOUND"
+          echo ""
+          echo "=== Builds/ full tree (depth 3):"
+          find Builds/ -maxdepth 3 2>/dev/null || echo "nothing under Builds/"
+          echo ""
+          echo "=== File ownership under Builds/:"
+          find Builds/ -maxdepth 3 -exec ls -la {} \; 2>/dev/null || echo "nothing"
+          echo ""
+          echo "=== Disk usage:"
+          df -h .
+          du -sh Builds/ 2>/dev/null || echo "Builds/ not found"
 
       - name: Upload build output on failure
         if: failure()
