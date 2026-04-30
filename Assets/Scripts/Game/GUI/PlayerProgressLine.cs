@@ -71,7 +71,7 @@ namespace Game.GUI
         {
             foreach (var entry in _entries.Values)
             {
-                if (entry.LocalTimeline < 0f || entry.Buffer.Count == 0)
+                if (entry.LocalTimeline < 0f || entry.Buffer.Count < 2)
                     continue;
 
                 entry.LocalTimeline += Time.unscaledDeltaTime;
@@ -92,7 +92,7 @@ namespace Game.GUI
                 if (!_entries.TryGetValue(progressEntry.PlayerId, out var entry))
                     continue;
 
-                float now = Time.time;
+                float now = Time.unscaledTime;
 
                 if (entry.Buffer.Count > 0)
                 {
@@ -133,6 +133,7 @@ namespace Game.GUI
                 icon = FindIcon(charData.CharacterName);
 
             marker.Initialize(nickname, icon);
+            marker.SetProgress(0f);
 
             _entries[playerId] = new MarkerEntry
             {
