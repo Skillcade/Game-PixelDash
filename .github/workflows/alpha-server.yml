@@ -47,6 +47,17 @@ jobs:
           buildMethod: SkillcadeSDK.Editor.BuildScript.BuildFromCommandLine
           customParameters: -buildConfig ${{ inputs.build_config || vars.SERVER_BUILD_CONFIG }}
 
+      - name: Debug — workspace structure
+        run: |
+          echo "=== GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          echo "=== pwd: $(pwd)"
+          echo "=== workspace root:"
+          ls -la
+          echo "=== Builds/ (if exists):"
+          ls -la Builds/ || echo "Builds/ not found"
+          echo "=== Builds/ tree (depth 2):"
+          find Builds/ -maxdepth 2 2>/dev/null || echo "nothing under Builds/"
+
       - name: Upload build output on failure
         if: failure()
         uses: actions/upload-artifact@v4
