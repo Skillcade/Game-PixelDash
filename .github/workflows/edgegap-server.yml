@@ -59,6 +59,7 @@ jobs:
 
       - name: Generate Dockerfile
         run: |
+          [ -d Builds ] && sudo chown -R "$(whoami)" Builds/
           mkdir -p Builds
           cat > Builds/Dockerfile << 'DOCKERFILE_EOF'
           FROM ubuntu:22.04
