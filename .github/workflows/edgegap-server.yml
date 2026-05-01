@@ -57,6 +57,28 @@ jobs:
           path: Builds/
           if-no-files-found: warn
 
+      - name: Generate Dockerfile
+        run: |
+          cat > Builds/Dockerfile << 'DOCKERFILE_EOF'
+          FROM ubuntu:22.04
+
+          ARG DEBIAN_FRONTEND=noninteractive
+          ARG SERVER_BUILD_PATH=EdgegapServer
+
+          COPY ${SERVER_BUILD_PATH} /root/build/
+
+          WORKDIR /root/
+
+          RUN chmod +x /root/build/ServerBuild
+
+          RUN apt-get update && \
+              apt-get install -y ca-certificates && \
+              apt-get clean && \
+              update-ca-certificates
+
+          CMD ["/bin/bash", "-c", "env;/root/build/ServerBuild -batchmode -nographics $UNITY_COMMANDLINE_ARGS"]
+          DOCKERFILE_EOF
+
       - name: Docker build
         run: |
           docker build --no-cache --platform linux/amd64 \
