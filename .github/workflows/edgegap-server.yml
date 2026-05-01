@@ -59,6 +59,7 @@ jobs:
 
       - name: Generate Dockerfile
         run: |
+          mkdir -p Builds
           cat > Builds/Dockerfile << 'DOCKERFILE_EOF'
           FROM ubuntu:22.04
 
@@ -78,9 +79,18 @@ jobs:
 
           CMD ["/bin/bash", "-c", "env;/root/build/ServerBuild -batchmode -nographics $UNITY_COMMANDLINE_ARGS"]
           DOCKERFILE_EOF
+          echo "=== Builds directory contents ==="
+          ls -laR Builds/
+          echo "=== Dockerfile contents ==="
+          cat Builds/Dockerfile
 
       - name: Docker build
         run: |
+          echo "=== Debug: pwd ==="
+          pwd
+          echo "=== Debug: Builds directory tree ==="
+          ls -laR Builds/ || echo "Builds/ not found"
+          echo "=== Debug: Starting docker build ==="
           docker build --no-cache --platform linux/amd64 \
             -t "${{ secrets.EDGEGAP_IMAGE_NAME }}" \
             Builds/
