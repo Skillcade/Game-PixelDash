@@ -14,11 +14,11 @@ namespace Game.GUI
         private void Awake()
         {
             _rectTransform = GetComponent<RectTransform>();
-            _rectTransform.pivot = new Vector2(0.5f, 0.5f);
         }
 
         public void Initialize(string nickname, Sprite icon)
         {
+            _rectTransform = GetComponent<RectTransform>();
             _nameText.text = nickname;
             if (icon != null)
             {
