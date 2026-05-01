@@ -80,44 +80,18 @@ jobs:
 
           CMD ["/bin/bash", "-c", "env;/root/build/ServerBuild -batchmode -nographics $UNITY_COMMANDLINE_ARGS"]
           DOCKERFILE_EOF
-          echo "=== Builds directory contents ==="
-          ls -laR Builds/
-          echo "=== Dockerfile contents ==="
-          cat Builds/Dockerfile
 
       - name: Docker build
         run: |
-          echo "=== Debug: pwd ==="
-          pwd
-          echo "=== Debug: Builds directory tree ==="
-          ls -laR Builds/ || echo "Builds/ not found"
-          echo "=== Debug: Starting docker build ==="
           docker build --no-cache --platform linux/amd64 \
             -t "${{ secrets.EDGEGAP_IMAGE_NAME }}" \
             Builds/
-
-      - name: Debug secrets
-        env:
-          EDGEGAP_USERNAME: ${{ secrets.EDGEGAP_USERNAME }}
-          EDGEGAP_PASSWORD: ${{ secrets.EDGEGAP_PASSWORD }}
-          EDGEGAP_PROJECT_NAME: ${{ secrets.EDGEGAP_PROJECT_NAME }}
-          EDGEGAP_IMAGE_NAME: ${{ secrets.EDGEGAP_IMAGE_NAME }}
-        run: |
-          echo "registry: registry.edgegap.com"
-          echo "project: $EDGEGAP_PROJECT_NAME"
-          echo "image:   $EDGEGAP_IMAGE_NAME"
-          echo "version: ${{ inputs.version }}"
-          [ -n "$EDGEGAP_USERNAME" ] && echo "username: set" || echo "username: EMPTY!"
-          [ -n "$EDGEGAP_PASSWORD" ] && echo "password: set" || echo "password: EMPTY!"
-          curl -sf -o /dev/null -w "registry reachable: %{http_code}" https://registry.edgegap.com/v2/ || echo "registry unreachable"
 
       - name: Login to Edgegap registry
         env:
           EDGEGAP_USERNAME: ${{ secrets.EDGEGAP_USERNAME }}
           EDGEGAP_PASSWORD: ${{ secrets.EDGEGAP_PASSWORD }}
         run: |
-          echo "EDGEGAP_USERNAME base64 = $(echo -n "$EDGEGAP_USERNAME" | base64)"
-          echo "EDGEGAP_PASSWORD base64 = $(echo -n "$EDGEGAP_PASSWORD" | base64)"
           echo $EDGEGAP_PASSWORD | docker login -u "$EDGEGAP_USERNAME" --password-stdin registry.edgegap.com
 
       - name: Tag and push image
