@@ -36,6 +36,15 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          docker system prune -af
+          df -h
+
       - name: Build server (Unity)
         uses: game-ci/unity-builder@v4
         env:

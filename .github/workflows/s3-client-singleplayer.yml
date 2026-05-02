@@ -1,4 +1,4 @@
-name: S3 — Client Build & Deploy
+name: S3 Singleplayer — Client Build & Deploy
 
 on:
   workflow_dispatch:
@@ -8,12 +8,12 @@ on:
         required: false
         default: ''
       environment:
-        description: 'Target environment'
+        description: 'Target singleplayer environment'
         required: true
         type: choice
         options:
-          - staging
-          - production
+          - staging-singleplayer
+          - production-singleplayer
       build_config:
         description: 'Build config asset path override (optional, leave blank to use vars.CLIENT_BUILD_CONFIG)'
         required: false
