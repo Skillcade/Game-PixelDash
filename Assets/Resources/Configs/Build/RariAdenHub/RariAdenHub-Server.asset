@@ -10,16 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11a6c158ae1d54d40a6ae01c437a4561, type: 3}
-  m_Name: London-Server
+  m_Name: RariAdenHub-Server
   m_EditorClassIdentifier: 
-  ConnectionConfig: {fileID: 11400000, guid: 5fa8a9f51d08fac4eb687a64030b4d8e, type: 2}
+  PipelineType: 0
+  ConnectionConfig: {fileID: 11400000, guid: 4def44019d0ebe74b8de22f334bc2f66, type: 2}
+  ConnectionConfigName: RariAdenHub
   SceneNames:
   - NetworkingScene
   - LevelScene
   BuildFileName: fakeMario-server.x86_64
-  BuildFolderName: Game-PixelDash-Linux_Server
+  BuildFolderName: Game-PixelDash-Linux_Server-RariAdenHub
   BuildTarget: 24
   BuildSubtarget: 1
   ExtraBuildScenes: []
-  ExtraDefines: []
+  UseSkillcadeDebug: 0
   DevelopmentBuild: 0

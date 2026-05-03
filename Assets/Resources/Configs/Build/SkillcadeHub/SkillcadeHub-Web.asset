@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11a6c158ae1d54d40a6ae01c437a4561, type: 3}
-  m_Name: RariAdenHub-Web-Debug
+  m_Name: SkillcadeHub-Web
   m_EditorClassIdentifier: 
-  ConnectionConfig: {fileID: 11400000, guid: 4def44019d0ebe74b8de22f334bc2f66, type: 2}
+  PipelineType: 0
+  ConnectionConfig: {fileID: 11400000, guid: 5d3237476a32c854d859adc2f532ac6e, type: 2}
+  ConnectionConfigName: SkillcadeHub
   SceneNames:
   - NetworkingScene
   - LevelScene
   BuildFileName: Game-PixelDash-Web
-  BuildFolderName: Game-PixelDash-Web-RariAdenHub
+  BuildFolderName: Game-PixelDash-Web-SkillcadeHub
   BuildTarget: 20
   BuildSubtarget: 0
-  ExtraBuildScenes:
-  - NetworkDebugScene
-  UseSkillcadeDebug: 1
+  ExtraBuildScenes: []
+  UseSkillcadeDebug: 0
   DevelopmentBuild: 0

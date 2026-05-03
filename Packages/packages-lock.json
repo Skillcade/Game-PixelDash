@@ -18,7 +18,7 @@
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       },
-      "hash": "44260aeb070c771f03216249e6bb93e705b0fbc8"
+      "hash": "46f96854b48011072226b79640c8ccb75fa00618"
     },
     "com.skillcade.sdk-fishnet": {
       "version": "https://github.com/Skillcade/SkillcadeSDK-FishNet.git?path=Assets/Sources/SkillcadeSDK",
