@@ -60,7 +60,6 @@ namespace Game.Player
         [SerializeField] private PlayerMovementConfig _playerMovementConfig;
         [SerializeField] private Collider2D _collider;
         [SerializeField] private Transform _visualsTransform;
-        [SerializeField] private bool _debugInputLogs = true;
 
         [Inject] private readonly SkillcadeGameStateMachine _gameStateMachine;
 
@@ -154,12 +153,6 @@ namespace Game.Player
                 JumpReleased = _inputReader.JumpReleased
             };
             
-            if (_debugInputLogs && (Mathf.Abs(input.Movement) > 0.01f || input.Jump || input.JumpReleased))
-            {
-                Debug.Log($"[PlayerMovement] Tick input: movement={input.Movement}, jump={input.Jump}, " +
-                          $"jumpReleased={input.JumpReleased}, grounded={_isGrounded}, coyote={_coyoteTimer}, jumpTimer={_jumpTimer}");
-            }
-            
             _inputReader.ClearInput();
             return input;
         }
@@ -213,10 +206,7 @@ namespace Game.Player
 
         private void Move(PlayerInput input, float dt)
         {
-            bool canMove = CanMove;
-            bool jumpRequestedBeforeReset = input.Jump;
-            
-            if (!canMove)
+            if (!CanMove)
                 input.Reset();
             
             Vector2 currentVelocity = _rigidbody.Rigidbody.linearVelocity;
@@ -239,11 +229,6 @@ namespace Game.Player
             {
                 Jump();
                 _jumpTimer = _playerMovementConfig._jumpDelay;
-            }
-            else if (_debugInputLogs && jumpRequestedBeforeReset)
-            {
-                Debug.Log($"[PlayerMovement] Jump rejected: canMove={canMove}, grounded={_isGrounded}, " +
-                          $"coyote={_coyoteTimer}, jumpTimer={_jumpTimer}, movement={input.Movement}");
             }
         }
 
