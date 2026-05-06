@@ -3,6 +3,7 @@ using Game.Level;
 using SkillcadeSDK.Connection;
 using SkillcadeSDK.Events;
 using SkillcadeSDK.FishNetAdapter;
+using SkillcadeSDK.FishNetAdapter.Players;
 using SkillcadeSDK.StateMachine;
 using VContainer;
 using VContainer.Unity;
@@ -19,6 +20,7 @@ namespace Game.Handlers
         [Inject] private readonly FinishLine _finishLine;
         [Inject] private readonly SkillcadeGameStateMachine _stateMachine;
         [Inject] private readonly IConnectionController _connectionController;
+        [Inject] private readonly FishNetPlayersController _playersController;
 
         public void Initialize()
         {
@@ -39,7 +41,17 @@ namespace Game.Handlers
         private void OnPlayerFinished(int winnerId)
         {
             if (_stateMachine.IsServer || _connectionController.ConnectionState == ConnectionState.SinglePlayer)
-                _stateMachine.SetStateServer(GameStateType.Finished, new FinishedStateData(winnerId, FinishReason.CompletedGoal));
+                _stateMachine.SetStateServer(GameStateType.Finished, new FinishedStateData(winnerId, GetWinnerPlayerId(winnerId), FinishReason.CompletedGoal));
+        }
+
+        private string GetWinnerPlayerId(int winnerId)
+        {
+            if (_playersController == null || !_playersController.TryGetPlayerData(winnerId, out var playerData))
+                return null;
+
+            return PlayerMatchData.TryGetFromPlayer(playerData, out var matchData)
+                ? matchData.PlayerId
+                : null;
         }
     }
 }

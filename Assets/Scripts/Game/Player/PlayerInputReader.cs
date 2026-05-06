@@ -5,6 +5,8 @@ namespace Game.Player
 {
     public class PlayerInputReader : MonoBehaviour
     {
+        [SerializeField] private bool _debugInputLogs = true;
+        
         private PlayerControls _playerControls;
 
         public float Movement { get; private set; }
@@ -58,18 +60,37 @@ namespace Game.Player
             Vector2 value = ctx.ReadValue<Vector2>();
             Movement = value.x;
             VerticalInput = value.y;
+            
+            if (_debugInputLogs)
+                Debug.Log($"[PlayerInputReader] Move {ctx.phase}: raw={value}, movement={Movement}, vertical={VerticalInput}, keys={GetKeyboardState()}");
         }
 
         private void OnJumpPerformed(InputAction.CallbackContext ctx)
         {
             Jump = true;        // pulse
             JumpHeld = true;    // held state
+            
+            if (_debugInputLogs)
+                Debug.Log($"[PlayerInputReader] Jump performed {ctx.phase}: jump={Jump}, held={JumpHeld}, released={JumpReleased}, keys={GetKeyboardState()}");
         }
 
         private void OnJumpCanceled(InputAction.CallbackContext ctx)
         {
             JumpHeld = false;       // released
             JumpReleased = true;    // pulse
+            
+            if (_debugInputLogs)
+                Debug.Log($"[PlayerInputReader] Jump canceled {ctx.phase}: jump={Jump}, held={JumpHeld}, released={JumpReleased}, keys={GetKeyboardState()}");
+        }
+
+        private static string GetKeyboardState()
+        {
+            var keyboard = Keyboard.current;
+            if (keyboard == null)
+                return "keyboard=null";
+
+            return $"leftArrow={keyboard.leftArrowKey.isPressed}, rightArrow={keyboard.rightArrowKey.isPressed}, " +
+                   $"a={keyboard.aKey.isPressed}, d={keyboard.dKey.isPressed}, space={keyboard.spaceKey.isPressed}";
         }
     }
 }

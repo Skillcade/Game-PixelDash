@@ -19,6 +19,7 @@ namespace Game.Handlers
         [Inject] private readonly GameUi _gameUi;
         [Inject] private readonly FishNetPlayersController _playersController;
         [Inject] private readonly IConnectionController _connectionController;
+        [Inject] private readonly WebBridge _webBridge;
         
         public void Initialize()
         {
@@ -132,16 +133,37 @@ namespace Game.Handlers
             _gameUi.FinishedPanel.SetMode(mode);
             _gameUi.FinishedPanel.gameObject.SetActive(true);
             
-            if (!_playersController.TryGetPlayerData(evt.WinnerId, out var playerData))
+            string winnerName = evt.WinnerId >= 0 ? $"Player {evt.WinnerId}" : "—";
+
+            if (_playersController.TryGetPlayerData(evt.WinnerId, out var playerData))
             {
-                Debug.LogError($"[GameUiHandler] Can't get winner player data {evt.WinnerId}");
-                return;
+                if (PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
+                    winnerName = matchData.Nickname;
+            }
+            else
+            {
+                Debug.LogWarning($"[GameUiHandler] Can't get winner player data {evt.WinnerId}; using stable result data");
             }
 
-            if (PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
-                _gameUi.FinishedPanel.SetWinner(matchData.Nickname, evt.FinishReason);
+            _gameUi.FinishedPanel.SetWinner(winnerName, evt.FinishReason);
+            _gameUi.FinishedPanel.SetUserState(IsLocalWinner(evt));
+        }
 
-            _gameUi.FinishedPanel.SetUserState(_playersController.LocalPlayerId == evt.WinnerId);
+        private bool IsLocalWinner(GameFinishedEvent evt)
+        {
+            bool useStablePlayerId = _connectionController.ActiveConfig.SkillcadeHubIntegrated &&
+                                     !string.IsNullOrEmpty(evt.WinnerPlayerId);
+
+            if (!useStablePlayerId)
+                return _playersController.LocalPlayerId == evt.WinnerId;
+
+            if (_playersController.TryGetLocalPlayerData(out var localPlayerData) &&
+                PlayerMatchData.TryGetFromPlayer(localPlayerData, out var localMatchData))
+            {
+                return localMatchData.PlayerId == evt.WinnerPlayerId;
+            }
+
+            return _webBridge.Payload != null && _webBridge.Payload.PlayerId == evt.WinnerPlayerId;
         }
     }
 }

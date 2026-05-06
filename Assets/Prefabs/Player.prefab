@@ -164,7 +164,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
-  _initializedTimestamp: -8584249393836093333
+  _initializedTimestamp: -8584235237532376016
   NetworkObserver: {fileID: 0}
   _enablePrediction: 0
   _predictionType: 2
@@ -210,6 +210,7 @@ MonoBehaviour:
   _playerMovementConfig: {fileID: 11400000, guid: 13dcf7b23d5d25b489e33bb3ce163f55, type: 2}
   _collider: {fileID: 8367320915738945800}
   _visualsTransform: {fileID: 5081052010537483841}
+  _debugInputLogs: 0
 --- !u!50 &890865572886444992
 Rigidbody2D:
   serializedVersion: 5
@@ -287,6 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4331c6cf60dc4a15835b170170736676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _debugInputLogs: 0
 --- !u!114 &6550249093487379794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,6 +432,7 @@ MonoBehaviour:
   _targetObject: {fileID: 7294861560698192311}
   _graphicsObject: {fileID: 1095091617149836846}
   _networkObject: {fileID: 4944023266038734634}
+  _hideIfDifferentClientWorld: 0
   _targetRenderers:
   - {fileID: 5252079322890188045}
   _targetGroups:
@@ -447,7 +450,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _debug: 0
-  _useOverridePosition: 1
   _rigidbody: {fileID: 890865572886444992}
   _playerRollbackSource: {fileID: 1427533385231131571}
   _colliderRollback: {fileID: 6274731532900462022}
