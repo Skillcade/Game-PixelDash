@@ -13,6 +13,10 @@ GameObject:
   - component: {fileID: 5601794604963626924}
   - component: {fileID: 1674040647449191320}
   - component: {fileID: 2405369004300516086}
+  - component: {fileID: 8149275630184729561}
+  - component: {fileID: 8149275630184729562}
+  - component: {fileID: 8149275630184729563}
+  - component: {fileID: 8149275630184729564}
   m_Layer: 10
   m_Name: SpeedBuff
   m_TagString: Untagged
@@ -30,7 +34,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.4809031, y: 2.4809031, z: 2.4809031}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -160,10 +164,10 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 5495940997801683735}
   _networkObjectCache: {fileID: 5495940997801683735}
+  _debug: 0
   _shape: 0
   _triggerRadius: 0.5
   _triggerHalfExtents: {x: 0, y: 0}
-  _type: 0
   _respawnPrefab: {fileID: 5495940997801683735}
   _buffType: 1
   _value: 1.25
@@ -190,3 +194,83 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8149275630184729561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697982328058417135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b749f90d4c9961c4991179db1130fa4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbodyType: 0
+  _getInChildren: 0
+--- !u!50 &8149275630184729562
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697982328058417135}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &8149275630184729563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697982328058417135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80944225551645d0bae3f5997b282807, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isReplaying: 0
+  _replayObjectId: 0
+  _replayWorldId: 0
+  _prefabId: 6
+  _targetObject: {fileID: 4697982328058417135}
+  _graphicsObject: {fileID: 4697982328058417135}
+  _networkObject: {fileID: 5495940997801683735}
+  _hideIfDifferentClientWorld: 1
+  _targetRenderers:
+  - {fileID: 5601794604963626924}
+  _targetGroups: []
+--- !u!114 &8149275630184729564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697982328058417135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b96d45f34d654c07b8525419794b6b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _debug: 0
+  _rigidbody: {fileID: 8149275630184729562}
+  _playerRollbackSource: {fileID: 0}
+  _colliderRollback: {fileID: 0}

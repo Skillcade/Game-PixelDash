@@ -136304,9 +136304,9 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 1543381767}
   _networkObjectCache: {fileID: 0}
   _debug: 0
-  _shape: 0
+  _shape: 1
   _triggerRadius: 0
-  _triggerHalfExtents: {x: 0, y: 0}
+  _triggerHalfExtents: {x: 1, y: 50}
 --- !u!4 &1543381765
 Transform:
   m_ObjectHideFlags: 0

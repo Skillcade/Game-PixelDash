@@ -1,6 +1,5 @@
 using System;
 using FishNet.Object;
-using UnityEngine;
 
 namespace Collectables
 {
@@ -10,7 +9,6 @@ namespace Collectables
 
         public void CollectServer(CollectableBase collectable)
         {
-            Debug.Log($"[PlayerCollector] Collect {collectable.gameObject.name}");
             if (!collectable.TryCollectServer(this))
                 return;
 
