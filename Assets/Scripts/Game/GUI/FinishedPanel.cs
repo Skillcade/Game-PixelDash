@@ -31,7 +31,9 @@ namespace Game.GUI
         public void SetWinner(string winnerName, FinishReason reason)
         {
             _winnerText.text = winnerName;
-            _technicalWinText.gameObject.SetActive(reason == FinishReason.TechnicalWin);
+            _technicalWinText.gameObject.SetActive(reason == FinishReason.TechnicalWin || reason == FinishReason.Draw);
+            if (reason == FinishReason.Draw)
+                _technicalWinText.text = "Draw!";
         }
 
         public void SetUserState(bool state)
@@ -39,6 +41,14 @@ namespace Game.GUI
             foreach (var userStateText in _userStateTexts)
             {
                 userStateText.text = state ? "You won!" : "You lost!";
+            }
+        }
+
+        public void SetDraw()
+        {
+            foreach (var userStateText in _userStateTexts)
+            {
+                userStateText.text = "Draw!";
             }
         }
     }

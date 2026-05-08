@@ -3,6 +3,8 @@ using Game.GUI;
 using SkillcadeSDK.Connection;
 using SkillcadeSDK.Events;
 using SkillcadeSDK.FishNetAdapter.Players;
+using SkillcadeSDK.FishNetAdapter.StateMachine.Events;
+using SkillcadeSDK.StateMachine;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -27,6 +29,7 @@ namespace Game.Handlers
             _eventBus.Subscribe<AllPlayersReadyEvent>(OnAllPlayersReady);
             _eventBus.Subscribe<CountdownTickEvent>(OnCountdownTick);
             _eventBus.Subscribe<RunningStartEvent>(OnRunningStart);
+            _eventBus.Subscribe<RunningTimerTickEvent>(OnRunningTimerTick);
             _eventBus.Subscribe<GameFinishedEvent>(OnGameFinished);
 
             // Subscribe to UI button click
@@ -43,6 +46,7 @@ namespace Game.Handlers
             _eventBus.Unsubscribe<AllPlayersReadyEvent>(OnAllPlayersReady);
             _eventBus.Unsubscribe<CountdownTickEvent>(OnCountdownTick);
             _eventBus.Unsubscribe<RunningStartEvent>(OnRunningStart);
+            _eventBus.Unsubscribe<RunningTimerTickEvent>(OnRunningTimerTick);
             _eventBus.Unsubscribe<GameFinishedEvent>(OnGameFinished);
 
             _gameUi.WaitForPlayersPanel.OnReadyStateChanged -= OnReadyStateChanged;
@@ -120,18 +124,30 @@ namespace Game.Handlers
             _gameUi.RunningPanel.gameObject.SetActive(true);
         }
 
+        private void OnRunningTimerTick(RunningTimerTickEvent evt)
+        {
+            _gameUi.GameTimerPanel.UpdateTimer(evt);
+        }
+
         private void OnGameFinished(GameFinishedEvent evt)
         {
             _gameUi.RunningPanel.gameObject.SetActive(false);
-            
+
             var mode = _connectionController.ConnectionState == ConnectionState.SinglePlayer
                 ? FinishedPanel.FinishPanelMode.SinglePlayer
                 : _connectionController.ActiveConfig.SkillcadeHubIntegrated
                     ? FinishedPanel.FinishPanelMode.SkillcadeHub
                     : FinishedPanel.FinishPanelMode.Default;
-            
+
             _gameUi.FinishedPanel.SetMode(mode);
             _gameUi.FinishedPanel.gameObject.SetActive(true);
+
+            if (evt.FinishReason == FinishReason.Draw)
+            {
+                _gameUi.FinishedPanel.SetWinner("—", evt.FinishReason);
+                _gameUi.FinishedPanel.SetDraw();
+                return;
+            }
             
             string winnerName = evt.WinnerId >= 0 ? $"Player {evt.WinnerId}" : "—";
 
