@@ -1,3 +1,4 @@
+using SkillcadeSDK;
 using SkillcadeSDK.FishNetAdapter.StateMachine.Events;
 using TMPro;
 using UnityEngine;
@@ -51,7 +52,7 @@ namespace Game.GUI
                 return;
 
             _lastShownSeconds = remaining;
-            _timerText.text = $"{remaining}s";
+            _timerText.text = ((float)remaining).SecondsToTimeString();
         }
     }
 }
