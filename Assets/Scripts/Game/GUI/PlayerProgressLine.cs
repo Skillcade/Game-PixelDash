@@ -129,8 +129,12 @@ namespace Game.GUI
                 : "Player";
 
             Sprite icon = null;
+            UnityEngine.Debug.Log("[PlayerProgressLine] Searching for player character");
             if (PlayerCharacterData.TryGetFromPlayer(playerData, out var charData))
+            {
+                UnityEngine.Debug.Log($"[PlayerProgressLine] Character name is {charData.CharacterName}");
                 icon = FindIcon(charData.CharacterName);
+            }
 
             marker.Initialize(nickname, icon);
             marker.SetProgress(0f);

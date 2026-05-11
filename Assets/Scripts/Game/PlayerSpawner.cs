@@ -8,6 +8,11 @@ using SkillcadeSDK.FishNetAdapter.Players;
 using UnityEngine;
 using VContainer;
 
+#if UNITY_SERVER || UNITY_EDITOR
+using Game.Player;
+using SkillcadeSDK.ServerValidation;
+#endif
+
 namespace Game
 {
     public class PlayerSpawner : MonoBehaviour, IPlayerSpawner
@@ -16,6 +21,10 @@ namespace Game
         [SerializeField] private Transform _spawnPoint;
 
         [Inject] private readonly IObjectResolver _objectResolver;
+        
+#if UNITY_SERVER || UNITY_EDITOR
+        private ServerPayloadController _serverPayloadController;
+#endif
 
         private NetworkManager _networkManager;
         private FishNetPlayersController _playersController;
@@ -27,6 +36,10 @@ namespace Game
             _spawnedPlayers = new Dictionary<int, NetworkObject>();
             if (_objectResolver.TryResolve(out _playersController))
                 _playersController.OnPlayerRemoved += OnPlayerRemoved;
+            
+#if UNITY_SERVER || UNITY_EDITOR
+            _objectResolver.TryResolve(out _serverPayloadController);
+#endif
 
             _objectResolver.TryResolve(out _networkManager);
         }
@@ -46,6 +59,16 @@ namespace Game
 
                 if (_spawnedPlayers.ContainsKey(playerData.PlayerNetworkId))
                     continue;
+                
+#if UNITY_SERVER || UNITY_EDITOR
+                PlayerCharacterData characterData = null;
+                Debug.Log($"[PlayerSpawner] Searching for character data for player {playerData.PlayerNetworkId}");
+                if (_serverPayloadController == null || _serverPayloadController.Payload?.CharacterByPlayerIds != null)
+                {
+                    if (!PlayerCharacterData.TryGetFromPlayer(playerData, out characterData))
+                        continue;
+                }
+#endif
 
                 try
                 {
@@ -54,6 +77,23 @@ namespace Game
                         _spawnPoint.position,
                         Quaternion.identity,
                         connection);
+                    
+#if UNITY_SERVER || UNITY_EDITOR
+                    var movement = instance.GetComponent<PlayerMovement>();
+                    if (movement == null)
+                    {
+                        Debug.LogError($"[PlayerSpawner] Player {playerData.PlayerNetworkId} movement is null on player spawn");
+                    }
+                    else if (characterData != null)
+                    {
+                        Debug.Log($"[PlayerSpawner] Setting character name {characterData.CharacterName}");
+                        movement.SetCharacterName(characterData.CharacterName);
+                    }
+                    else if (_serverPayloadController != null && _serverPayloadController.Payload?.CharacterByPlayerIds != null)
+                    {
+                        Debug.LogError($"[PlayerSpawner] Can't get player {playerData.PlayerNetworkId} character data");
+                    }
+#endif
 
                     _spawnedPlayers[playerData.PlayerNetworkId] = instance;
                 }
