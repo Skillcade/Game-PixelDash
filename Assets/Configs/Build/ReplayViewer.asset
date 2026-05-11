@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ReplayViewer
   m_EditorClassIdentifier: 
   PipelineType: 1
-  ConnectionConfig: {fileID: 0}
-  ConnectionConfigName: 
+  ConnectionConfig: {fileID: 11400000, guid: 91d6b7b9a6911eb4c9510b6772c170a6, type: 2}
+  ConnectionConfigName: Replays
   SceneNames:
   - LevelScene
   BuildFileName: Game-PixelDash-Web
