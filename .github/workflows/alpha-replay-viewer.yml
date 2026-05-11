@@ -67,7 +67,7 @@ jobs:
       - name: Archive build
         run: |
           cd "Builds/${{ vars.REPLAY_BUILD_FOLDER }}/Game-PixelDash-Web"
-          zip -r ../../../client.zip . \
+          zip -r ../../../replay-viewer.zip . \
             -x "*DoNotShip*" -x "*DontShipItWithYourGame*"
 
       - name: Upload archive to VPS
@@ -75,7 +75,7 @@ jobs:
           VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
         run: |
           sshpass -p "$VPS_PASSWORD" scp -o StrictHostKeyChecking=no \
-            client.zip "${{ vars.VPS_USER }}@${{ vars.VPS_HOST }}:${{ vars.VPS_UPLOAD_PATH }}/client.zip"
+            replay-viewer.zip "${{ vars.VPS_USER }}@${{ vars.VPS_HOST }}:${{ vars.VPS_UPLOAD_PATH }}/replay-viewer.zip"
 
       - name: Deploy on VPS
         env:
@@ -85,5 +85,5 @@ jobs:
             "${{ vars.VPS_USER }}@${{ vars.VPS_HOST }}" "
               cd ${{ vars.VPS_REPLAY_PATH }} &&
               sudo rm -rf * &&
-              sudo unzip ${{ vars.VPS_UPLOAD_PATH }}/client.zip -d ./
+              sudo unzip ${{ vars.VPS_UPLOAD_PATH }}/replay-viewer.zip -d ./
             "
