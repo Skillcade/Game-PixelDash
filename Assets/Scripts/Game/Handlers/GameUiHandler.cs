@@ -122,16 +122,19 @@ namespace Game.Handlers
         {
             _gameUi.CountdownPanel.gameObject.SetActive(false);
             _gameUi.RunningPanel.gameObject.SetActive(true);
+            _gameUi.speedrunTimePanel.StartSpeedrunTime();
+            _gameUi.remainingTimePanel.Disable();
         }
 
         private void OnRunningTimerTick(RunningTimerTickEvent evt)
         {
-            _gameUi.GameTimerPanel.UpdateTimer(evt);
+            _gameUi.remainingTimePanel.UpdateTimer(evt);
         }
 
         private void OnGameFinished(GameFinishedEvent evt)
         {
             _gameUi.RunningPanel.gameObject.SetActive(false);
+            _gameUi.speedrunTimePanel.StopSpeedrunTime();
 
             var mode = _connectionController.ConnectionState == ConnectionState.SinglePlayer
                 ? FinishedPanel.FinishPanelMode.SinglePlayer

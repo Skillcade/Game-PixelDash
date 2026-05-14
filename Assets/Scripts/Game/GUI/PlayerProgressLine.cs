@@ -121,10 +121,17 @@ namespace Game.GUI
         {
             if (_entries.ContainsKey(playerId))
                 return;
+            
+            if (!PlayerInGameData.TryGetFromPlayer(playerData, out var inGameData) || !inGameData.InGame)
+                return;
 
+            CreatePlayerMarker(playerId, playerData);
+        }
+
+        private MarkerEntry CreatePlayerMarker(int playerId, FishNetPlayerData playerData)
+        {
             var marker = Instantiate(_markerPrefab, _markersContainer);
-
-            string nickname = PlayerMatchData.TryGetFromPlayer(playerData, out var matchData)
+            var nickname = PlayerMatchData.TryGetFromPlayer(playerData, out var matchData)
                 ? matchData.Nickname
                 : "Player";
 
@@ -139,19 +146,24 @@ namespace Game.GUI
             marker.Initialize(nickname, icon);
             marker.SetProgress(0f);
 
-            _entries[playerId] = new MarkerEntry
+            var entry = new MarkerEntry
             {
                 Marker = marker,
                 OwnerId = playerId
             };
+            _entries[playerId] = entry;
+            return entry;
         }
 
         private void OnPlayerDataUpdated(int playerId, FishNetPlayerData playerData)
         {
-            if (!_entries.TryGetValue(playerId, out var entry))
+            if (!PlayerInGameData.TryGetFromPlayer(playerData, out var inGameData) || !inGameData.InGame)
                 return;
+            
+            if (!_entries.TryGetValue(playerId, out var entry))
+                entry = CreatePlayerMarker(playerId, playerData);
 
-            string nickname = PlayerMatchData.TryGetFromPlayer(playerData, out var matchData)
+            var nickname = PlayerMatchData.TryGetFromPlayer(playerData, out var matchData)
                 ? matchData.Nickname
                 : "Player";
 

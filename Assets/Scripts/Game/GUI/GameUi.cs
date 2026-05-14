@@ -8,7 +8,8 @@ namespace Game.GUI
         [SerializeField] public WaitForPlayersPanel WaitForPlayersPanel;
         [SerializeField] public CountdownPanel CountdownPanel;
         [SerializeField] public GameObject RunningPanel;
-        [SerializeField] public GameTimerPanel GameTimerPanel;
+        [SerializeField] public RemainingTimePanel remainingTimePanel;
+        [SerializeField] public SpeedrunTimePanel speedrunTimePanel;
         [SerializeField] public FinishedPanel FinishedPanel;
         [SerializeField] public Button StopSinglePlayerButton;
 

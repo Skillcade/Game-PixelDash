@@ -5,8 +5,9 @@ using UnityEngine;
 
 namespace Game.GUI
 {
-    public class GameTimerPanel : MonoBehaviour
+    public class RemainingTimePanel : MonoBehaviour
     {
+        [SerializeField] private GameObject _container;
         [SerializeField] private TMP_Text _timerText;
         [SerializeField] private float _warningThreshold = 30f;
         [SerializeField] private Color _warningColor = Color.yellow;
@@ -32,16 +33,19 @@ namespace Game.GUI
                 _timerText.color = _criticalColor;
                 float pulse = 1f + Mathf.Sin(Time.unscaledTime * _pulseSpeed) * _pulseAmount;
                 _timerText.transform.localScale = _baseScale * pulse;
+                _container.SetActive(true);
             }
             else if (_lastShownSeconds <= _warningThreshold)
             {
                 _timerText.color = _warningColor;
                 _timerText.transform.localScale = _baseScale;
+                _container.SetActive(true);
             }
             else
             {
                 _timerText.color = _normalColor;
                 _timerText.transform.localScale = _baseScale;
+                _container.SetActive(false);
             }
         }
 
@@ -53,6 +57,11 @@ namespace Game.GUI
 
             _lastShownSeconds = remaining;
             _timerText.text = ((float)remaining).SecondsToTimeString();
+        }
+
+        public void Disable()
+        {
+            _container.SetActive(false);
         }
     }
 }
