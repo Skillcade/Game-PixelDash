@@ -210,7 +210,6 @@ MonoBehaviour:
   _playerMovementConfig: {fileID: 11400000, guid: 13dcf7b23d5d25b489e33bb3ce163f55, type: 2}
   _collider: {fileID: 8367320915738945800}
   _visualsTransform: {fileID: 5081052010537483841}
-  _debugInputLogs: 0
 --- !u!50 &890865572886444992
 Rigidbody2D:
   serializedVersion: 5
@@ -288,7 +287,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4331c6cf60dc4a15835b170170736676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debugInputLogs: 0
 --- !u!114 &6550249093487379794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -620,6 +618,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3955183533825437993, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
+      propertyPath: _movement
+      value: 
+      objectReference: {fileID: 8866073289841078330}
+    - target: {fileID: 3955183533825437993, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
+      propertyPath: _speedBuffs
+      value: 
+      objectReference: {fileID: 2097062857943216485}
     - target: {fileID: 6304163133518189503, guid: 448f525ccc15ec84b8e706990dd066c2, type: 3}
       propertyPath: _movement
       value: 

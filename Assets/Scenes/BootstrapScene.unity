@@ -514,7 +514,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &46433414
 RectTransform:
   m_ObjectHideFlags: 0
@@ -558,6 +558,12 @@ MonoBehaviour:
   - {fileID: 1969014256}
   - {fileID: 1002119331}
   - {fileID: 817213603}
+  _closeMatchText: {fileID: 0}
+  _closeMatchMessage: You were close!
+  _winConfetti: {fileID: 0}
+  _popTarget: {fileID: 0}
+  _popDuration: 0.35
+  _popOvershoot: 1.15
 --- !u!1 &50225358
 GameObject:
   m_ObjectHideFlags: 0
@@ -3266,6 +3272,7 @@ MonoBehaviour:
   remainingTimePanel: {fileID: 865345671}
   speedrunTimePanel: {fileID: 1215362720}
   FinishedPanel: {fileID: 46433415}
+  PlayerProgressLine: {fileID: 1174978949}
   StopSinglePlayerButton: {fileID: 45281879}
 --- !u!1 &787727613
 GameObject:
@@ -5085,10 +5092,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1881566853}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 134.22499, y: -50}
-  m_SizeDelta: {x: 163.34, y: 56.26}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1123518549
 MonoBehaviour:
@@ -5333,6 +5340,8 @@ MonoBehaviour:
   _bufferTime: 0.1
   _snapBackwardThreshold: 0.05
   _charactersConfig: {fileID: 11400000, guid: d8779a513ca97b1419dfe24bed4f26a4, type: 2}
+  _closeGapThreshold: 0.05
+  _closeGapHysteresis: 0.02
 --- !u!1 &1215362718
 GameObject:
   m_ObjectHideFlags: 0
@@ -5417,10 +5426,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1881566853}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 341.66998, y: -50}
-  m_SizeDelta: {x: 211.55, y: 56.26}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1239746425
 MonoBehaviour:
@@ -7083,7 +7092,7 @@ MonoBehaviour:
   - {fileID: 1699503132}
   - {fileID: 1699503133}
   - {fileID: 1699503134}
-  _connectionConfig: {fileID: 11400000, guid: 4005b0ff013f89644a5e23e586d77277, type: 2}
+  _connectionConfig: {fileID: 11400000, guid: 8471d1d5d9b0fc844837a7c2c0ad9566, type: 2}
 --- !u!114 &1699503132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8287,6 +8296,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timerText: {fileID: 2021451024}
+  _punchScale: 1.35
+  _punchDuration: 0.28
+  _goText: GO!
+  _goVisibleDuration: 0.6
 --- !u!1 &2089314343
 GameObject:
   m_ObjectHideFlags: 0

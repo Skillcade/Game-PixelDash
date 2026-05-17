@@ -131,8 +131,9 @@ GameObject:
   - component: {fileID: 6304163133518189503}
   - component: {fileID: 1474460296591712576}
   - component: {fileID: 8221566878186941655}
+  - component: {fileID: 3955183533825437993}
   m_Layer: 2
-  m_Name: Model
+  m_Name: PlayerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -285,6 +286,34 @@ MonoBehaviour:
   _replayObjectHandler: {fileID: 0}
   _networkObject: {fileID: 0}
   _nicknameText: {fileID: 8338453291196134784}
+--- !u!114 &3955183533825437993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509134482077141073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6878e6cdec195e499d07bb02048d6fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movement: {fileID: 0}
+  _speedBuffs: {fileID: 0}
+  _visualsTransform: {fileID: 6719524802415552574}
+  _animator: {fileID: 6542109632890407795}
+  _jumpStretch: {x: 0.8, y: 1.25, z: 1}
+  _landSquash: {x: 1.25, y: 0.8, z: 1}
+  _squashDuration: 0.18
+  _jumpDust: {fileID: 0}
+  _landDust: {fileID: 0}
+  _hardLandingSpeed: 12
+  _landShakeIntensity: 0.15
+  _landShakeDuration: 0.12
+  _deathHitStopDuration: 0.18
+  _buffHitStopDuration: 0.04
+  _deathFlashColor: {r: 1, g: 0.25, b: 0.25, a: 0.6}
+  _buffFlashColor: {r: 1, g: 0.95, b: 0.4, a: 0.45}
 --- !u!1 &1828312104256193721
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,6 +643,7 @@ MonoBehaviour:
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

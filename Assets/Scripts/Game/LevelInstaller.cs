@@ -1,5 +1,6 @@
 using Collectables;
 using Game.Camera;
+using Game.GameFeel;
 using Game.Level;
 using Game.Player;
 using SkillcadeSDK.Common.Level;
@@ -17,6 +18,7 @@ namespace Game
         [SerializeField] private CollectablesRespawnService _collectablesRespawnService;
         [SerializeField] private GameCameraTarget gameCameraTarget;
         [SerializeField] private PlayerCharactersConfig _charactersConfig;
+        [SerializeField] private GameFeelController _gameFeelController;
 
         public override void Install(IContainerBuilder builder)
         {
@@ -24,7 +26,10 @@ namespace Game
             builder.RegisterInstance(_finishLine);
             builder.RegisterInstance(_charactersConfig);
             builder.RegisterInstance(_collectablesRespawnService).As<IRespawnService>();
-            
+
+            if (_gameFeelController != null)
+                builder.RegisterInstance(_gameFeelController);
+
             // PlayerSpawner
             builder.RegisterInstance(_playerSpawner).As<IPlayerSpawner>();
         }

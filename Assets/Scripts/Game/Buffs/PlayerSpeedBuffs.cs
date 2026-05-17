@@ -10,6 +10,9 @@ namespace Game.Buffs
     [RequireComponent(typeof(PlayerCollector))]
     public class PlayerSpeedBuffs : NetworkBehaviour
     {
+        // Fired client-side on every buff added (any client). Listeners should filter by IsOwner.
+        public event System.Action BuffAddedFx;
+
         private readonly SyncList<SpeedBuffData> _activeBuffs = new(new SyncTypeSettings(writePermissions: WritePermission.ServerOnly));
         
         [SerializeField] private PlayerMovement _movement;
@@ -70,6 +73,11 @@ namespace Game.Buffs
         private void OnActiveBuffsChanged(SyncListOperation op, int index, SpeedBuffData oldItem, SpeedBuffData newItem, bool asServer)
         {
             Recalculate();
+
+            // Fire only on the client mirror (asServer=false) so visual juice fires once per pickup,
+            // even on host where both server and client callbacks run.
+            if (!asServer && op == SyncListOperation.Add)
+                BuffAddedFx?.Invoke();
         }
 
         private void Recalculate()

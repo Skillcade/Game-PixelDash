@@ -1,4 +1,5 @@
 using System;
+using Game.GameFeel;
 using Game.GUI;
 using SkillcadeSDK.Connection;
 using SkillcadeSDK.Events;
@@ -22,9 +23,14 @@ namespace Game.Handlers
         [Inject] private readonly FishNetPlayersController _playersController;
         [Inject] private readonly IConnectionController _connectionController;
         [Inject] private readonly WebBridge _webBridge;
+        [Inject] private readonly IObjectResolver _objectResolver;
+
+        private GameFeelController _gameFeel;
         
         public void Initialize()
         {
+            _objectResolver.TryResolve(out _gameFeel);
+
             _eventBus.Subscribe<WaitForPlayersEnterEvent>(OnWaitForPlayersEnter);
             _eventBus.Subscribe<AllPlayersReadyEvent>(OnAllPlayersReady);
             _eventBus.Subscribe<CountdownTickEvent>(OnCountdownTick);
@@ -120,10 +126,18 @@ namespace Game.Handlers
 
         private void OnRunningStart(RunningStartEvent evt)
         {
-            _gameUi.CountdownPanel.gameObject.SetActive(false);
+            // Keep the countdown panel up for the GO! flourish; it self-hides after the punch animation.
+            _gameUi.CountdownPanel.gameObject.SetActive(true);
+            _gameUi.CountdownPanel.ShowGo();
             _gameUi.RunningPanel.gameObject.SetActive(true);
             _gameUi.speedrunTimePanel.StartSpeedrunTime();
             _gameUi.remainingTimePanel.Disable();
+
+            if (_gameFeel != null)
+            {
+                _gameFeel.Flash(new Color(1f, 1f, 1f, 0.65f), 0.18f);
+                // _gameFeel.ShakeStrong();
+            }
         }
 
         private void OnRunningTimerTick(RunningTimerTickEvent evt)
@@ -165,7 +179,15 @@ namespace Game.Handlers
             }
 
             _gameUi.FinishedPanel.SetWinner(winnerName, evt.FinishReason);
-            _gameUi.FinishedPanel.SetUserState(IsLocalWinner(evt));
+            bool localWon = IsLocalWinner(evt);
+            _gameUi.FinishedPanel.SetUserState(localWon);
+
+            // Soften loss: if the gap was tight, surface a "you were close" line so the loss
+            // doesn't read as a blowout. Skip on win — winners don't need consolation.
+            if (!localWon && _gameUi.PlayerProgressLine != null)
+            {
+                _gameUi.FinishedPanel.ShowCloseMatch(Mathf.Abs(_gameUi.PlayerProgressLine.LastLocalGap));
+            }
         }
 
         private bool IsLocalWinner(GameFinishedEvent evt)

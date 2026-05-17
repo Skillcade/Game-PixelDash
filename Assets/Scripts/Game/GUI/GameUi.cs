@@ -11,6 +11,7 @@ namespace Game.GUI
         [SerializeField] public RemainingTimePanel remainingTimePanel;
         [SerializeField] public SpeedrunTimePanel speedrunTimePanel;
         [SerializeField] public FinishedPanel FinishedPanel;
+        [SerializeField] public PlayerProgressLine PlayerProgressLine;
         [SerializeField] public Button StopSinglePlayerButton;
 
         private void Awake()

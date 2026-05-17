@@ -5,6 +5,7 @@ using Game.Level;
 using Game.Player;
 using Game.RigidbodyInterpolation;
 using SkillcadeSDK;
+using SkillcadeSDK.Connection;
 using SkillcadeSDK.FishNetAdapter.Players;
 using UnityEngine;
 using VContainer;
@@ -20,7 +21,16 @@ namespace Game.GUI
         [SerializeField] private float _snapBackwardThreshold = 0.05f;
         [SerializeField] private PlayerCharactersConfig _charactersConfig;
 
+        [Header("Race feedback")]
+        // Below this gap (in normalised progress) the race is considered "close" and both markers light up.
+        [SerializeField] private float _closeGapThreshold = 0.05f;
+        // Hysteresis added to the close threshold when leaving the close state to avoid flicker.
+        [SerializeField] private float _closeGapHysteresis = 0.02f;
+
+        [Inject] private readonly IConnectionController _connectionController;
         [Inject] private readonly FishNetPlayersController _playersController;
+
+        public float LastLocalGap { get; private set; }
 
         private struct ProgressSnapshot : IInterpolateSnapshot
         {
@@ -34,6 +44,7 @@ namespace Game.GUI
             public PlayerProgressMarker Marker;
             public int OwnerId;
             public float CurrentProgress;
+            public bool IsClose;
             public readonly SortedList<float, ProgressSnapshot> Buffer = new();
             public float LocalTimeline = -1f;
         }
@@ -82,6 +93,88 @@ namespace Game.GUI
 
                 entry.CurrentProgress = Mathf.Lerp(from.Progress, to.Progress, t);
                 entry.Marker.SetProgress(entry.CurrentProgress);
+            }
+
+            UpdateRaceFeedback();
+        }
+
+        private void UpdateRaceFeedback()
+        {
+            if (_connectionController.ConnectionState is not (ConnectionState.Connected or ConnectionState.SinglePlayer))
+                return;
+            
+            if (!_playersController.TryGetLocalPlayerData(out _))
+                return;
+            
+            int localId = _playersController.LocalPlayerId;
+            if (!_entries.TryGetValue(localId, out var local))
+                return;
+
+            // Pick the leading opponent (largest gap in either direction, ignoring the local marker).
+            float bestAbsGap = 0f;
+            float bestSignedGap = 0f;
+            MarkerEntry leadingOpponent = null;
+            foreach (var kvp in _entries)
+            {
+                if (kvp.Key == localId)
+                    continue;
+                float gap = kvp.Value.CurrentProgress - local.CurrentProgress;
+                float abs = Mathf.Abs(gap);
+                if (abs > bestAbsGap || leadingOpponent == null)
+                {
+                    bestAbsGap = abs;
+                    bestSignedGap = gap;
+                    leadingOpponent = kvp.Value;
+                }
+            }
+
+            if (leadingOpponent == null)
+            {
+                LastLocalGap = 0f;
+                local.Marker.SetState(PlayerProgressMarker.State.Neutral);
+                return;
+            }
+
+            LastLocalGap = bestSignedGap;
+
+            // Hysteresis: once close, require a slightly bigger gap to drop the close state.
+            float threshold = local.IsClose
+                ? _closeGapThreshold + _closeGapHysteresis
+                : _closeGapThreshold;
+            bool close = bestAbsGap < threshold;
+            local.IsClose = close;
+            leadingOpponent.IsClose = close;
+
+            PlayerProgressMarker.State localState;
+            PlayerProgressMarker.State opponentState;
+            if (close)
+            {
+                localState = PlayerProgressMarker.State.Close;
+                opponentState = PlayerProgressMarker.State.Close;
+            }
+            else if (bestSignedGap > 0f)
+            {
+                // Opponent is ahead → local marker reads as "behind" (red), opponent stays neutral
+                // so it does not over-glorify the leader.
+                localState = PlayerProgressMarker.State.Behind;
+                opponentState = PlayerProgressMarker.State.Neutral;
+            }
+            else
+            {
+                // We are ahead. Subtle gold accent on local; opponent stays neutral.
+                localState = PlayerProgressMarker.State.Ahead;
+                opponentState = PlayerProgressMarker.State.Neutral;
+            }
+
+            local.Marker.SetState(localState);
+            leadingOpponent.Marker.SetState(opponentState);
+
+            // Any other opponents (>2 players) read as neutral; they still pulse via SetRole(Opponent).
+            foreach (var kvp in _entries)
+            {
+                if (kvp.Key == localId || kvp.Value == leadingOpponent)
+                    continue;
+                kvp.Value.Marker.SetState(PlayerProgressMarker.State.Neutral);
             }
         }
 
@@ -145,6 +238,9 @@ namespace Game.GUI
 
             marker.Initialize(nickname, icon);
             marker.SetProgress(0f);
+            marker.SetRole(playerId == _playersController.LocalPlayerId
+                ? PlayerProgressMarker.Role.Local
+                : PlayerProgressMarker.Role.Opponent);
 
             var entry = new MarkerEntry
             {

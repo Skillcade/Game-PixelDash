@@ -41,6 +41,9 @@ namespace Game.Player
         private const float JUMP_CUT_MULTIPLIER = 0.5f; // lower = shorter tap jump, higher = less difference
         
         public event System.Action JumpFx;
+        // Fall speed at the moment of landing (positive value). 0 means a soft / no-fall landing.
+        public event System.Action<float> LandFx;
+        public event System.Action DeathFx;
         public event System.Action OnCharacterNameChanged;
 
         public Vector2 VelocityVisual => IsOwner ? _rigidbody.Rigidbody.linearVelocity : _derivedVelocity;
@@ -70,6 +73,11 @@ namespace Game.Player
         private float _knockbackTimer;
         private float _coyoteTimer;
         private float _jumpTimer;
+        private float _jumpBufferTimer;
+        private float _baseGravityScale;
+        private bool _apexActive;
+        private float _lastVerticalVelocity;
+        private bool _deathFxFired;
 
         private Vector2 _spawnPoint;
         private string _characterNameToSet;
@@ -90,6 +98,7 @@ namespace Game.Player
             _prevPosition = transform.position;
 
             _knockbackTimer = 0f;
+            _baseGravityScale = _rigidbody.Rigidbody.gravityScale;
             _healthSync.SetInitialValues(_playerMovementConfig._maxHealth);
             MoveValues.ResetToConfig(_playerMovementConfig);
             
@@ -167,11 +176,29 @@ namespace Game.Player
             if (_jumpTimer > 0f)
                 _jumpTimer -= dt;
 
+            // Jump buffer: tap registered up to _jumpBufferTime before landing should still trigger a jump.
+            if (input.Jump)
+                _jumpBufferTimer = _playerMovementConfig._jumpBufferTime;
+            else if (_jumpBufferTimer > 0f)
+                _jumpBufferTimer -= dt;
+
             UpdateKnockback(dt);
             Move(input, dt);
             ApplyJumpCut(input);
-            
+            ApplyApexHangtime();
+
+            bool wasGrounded = _isGrounded;
+            float vyBeforeUpdate = _rigidbody.Rigidbody.linearVelocity.y;
             UpdateGrounded();
+
+            // Detect land transition before vy gets clamped by ground contact.
+            if (!wasGrounded && _isGrounded)
+            {
+                float impact = Mathf.Max(0f, -_lastVerticalVelocity);
+                LandFx?.Invoke(impact);
+            }
+
+            _lastVerticalVelocity = vyBeforeUpdate;
 
             if (_isGrounded)
                 _coyoteTimer = _playerMovementConfig._coyoteTime;
@@ -179,6 +206,32 @@ namespace Game.Player
                 _coyoteTimer -= (float)TimeManager.TickDelta;
 
             CapFallVelocity();
+        }
+
+        private void ApplyApexHangtime()
+        {
+            // Lower gravity briefly near the top of the jump (small |vy|) for that "floaty" apex feel.
+            // Owner-side, purely physics-state driven — no extra network traffic.
+            float multiplier = _playerMovementConfig._apexGravityMultiplier;
+            if (multiplier <= 0f || Mathf.Approximately(multiplier, 1f))
+                return;
+
+            bool inAir = !_isGrounded;
+            bool nearApex = Mathf.Abs(_rigidbody.Rigidbody.linearVelocity.y) <= _playerMovementConfig._apexVelocityThreshold;
+
+            if (inAir && nearApex)
+            {
+                if (!_apexActive)
+                {
+                    _rigidbody.Rigidbody.gravityScale = _baseGravityScale * multiplier;
+                    _apexActive = true;
+                }
+            }
+            else if (_apexActive)
+            {
+                _rigidbody.Rigidbody.gravityScale = _baseGravityScale;
+                _apexActive = false;
+            }
         }
 
         private void UpdateGrounded()
@@ -199,8 +252,17 @@ namespace Game.Player
             }
             else if (_knockbackTimer <= 0f && _healthSync.Value <= 0f)
             {
+                if (!_deathFxFired)
+                {
+                    _deathFxFired = true;
+                    DeathFx?.Invoke();
+                }
                 _rigidbody.Teleport(_spawnPoint, resetVelocity: true);
                 RespawnServerRpc();
+            }
+            else if (_healthSync.Value > 0f && _deathFxFired)
+            {
+                _deathFxFired = false;
             }
         }
 
@@ -225,10 +287,15 @@ namespace Game.Player
                 _rigidbody.Rigidbody.linearVelocity = new Vector2(newX, currentVelocity.y);
             }
 
-            if (input.Jump && (_isGrounded || _coyoteTimer > 0f) && _jumpTimer <= 0f)
+            // Jump if either the current input fires, or a buffered tap from the last few ms is still alive.
+            // Buffer is cleared on consumption so it can't double-fire.
+            bool jumpRequested = input.Jump || _jumpBufferTimer > 0f;
+            if (jumpRequested && (_isGrounded || _coyoteTimer > 0f) && _jumpTimer <= 0f)
             {
                 Jump();
                 _jumpTimer = _playerMovementConfig._jumpDelay;
+                _jumpBufferTimer = 0f;
+                _coyoteTimer = 0f;
             }
         }
 
@@ -249,6 +316,13 @@ namespace Game.Player
 
             JumpFx?.Invoke();
             TriggerJumpServerRpc();
+
+            // Restore gravity in case apex hangtime was active from a previous arc.
+            if (_apexActive)
+            {
+                _rigidbody.Rigidbody.gravityScale = _baseGravityScale;
+                _apexActive = false;
+            }
 
             _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             _isGrounded = false;

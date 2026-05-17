@@ -29,7 +29,6 @@ namespace Game.RollbackDebug
         // Server-returned rolled-back positions (received via TargetRpc)
         private Dictionary<int, Vector3> _serverPositions = new();
 
-        private bool _hasPendingRequest;
         private bool _sendRequest;
 
         private void Update()
@@ -95,7 +94,6 @@ namespace Game.RollbackDebug
             }
 
             var tick = TimeManager.GetPreciseTick(_tickType);
-            _hasPendingRequest = true;
             Debug.Log($"[RollbackDebugger] Request positions with tick {tick.Tick}, current: {TimeManager.Tick}");
             RequestRollbackPositionsServerRpc(tick);
         }
@@ -159,14 +157,12 @@ namespace Game.RollbackDebug
         {
             Debug.Log($"[RollbackDebugger] Received server response on tick {TimeManager.Tick}");
             _serverPositions = serverPositions;
-            _hasPendingRequest = false;
         }
 
         private void ClearPositions()
         {
             _clientPositions.Clear();
             _serverPositions.Clear();
-            _hasPendingRequest = false;
         }
 
 #if UNITY_EDITOR
