@@ -1,6 +1,9 @@
 using System.Collections;
+using Game.GUI;
+using SkillcadeSDK;
 using UnityEngine;
-using UnityEngine.UI;
+using VContainer;
+using VContainer.Unity;
 
 namespace Game.GameFeel
 {
@@ -11,14 +14,8 @@ namespace Game.GameFeel
     /// and is applied on the character via PlayerCharacterJuice; this controller only
     /// handles screen-wide juice.
     /// </summary>
-    public class GameFeelController : MonoBehaviour
+    public class GameFeelController : MonoBehaviour, IInitializable
     {
-        [Header("Flash")]
-        [SerializeField] private Image _flashImage;
-
-        [Header("Shake")]
-        [SerializeField] private CameraShaker _cameraShaker;
-
         [Header("Defaults")]
         [SerializeField] private float _shakeLight = 0.1f;
         [SerializeField] private float _shakeMedium = 0.25f;
@@ -27,23 +24,27 @@ namespace Game.GameFeel
         [SerializeField] private float _shakeDurationMedium = 0.2f;
         [SerializeField] private float _shakeDurationStrong = 0.35f;
 
+        [Inject] private readonly GameUi _gameUi;
+        [Inject] private readonly CameraShaker _cameraShaker;
+
         private Coroutine _flashRoutine;
 
-        private void Awake()
+        public void Initialize()
         {
-            if (_flashImage != null)
+            this.InjectToMe();
+            if (_gameUi.FlashImage != null)
             {
-                Color c = _flashImage.color;
+                Color c = _gameUi.FlashImage.color;
                 c.a = 0f;
-                _flashImage.color = c;
-                _flashImage.raycastTarget = false;
-                _flashImage.gameObject.SetActive(false);
+                _gameUi.FlashImage.color = c;
+                _gameUi.FlashImage.raycastTarget = false;
+                _gameUi.FlashImage.gameObject.SetActive(false);
             }
         }
 
         public void Flash(Color color, float duration)
         {
-            if (_flashImage == null || duration <= 0f)
+            if (_gameUi.FlashImage == null || duration <= 0f)
                 return;
 
             if (_flashRoutine != null)
@@ -58,29 +59,28 @@ namespace Game.GameFeel
 
         public void Shake(float intensity, float duration)
         {
-            if (_cameraShaker == null)
-                return;
-            _cameraShaker.Shake(intensity, duration);
+            if (_cameraShaker != null)
+                _cameraShaker.Shake(intensity, duration);
         }
 
         private IEnumerator FlashRoutine(Color color, float duration)
         {
-            _flashImage.gameObject.SetActive(true);
+            _gameUi.FlashImage.gameObject.SetActive(true);
             float t = 0f;
             while (t < duration)
             {
                 float a = 1f - (t / duration);
                 Color c = color;
                 c.a = a;
-                _flashImage.color = c;
+                _gameUi.FlashImage.color = c;
                 t += Time.unscaledDeltaTime;
                 yield return null;
             }
 
             Color end = color;
             end.a = 0f;
-            _flashImage.color = end;
-            _flashImage.gameObject.SetActive(false);
+            _gameUi.FlashImage.color = end;
+            _gameUi.FlashImage.gameObject.SetActive(false);
             _flashRoutine = null;
         }
     }

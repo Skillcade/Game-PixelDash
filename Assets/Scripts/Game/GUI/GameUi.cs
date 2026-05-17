@@ -13,6 +13,7 @@ namespace Game.GUI
         [SerializeField] public FinishedPanel FinishedPanel;
         [SerializeField] public PlayerProgressLine PlayerProgressLine;
         [SerializeField] public Button StopSinglePlayerButton;
+        [SerializeField] public Image FlashImage;
 
         private void Awake()
         {

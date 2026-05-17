@@ -1,3 +1,4 @@
+using Game.GameFeel;
 using Game.Player;
 using UnityEngine;
 
@@ -10,6 +11,9 @@ namespace Game.Camera
         [SerializeField] private float _rightSpeedFactor = 0.05f;
         [SerializeField] private float _leftBaseDistance = 1f;
         [SerializeField] private float _leftSpeedFactor = 0.05f;
+
+        [Header("Shake (optional)")]
+        [SerializeField] private CameraShaker _cameraShaker;
 
         [Header("Vertical go-ahead")]
         [SerializeField] private float _upBaseDistance = 0.5f;
@@ -99,6 +103,16 @@ namespace Game.Camera
             target.z = transform.position.z;
 
             transform.position = Vector3.MoveTowards(transform.position, target, _followSpeed * Time.deltaTime);
+
+            // Add the shake offset on top of the followed position. Cinemachine then
+            // damps toward this jittered target each frame and produces a real shake,
+            // without any execution-order tricks against the brain.
+            if (_cameraShaker != null)
+            {
+                Vector2 shake = _cameraShaker.CurrentOffset;
+                if (shake.sqrMagnitude > 0f)
+                    transform.position += new Vector3(shake.x, shake.y, 0f);
+            }
         }
     }
 }

@@ -136,7 +136,7 @@ namespace Game.Handlers
             if (_gameFeel != null)
             {
                 _gameFeel.Flash(new Color(1f, 1f, 1f, 0.65f), 0.18f);
-                // _gameFeel.ShakeStrong();
+                _gameFeel.ShakeStrong();
             }
         }
 

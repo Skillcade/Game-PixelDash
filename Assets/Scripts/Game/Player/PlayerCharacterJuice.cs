@@ -128,7 +128,7 @@ namespace Game.Player
 
             if (_isLocal && _gameFeel != null && impactSpeed >= _hardLandingSpeed)
             {
-                // _gameFeel.Shake(_landShakeIntensity, _landShakeDuration);
+                _gameFeel.Shake(_landShakeIntensity, _landShakeDuration);
             }
         }
 
@@ -139,7 +139,7 @@ namespace Game.Player
             if (_gameFeel != null)
             {
                 _gameFeel.Flash(_deathFlashColor, _deathFlashDuration);
-                // _gameFeel.ShakeMedium();
+                _gameFeel.ShakeMedium();
             }
         }
 
