@@ -75,6 +75,7 @@ namespace Game.Handlers
 
         private void UpdateWaitForPlayersUi()
         {
+            Debug.Log("[GameUiHandler] Update wait for players ui");
             if (_connectionController.ActiveConfig.TargetPlayerCount > 0)
             {
                 _gameUi.WaitForPlayersPanel.SetWaitForOthersState(true);
@@ -82,18 +83,20 @@ namespace Game.Handlers
             }
             
             _gameUi.WaitForPlayersPanel.SetWaitForOthersState(false);
-            bool localReady = _playersController.TryGetLocalPlayerData(out var data) &&
-                              PlayerInGameData.TryGetFromPlayer(data, out var inGameData) &&
-                              inGameData.IsReady;
-
-            int readyPlayers = 0;
-            int totalPlayers = 0;
+            var localReady = _playersController.TryGetLocalPlayerData(out var data) &&
+                             PlayerInGameData.TryGetFromPlayer(data, out var inGameData) &&
+                             inGameData.IsReady;
+            
+            var readyPlayers = 0;
+            var totalPlayers = 0;
             foreach (var playerData in _playersController.GetAllPlayersData())
             {
                 totalPlayers++;
                 if (PlayerInGameData.TryGetFromPlayer(playerData, out var playerInGameData) && playerInGameData.IsReady)
                     readyPlayers++;
             }
+
+            Debug.Log($"[GameUiHandler] Total players: {totalPlayers}, ready: {readyPlayers}, local ready: {localReady}");
 
             _gameUi.WaitForPlayersPanel.SetReadyState(readyPlayers, totalPlayers, localReady);
         }
@@ -107,7 +110,7 @@ namespace Game.Handlers
         {
             if (!_playersController.TryGetLocalPlayerData(out var playerData))
             {
-                Debug.LogError($"[GameUiHandler] Can't get local player data for id {_playersController.LocalPlayerId}");
+                Debug.LogError($"[GameUiHandler] Can't get local player data");
                 return;
             }
             
@@ -192,11 +195,11 @@ namespace Game.Handlers
 
         private bool IsLocalWinner(GameFinishedEvent evt)
         {
-            bool useStablePlayerId = _connectionController.ActiveConfig.SkillcadeHubIntegrated &&
-                                     !string.IsNullOrEmpty(evt.WinnerPlayerId);
+            var useStablePlayerId = _connectionController.ActiveConfig.SkillcadeHubIntegrated &&
+                                    !string.IsNullOrEmpty(evt.WinnerPlayerId);
 
             if (!useStablePlayerId)
-                return _playersController.LocalPlayerId == evt.WinnerId;
+                return _playersController.IsLocalPlayerId(evt.WinnerId);
 
             if (_playersController.TryGetLocalPlayerData(out var localPlayerData) &&
                 PlayerMatchData.TryGetFromPlayer(localPlayerData, out var localMatchData))

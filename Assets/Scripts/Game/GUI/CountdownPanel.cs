@@ -62,7 +62,9 @@ namespace Game.GUI
 
             if (_goRoutine != null)
                 StopCoroutine(_goRoutine);
-            _goRoutine = StartCoroutine(HideAfter(_goVisibleDuration));
+            
+            if (gameObject.activeInHierarchy)
+                _goRoutine = StartCoroutine(HideAfter(_goVisibleDuration));
         }
 
         private IEnumerator HideAfter(float seconds)
@@ -81,7 +83,9 @@ namespace Game.GUI
         {
             if (_punchRoutine != null)
                 StopCoroutine(_punchRoutine);
-            _punchRoutine = StartCoroutine(PunchRoutine());
+            
+            if (gameObject.activeInHierarchy)
+                _punchRoutine = StartCoroutine(PunchRoutine());
         }
 
         private IEnumerator PunchRoutine()

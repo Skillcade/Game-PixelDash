@@ -103,11 +103,10 @@ namespace Game.GUI
             if (_connectionController.ConnectionState is not (ConnectionState.Connected or ConnectionState.SinglePlayer))
                 return;
             
-            if (!_playersController.TryGetLocalPlayerData(out _))
+            if (!_playersController.TryGetLocalPlayerId(out var localPlayerId))
                 return;
             
-            int localId = _playersController.LocalPlayerId;
-            if (!_entries.TryGetValue(localId, out var local))
+            if (!_entries.TryGetValue(localPlayerId, out var local))
                 return;
 
             // Pick the leading opponent (largest gap in either direction, ignoring the local marker).
@@ -116,7 +115,7 @@ namespace Game.GUI
             MarkerEntry leadingOpponent = null;
             foreach (var kvp in _entries)
             {
-                if (kvp.Key == localId)
+                if (kvp.Key == localPlayerId)
                     continue;
                 float gap = kvp.Value.CurrentProgress - local.CurrentProgress;
                 float abs = Mathf.Abs(gap);
@@ -172,7 +171,7 @@ namespace Game.GUI
             // Any other opponents (>2 players) read as neutral; they still pulse via SetRole(Opponent).
             foreach (var kvp in _entries)
             {
-                if (kvp.Key == localId || kvp.Value == leadingOpponent)
+                if (kvp.Key == localPlayerId || kvp.Value == leadingOpponent)
                     continue;
                 kvp.Value.Marker.SetState(PlayerProgressMarker.State.Neutral);
             }
@@ -235,10 +234,10 @@ namespace Game.GUI
                 UnityEngine.Debug.Log($"[PlayerProgressLine] Character name is {charData.CharacterName}");
                 icon = FindIcon(charData.CharacterName);
             }
-
+            
             marker.Initialize(nickname, icon);
             marker.SetProgress(0f);
-            marker.SetRole(playerId == _playersController.LocalPlayerId
+            marker.SetRole(_playersController.IsLocalPlayerId(playerId)
                 ? PlayerProgressMarker.Role.Local
                 : PlayerProgressMarker.Role.Opponent);
 
