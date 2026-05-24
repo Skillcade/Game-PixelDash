@@ -55,6 +55,10 @@ namespace Game.GUI
         {
             this.InjectToMe();
 
+#if UNITY_SERVER && !UNITY_EDITOR
+            return;
+#endif
+
             InstanceFinder.ClientManager.RegisterBroadcast<PlayerProgressBroadcast>(OnProgressReceived);
 
             _playersController.OnPlayerAdded += OnPlayerAdded;
@@ -67,6 +71,10 @@ namespace Game.GUI
 
         private void OnDestroy()
         {
+#if UNITY_SERVER && !UNITY_EDITOR
+            return;
+#endif
+            
             if (InstanceFinder.ClientManager != null)
                 InstanceFinder.ClientManager.UnregisterBroadcast<PlayerProgressBroadcast>(OnProgressReceived);
 
@@ -80,6 +88,9 @@ namespace Game.GUI
 
         private void Update()
         {
+#if UNITY_SERVER && !UNITY_EDITOR
+            return;
+#endif
             foreach (var entry in _entries.Values)
             {
                 if (entry.LocalTimeline < 0f || entry.Buffer.Count < 2)
