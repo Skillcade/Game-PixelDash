@@ -4081,6 +4081,8 @@ MonoBehaviour:
   _finishLine: {fileID: 1543381764}
   _collectablesRespawnService: {fileID: 337552299}
   gameCameraTarget: {fileID: 910000003}
+  _charactersConfig: {fileID: 0}
+  _cameraShaker: {fileID: 0}
 --- !u!4 &333015395
 Transform:
   m_ObjectHideFlags: 0
@@ -131014,6 +131016,7 @@ MonoBehaviour:
   _rightSpeedFactor: 0.05
   _leftBaseDistance: 1
   _leftSpeedFactor: 0.05
+  _cameraShaker: {fileID: 0}
   _upBaseDistance: 0.5
   _upSpeedFactor: 0.02
   _downBaseDistance: 0.5
@@ -260719,6 +260722,10 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 1543381767}
   _networkObjectCache: {fileID: 0}
+  _debug: 0
+  _shape: 0
+  _triggerRadius: 0
+  _triggerHalfExtents: {x: 0, y: 0}
 --- !u!4 &1543381765
 Transform:
   m_ObjectHideFlags: 0
