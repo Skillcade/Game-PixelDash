@@ -42,15 +42,13 @@ namespace Game.Handlers
         {
             if (!_winnerId.HasValue)
                 return;
-            
-            if (_stateMachine.CurrentStateType == GameStateType.Finished)
-                return;
 
             _timeBeforeFinish -= Time.deltaTime;
             if (_timeBeforeFinish > 0f)
                 return;
 
             _stateMachine.SetStateServer(GameStateType.Finished, new FinishedStateData(_winnerId.Value, GetWinnerPlayerId(_winnerId.Value), FinishReason.CompletedGoal));
+            _winnerId = null;
         }
 
         private void OnRunningStart(RunningStartEvent evt)
