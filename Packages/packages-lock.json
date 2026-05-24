@@ -1,14 +1,5 @@
 {
   "dependencies": {
-    "com.alven.fishnet.unitytransport": {
-      "version": "https://github.com/ooonush/FishyUnityTransport.git?path=Assets/FishNet/Plugins/FishyUnityTransport",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.transport": "1.3.1"
-      },
-      "hash": "08756d9733a556018041e52fcb9d2a6035346aeb"
-    },
     "com.edgegap.unity-servers-plugin": {
       "version": "https://github.com/edgegap/edgegap-unity-plugin.git",
       "depth": 0,
@@ -20,15 +11,6 @@
       },
       "hash": "fe7c540b806f7a77daefcbee655924cab1b98188"
     },
-    "com.skillcade.fishy-webrtc": {
-      "version": "https://github.com/KGonzalezASC/FishyWebRTC.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.webrtc": "3.0.0-pre.7"
-      },
-      "hash": "46bcb3fe1666cf23c1ad62b7eaf97b72cd668361"
-    },
     "com.skillcade.sdk": {
       "version": "https://github.com/Skillcade/SkillcadeSDK.git?path=Assets/Source/SkillcadeSDK",
       "depth": 0,
@@ -36,14 +18,14 @@
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       },
-      "hash": "acdd7761f2e09d726080654e6a8d2c112e1b9fe0"
+      "hash": "2a36a298370d349e2d1b81f23286248afff388d5"
     },
     "com.skillcade.sdk-fishnet": {
       "version": "https://github.com/Skillcade/SkillcadeSDK-FishNet.git?path=Assets/Sources/SkillcadeSDK",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "c55ff221fc4f3bca99a9d0c75b802d86607b403b"
+      "hash": "5604ca2c8337d9f54ec6291c47f8bfe8bd90b555"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -61,8 +43,8 @@
       }
     },
     "com.unity.burst": {
-      "version": "1.8.21",
-      "depth": 2,
+      "version": "1.8.28",
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
@@ -88,22 +70,16 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collections": {
-      "version": "2.5.1",
-      "depth": 2,
+      "version": "2.6.2",
+      "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.burst": "1.8.17",
-        "com.unity.test-framework": "1.4.5",
-        "com.unity.nuget.mono-cecil": "1.11.4",
+        "com.unity.burst": "1.8.23",
+        "com.unity.mathematics": "1.3.2",
+        "com.unity.test-framework": "1.4.6",
+        "com.unity.nuget.mono-cecil": "1.11.5",
         "com.unity.test-framework.performance": "3.0.3"
       },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.editorcoroutines": {
-      "version": "1.0.0",
-      "depth": 2,
-      "source": "registry",
-      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.ext.nunit": {
@@ -113,7 +89,7 @@
       "dependencies": {}
     },
     "com.unity.ide.rider": {
-      "version": "3.0.38",
+      "version": "3.0.39",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -122,16 +98,16 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.25",
+      "version": "2.0.27",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.test-framework": "1.1.31"
+        "com.unity.test-framework": "1.1.33"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.14.2",
+      "version": "1.18.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -141,13 +117,13 @@
     },
     "com.unity.mathematics": {
       "version": "1.3.2",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.multiplayer.playmode": {
-      "version": "1.3.3",
+      "version": "1.6.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -156,8 +132,8 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.nuget.mono-cecil": {
-      "version": "1.11.4",
-      "depth": 3,
+      "version": "1.11.5",
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -174,7 +150,7 @@
       "depth": 1,
       "source": "builtin",
       "dependencies": {
-        "com.unity.burst": "1.8.14",
+        "com.unity.burst": "1.8.20",
         "com.unity.mathematics": "1.3.2",
         "com.unity.ugui": "2.0.0",
         "com.unity.collections": "2.4.3",
@@ -236,7 +212,7 @@
       }
     },
     "com.unity.splines": {
-      "version": "2.8.0",
+      "version": "2.8.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -263,7 +239,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
-      "version": "1.5.1",
+      "version": "1.6.0",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
@@ -273,8 +249,8 @@
       }
     },
     "com.unity.test-framework.performance": {
-      "version": "3.1.0",
-      "depth": 3,
+      "version": "3.2.0",
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.test-framework": "1.1.33",
@@ -293,13 +269,13 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.transport": {
-      "version": "2.5.1",
-      "depth": 1,
+      "version": "2.6.0",
+      "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.burst": "1.8.12",
+        "com.unity.burst": "1.8.24",
         "com.unity.collections": "2.2.1",
-        "com.unity.mathematics": "1.3.1"
+        "com.unity.mathematics": "1.3.2"
       },
       "url": "https://packages.unity.com"
     },
@@ -311,17 +287,6 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
-    },
-    "com.unity.webrtc": {
-      "version": "3.0.0-pre.7",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.audio": "1.0.0",
-        "com.unity.editorcoroutines": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
     },
     "jp.hadashikick.vcontainer": {
       "version": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.17.0",

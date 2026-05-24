@@ -71,17 +71,8 @@ namespace Collectables
 
             foreach (var point in _spawnPoints)
             {
-                if (point.Prefab == null)
-                {
-                    continue;
-                }
-
-                var instance = NetworkManager.ServerManager.InstantiateAndSpawn(point.Prefab, point.Position, point.Rotation);
-                if (instance.TryGetComponent<Rigidbody2D>(out var rb))
-                {
-                    rb.linearVelocity = Vector2.zero;
-                    rb.angularVelocity = 0;
-                }
+                if (point.Prefab != null)
+                    NetworkManager.ServerManager.InstantiateAndSpawn(point.Prefab, point.Position, point.Rotation);
             }
         }
     }

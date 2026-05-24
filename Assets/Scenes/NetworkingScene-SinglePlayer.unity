@@ -396,6 +396,7 @@ MonoBehaviour:
   _playersController: {fileID: 659747695}
   _stateMachineSyncer: {fileID: 1836597217}
   _replayWriteController: {fileID: 1337802088}
+  _rollbackReplayController: {fileID: 1337802089}
 --- !u!4 &1165856135
 Transform:
   m_ObjectHideFlags: 0
@@ -451,6 +452,7 @@ GameObject:
   - component: {fileID: 1337802087}
   - component: {fileID: 1337802086}
   - component: {fileID: 1337802088}
+  - component: {fileID: 1337802089}
   m_Layer: 0
   m_Name: FishNetReplayWriteController
   m_TagString: Untagged
@@ -542,7 +544,21 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 1337802086}
   _networkObjectCache: {fileID: 0}
-  _framesToSend: 0
+--- !u!114 &1337802089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337802084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a9eca5ef8faf774a83409484aaf2648, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 1337802086}
+  _networkObjectCache: {fileID: 0}
 --- !u!1 &1836597215
 GameObject:
   m_ObjectHideFlags: 0

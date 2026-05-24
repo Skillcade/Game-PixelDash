@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11a6c158ae1d54d40a6ae01c437a4561, type: 3}
+  m_Name: SkillcadeHub-Server
+  m_EditorClassIdentifier: 
+  PipelineType: 0
+  ConnectionConfig: {fileID: 11400000, guid: 5d3237476a32c854d859adc2f532ac6e, type: 2}
+  ConnectionConfigName: SkillcadeHub
+  SceneNames:
+  - NetworkingScene
+  - LevelScene
+  BuildFileName: ServerBuild
+  BuildFolderName: EdgegapServer
+  BuildTarget: 24
+  BuildSubtarget: 1
+  ExtraBuildScenes: []
+  UseSkillcadeDebug: 0
+  DevelopmentBuild: 0

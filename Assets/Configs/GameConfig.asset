@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   <StartGameCountdownSeconds>k__BackingField: 3
-  <WaitAfterFinishSeconds>k__BackingField: 3
+  <WaitAfterFinishSeconds>k__BackingField: 2
+  <WaitBeforeFinishSeconds>k__BackingField: 0.5
+  <UseReplaysV1>k__BackingField: 0
+  <GameTimerSeconds>k__BackingField: 300

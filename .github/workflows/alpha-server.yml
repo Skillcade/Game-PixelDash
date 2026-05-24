@@ -1,0 +1,93 @@
+name: Alpha — Server Build & Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch, tag, or commit SHA to deploy (e.g. main, v1.8.0)"
+        required: false
+        default: ""
+      environment:
+        description: "Target alpha environment"
+        required: true
+        type: choice
+        options:
+          - alpha-skillcade-germany
+          - alpha-rariaden
+      build_config:
+        description: "Build config asset path override (optional, leave blank to use vars.SERVER_BUILD_CONFIG)"
+        required: false
+        default: ""
+
+concurrency:
+  group: unity-build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          docker system prune -af
+          df -h
+
+      - name: Build server (Unity)
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 6000.0.68f1
+          targetPlatform: StandaloneLinux64
+          buildMethod: SkillcadeSDK.Editor.BuildScript.BuildFromCommandLine
+          customParameters: -buildConfig ${{ inputs.build_config || vars.SERVER_BUILD_CONFIG }}
+
+      - name: Upload build output on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output-${{ github.run_id }}-${{ github.run_attempt }}
+          path: Builds/
+          if-no-files-found: warn
+
+      - name: Archive build
+        run: |
+          cd "Builds/${{ vars.SERVER_BUILD_FOLDER }}"
+          zip -r ../../server.zip . \
+            -x "*DoNotShip*" -x "*DontShipItWithYourGame*"
+
+      - name: Upload archive to VPS
+        env:
+          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
+        run: |
+          sshpass -p "$VPS_PASSWORD" scp -o StrictHostKeyChecking=no \
+            server.zip "${{ vars.VPS_USER }}@${{ vars.VPS_HOST }}:${{ vars.VPS_UPLOAD_PATH }}/server.zip"
+
+      - name: Deploy on VPS
+        env:
+          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
+        run: |
+          sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no \
+            "${{ vars.VPS_USER }}@${{ vars.VPS_HOST }}" "
+              cd ${{ vars.VPS_SERVER_BUILD_PATH }} &&
+              sudo service ${{ vars.VPS_SERVICE_NAME }} stop &&
+              sudo rm -rf build &&
+              sudo mkdir build &&
+              sudo unzip ${{ vars.VPS_UPLOAD_PATH }}/server.zip -d ./build/ &&
+              sudo chmod +x build/${{ vars.SERVER_BUILD_EXE }} &&
+              sudo service ${{ vars.VPS_SERVICE_NAME }} start
+            "

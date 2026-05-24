@@ -17,6 +17,10 @@ namespace Game.Player
         [SerializeField] public float _jumpHeight;
         [SerializeField] public float _coyoteTime;
         [SerializeField] public float _jumpDelay;
+        [SerializeField] public float _jumpBufferTime;
+        // Apex hangtime: while |vy| is below this threshold near jump apex, gravityScale is multiplied.
+        [SerializeField] public float _apexVelocityThreshold;
+        [SerializeField] public float _apexGravityMultiplier;
         
         [Header("Ground check")]
         [SerializeField] public float _groundCheckOffset;

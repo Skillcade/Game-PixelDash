@@ -8,8 +8,12 @@ namespace Game.GUI
         [SerializeField] public WaitForPlayersPanel WaitForPlayersPanel;
         [SerializeField] public CountdownPanel CountdownPanel;
         [SerializeField] public GameObject RunningPanel;
+        [SerializeField] public RemainingTimePanel remainingTimePanel;
+        [SerializeField] public SpeedrunTimePanel speedrunTimePanel;
         [SerializeField] public FinishedPanel FinishedPanel;
+        [SerializeField] public PlayerProgressLine PlayerProgressLine;
         [SerializeField] public Button StopSinglePlayerButton;
+        [SerializeField] public Image FlashImage;
 
         private void Awake()
         {

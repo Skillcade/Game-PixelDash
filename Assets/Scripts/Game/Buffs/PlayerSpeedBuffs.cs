@@ -10,6 +10,9 @@ namespace Game.Buffs
     [RequireComponent(typeof(PlayerCollector))]
     public class PlayerSpeedBuffs : NetworkBehaviour
     {
+        // Fired client-side on every buff added (any client). Listeners should filter by IsOwner.
+        public event System.Action BuffAddedFx;
+
         private readonly SyncList<SpeedBuffData> _activeBuffs = new(new SyncTypeSettings(writePermissions: WritePermission.ServerOnly));
         
         [SerializeField] private PlayerMovement _movement;
@@ -41,35 +44,40 @@ namespace Game.Buffs
         private void Update()
         {
             if (!IsServerInitialized)
-            {
                 return;
-            }
-            
-            float now = Time.time;
+
+            uint currentTick = TimeManager.Tick;
             for (int i = _activeBuffs.Count - 1; i >= 0; i--)
             {
-                if (_activeBuffs[i].IsExpired(now))
-                {
+                if (_activeBuffs[i].IsExpired(currentTick))
                     _activeBuffs.RemoveAt(i);
-                }
             }
         }
 
-        private void OnCollectedServer(PlayerCollector collector, CollectableBase collectable, CollectableType type)
+        private void OnCollectedServer(PlayerCollector collector, CollectableBase collectable)
         {
             if (collectable is not SpeedBuffPickup pickup)
-            {
                 return;
-            }
-            
-            var data = new SpeedBuffData(pickup.BuffType, pickup.Value, pickup.Duration, Time.time);
-            
+
+            var data = new SpeedBuffData
+            {
+                BuffType = pickup.BuffType,
+                Value = pickup.Value,
+                StartTick = TimeManager.Tick,
+                DurationTicks = (uint)(pickup.Duration * TimeManager.TickRate)
+            };
+
             _activeBuffs.Add(data);
         }
 
         private void OnActiveBuffsChanged(SyncListOperation op, int index, SpeedBuffData oldItem, SpeedBuffData newItem, bool asServer)
         {
             Recalculate();
+
+            // Fire only on the client mirror (asServer=false) so visual juice fires once per pickup,
+            // even on host where both server and client callbacks run.
+            if (!asServer && op == SyncListOperation.Add)
+                BuffAddedFx?.Invoke();
         }
 
         private void Recalculate()

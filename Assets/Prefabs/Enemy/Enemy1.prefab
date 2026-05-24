@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6758936861493103981}
@@ -180,7 +180,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b96d45f34d654c07b8525419794b6b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _debug: 0
+  _useOverridePosition: 0
   _rigidbody: {fileID: 5512311860101850221}
+  _playerRollbackSource: {fileID: 0}
+  _colliderRollback: {fileID: 0}
 --- !u!1 &4767784925725578143
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,7 +210,7 @@ Transform:
   m_GameObject: {fileID: 4767784925725578143}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalPosition: {x: -3, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -303,7 +307,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.14865685, y: 0.609517}
+  m_Size: {x: 0.2, y: 0.609517}
   m_EdgeRadius: 0
 --- !u!114 &7467715560128504238
 MonoBehaviour:
@@ -320,6 +324,10 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 2637202103619406344}
   _networkObjectCache: {fileID: 0}
+  _debug: 1
+  _shape: 1
+  _triggerRadius: 0
+  _triggerHalfExtents: {x: 0.1, y: 0.27}
   Damage: 100
 --- !u!1 &5669972979329020059
 GameObject:
@@ -331,11 +339,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6758936861493103981}
   - component: {fileID: 2637202103619406344}
-  - component: {fileID: 5657729608577931585}
   - component: {fileID: 5512311860101850221}
   - component: {fileID: 3608441422625415644}
   - component: {fileID: 388623077695782972}
   - component: {fileID: 1111389412888735395}
+  - component: {fileID: 2290283831823417213}
+  - component: {fileID: 9017784778080514660}
   m_Layer: 0
   m_Name: SpriteRoot
   m_TagString: Untagged
@@ -414,52 +423,6 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 0}
     Scale: {x: 0, y: 0, z: 0}
     IsValid: 0
---- !u!114 &5657729608577931585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5669972979329020059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 2637202103619406344}
-  _networkObjectCache: {fileID: 0}
-  _componentConfiguration: 0
-  _synchronizeParent: 0
-  _packing:
-    Position: 1
-    Rotation: 1
-    Scale: 0
-  _useScaledTime: 1
-  _interpolation: 2
-  _extrapolation: 2
-  _enableTeleport: 0
-  _teleportThreshold: 1
-  _clientAuthoritative: 1
-  _sendToOwner: 1
-  _interval: 1
-  _synchronizePosition: 1
-  _positionSensitivity: 0.001
-  _positionSnapping:
-    X: 0
-    Y: 0
-    Z: 0
-  _synchronizeRotation: 1
-  _rotationSnapping:
-    X: 0
-    Y: 0
-    Z: 0
-  _synchronizeScale: 1
-  _scaleSensitivity: 0.001
-  _scaleSnapping:
-    X: 0
-    Y: 0
-    Z: 0
 --- !u!50 &5512311860101850221
 Rigidbody2D:
   serializedVersion: 5
@@ -502,6 +465,7 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 2637202103619406344}
   _networkObjectCache: {fileID: 0}
+  _debug: 0
   _oneSideMoveTime: 2
   _oneSideMoveCurve:
     serializedVersion: 2
@@ -569,6 +533,46 @@ MonoBehaviour:
   _boundingBoxSize: {x: 3, y: 3, z: 3}
   _colliderParents:
   - {fileID: 4985391977909191330}
+--- !u!114 &2290283831823417213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5669972979329020059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5b9e502d787214481d0005a95b1e65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 2637202103619406344}
+  _networkObjectCache: {fileID: 0}
+  Debug: 0
+--- !u!114 &9017784778080514660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5669972979329020059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637c12bb3f61cd7438620dd5402ef220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 2637202103619406344}
+  _networkObjectCache: {fileID: 0}
+  _tickCallbacks: 4
+  _networkObject: {fileID: 2637202103619406344}
+  _rigidbody: {fileID: 5512311860101850221}
+  _visualTransform: {fileID: 7427507869138414002}
+  _workOnNotOwner: 1
+  _interpolationSettings: {fileID: 11400000, guid: eb3f9fb8a67c19b47a45dbe8a1dba394, type: 2}
+  _state: 0
+  _isActive: 0
+  _timelineOffset: 0
 --- !u!1 &6376225998756225442
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,7 +598,7 @@ Transform:
   m_GameObject: {fileID: 6376225998756225442}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalPosition: {x: 3, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

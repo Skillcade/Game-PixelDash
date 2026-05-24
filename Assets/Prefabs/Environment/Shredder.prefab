@@ -99,12 +99,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3244945930516696537}
   - component: {fileID: 5039122664999532716}
-  - component: {fileID: 2071940006847187129}
-  - component: {fileID: 8155658178347754107}
   - component: {fileID: 4157329822031842845}
   - component: {fileID: 3481866315551263833}
   - component: {fileID: 6072855168975738073}
   - component: {fileID: 4607441072004431435}
+  - component: {fileID: 181577568632774491}
   m_Layer: 0
   m_Name: Saw
   m_TagString: Untagged
@@ -183,72 +182,6 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 0}
     Scale: {x: 0, y: 0, z: 0}
     IsValid: 0
---- !u!114 &2071940006847187129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2192751021213653548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 5039122664999532716}
-  _networkObjectCache: {fileID: 0}
-  _componentConfiguration: 0
-  _synchronizeParent: 0
-  _packing:
-    Position: 1
-    Rotation: 1
-    Scale: 0
-  _useScaledTime: 1
-  _interpolation: 2
-  _extrapolation: 2
-  _enableTeleport: 0
-  _teleportThreshold: 1
-  _clientAuthoritative: 1
-  _sendToOwner: 0
-  _interval: 1
-  _synchronizePosition: 1
-  _positionSensitivity: 0.001
-  _positionSnapping:
-    X: 0
-    Y: 0
-    Z: 0
-  _synchronizeRotation: 1
-  _rotationSnapping:
-    X: 0
-    Y: 0
-    Z: 0
-  _synchronizeScale: 0
-  _scaleSensitivity: 0.001
-  _scaleSnapping:
-    X: 0
-    Y: 0
-    Z: 0
---- !u!114 &8155658178347754107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2192751021213653548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a60424afcf0b5984dbe878a1f21c10b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 5039122664999532716}
-  _networkObjectCache: {fileID: 0}
-  MaximumSimultaneousHits: 4
-  AdditionalSize: 0.1
-  Layers:
-    serializedVersion: 2
-    m_Bits: 960
 --- !u!50 &4157329822031842845
 Rigidbody2D:
   serializedVersion: 5
@@ -291,6 +224,7 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 5039122664999532716}
   _networkObjectCache: {fileID: 0}
+  _debug: 0
   _oneSideMoveTime: 2
   _oneSideMoveCurve:
     serializedVersion: 2
@@ -334,6 +268,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 5039122664999532716}
   _networkObjectCache: {fileID: 0}
   _rotationSpeed: 270
+  _rotateTarget: {fileID: 1143083974775187690}
 --- !u!114 &4607441072004431435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,6 +289,30 @@ MonoBehaviour:
   _boundingBoxSize: {x: 3, y: 3, z: 3}
   _colliderParents:
   - {fileID: 4473987581717625681}
+--- !u!114 &181577568632774491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2192751021213653548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 637c12bb3f61cd7438620dd5402ef220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 5039122664999532716}
+  _networkObjectCache: {fileID: 0}
+  _tickCallbacks: 4
+  _networkObject: {fileID: 5039122664999532716}
+  _rigidbody: {fileID: 4157329822031842845}
+  _visualTransform: {fileID: 1143083974775187690}
+  _workOnNotOwner: 1
+  _interpolationSettings: {fileID: 11400000, guid: eb3f9fb8a67c19b47a45dbe8a1dba394, type: 2}
+  _state: 0
+  _isActive: 0
+  _timelineOffset: 0
 --- !u!1 &3584268969437341264
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,7 +531,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b96d45f34d654c07b8525419794b6b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _debug: 0
+  _useOverridePosition: 0
   _rigidbody: {fileID: 4157329822031842845}
+  _playerRollbackSource: {fileID: 0}
+  _colliderRollback: {fileID: 4607441072004431435}
 --- !u!1 &4473987581717625681
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,7 +546,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2684836161040716186}
   - component: {fileID: 4650670841107853011}
-  - component: {fileID: 7762054548500943522}
   m_Layer: 10
   m_Name: HitBox
   m_TagString: Untagged
@@ -621,40 +583,8 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 5039122664999532716}
   _networkObjectCache: {fileID: 0}
+  _debug: 0
+  _shape: 0
+  _triggerRadius: 1.1
+  _triggerHalfExtents: {x: 0, y: 0}
   Damage: 100
---- !u!58 &7762054548500943522
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4473987581717625681}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 1.1

@@ -13,22 +13,12 @@ namespace Game.Buffs
     {
         public SpeedBuffType BuffType;
         public float Value;
-        public float StartTime;
-        public float Duration;
+        public uint StartTick;
+        public uint DurationTicks;
 
-        public float EndTime => StartTime + Duration;
-        
-        public SpeedBuffData(SpeedBuffType buffType, float value, float duration, float startTime)
+        public bool IsExpired(uint currentTick)
         {
-            BuffType = buffType;
-            Value = value;
-            Duration = duration;
-            StartTime = startTime;
-        }
-        
-        public bool IsExpired(float now)
-        {
-            return Duration > 0f && now >= EndTime;
+            return DurationTicks > 0 && currentTick >= StartTick + DurationTicks;
         }
     }
 }

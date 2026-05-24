@@ -1,0 +1,80 @@
+name: S3 Singleplayer — Client Build & Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch, tag, or commit SHA to deploy (e.g. main, v1.8.0)'
+        required: false
+        default: ''
+      environment:
+        description: 'Target singleplayer environment'
+        required: true
+        type: choice
+        options:
+          - staging-singleplayer
+          - production-singleplayer
+      build_config:
+        description: 'Build config asset path override (optional, leave blank to use vars.CLIENT_BUILD_CONFIG)'
+        required: false
+        default: ''
+
+concurrency:
+  group: unity-build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          docker system prune -af
+          df -h
+
+      - name: Build WebGL client (Unity)
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 6000.0.68f1
+          targetPlatform: WebGL
+          buildMethod: SkillcadeSDK.Editor.BuildScript.BuildFromCommandLine
+          customParameters: -buildConfig ${{ inputs.build_config || vars.CLIENT_BUILD_CONFIG }}
+
+      - name: Upload build output on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output-${{ github.run_id }}-${{ github.run_attempt }}
+          path: Builds/
+          if-no-files-found: warn
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: S3 sync — non-gz files
+        run: |
+          aws s3 sync "Builds/${{ vars.CLIENT_BUILD_FOLDER }}/Game-PixelDash-Web/" "${{ vars.S3_URL }}" \
+            --delete --cache-control "no-cache" --exclude "*.gz"
+
+      - name: S3 sync — gz files with content-encoding
+        run: |
+          aws s3 sync "Builds/${{ vars.CLIENT_BUILD_FOLDER }}/Game-PixelDash-Web/" "${{ vars.S3_URL }}" \
+            --delete --exclude "*" --include "*.gz" \
+            --content-encoding gzip --cache-control "no-cache"

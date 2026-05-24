@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a6c158ae1d54d40a6ae01c437a4561, type: 3}
   m_Name: LocalHost-Windows-Debug
   m_EditorClassIdentifier: 
+  PipelineType: 0
   ConnectionConfig: {fileID: 11400000, guid: 4005b0ff013f89644a5e23e586d77277, type: 2}
+  ConnectionConfigName: LocalHost
   SceneNames:
   - NetworkingScene
   - LevelScene
   BuildFileName: PixelDash.exe
   BuildFolderName: Game-PixelDash-Windows-LocalHost
   BuildTarget: 5
-  BuildSubtarget: 0
+  BuildSubtarget: 2
   ExtraBuildScenes:
-  - NetworkingDebugScene
-  ExtraDefines:
-  - SKILLCADE_DEBUG
+  - NetworkDebugScene
+  UseSkillcadeDebug: 1
   DevelopmentBuild: 1

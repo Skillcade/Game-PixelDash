@@ -8,12 +8,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BootstrapScene.unity
     guid: 11171620162054d4fa8b0edc8cc1c086
+  - enabled: 0
+    path: Assets/Scenes/ReplayScene.unity
+    guid: 8e588df600ecb6543ae81e5f245141fc
   - enabled: 1
     path: Assets/Scenes/LevelScene.unity
-    guid: 3d27f412dc3a88549b8af05115013876
+    guid: 3ddeb4a8a7775524ca02724a812f5ac1
   - enabled: 1
     path: Assets/Scenes/NetworkingScene.unity
     guid: d8c151ad109fafb48ab4214ff8d587f5
+  - enabled: 1
+    path: Assets/Scenes/NetworkingScene-UTP.unity
+    guid: 90cb405887667c94ebcb944ec793a006
   - enabled: 1
     path: Assets/Scenes/NetworkingScene-SinglePlayer.unity
     guid: 484298943d8b6ce48a147a537e1906df

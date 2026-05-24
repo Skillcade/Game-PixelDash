@@ -98,12 +98,11 @@ GameObject:
   - component: {fileID: 5296692149138659092}
   - component: {fileID: 1691659755529564869}
   - component: {fileID: 6800391930242968300}
-  - component: {fileID: 2822278422150078881}
   - component: {fileID: 5346761184591508398}
   - component: {fileID: 7389209222400272676}
   - component: {fileID: 2117515439504612277}
   - component: {fileID: 6219159926353558244}
-  - component: {fileID: 309240296840958742}
+  - component: {fileID: 7757470075671939944}
   m_Layer: 10
   m_Name: TrioSpike
   m_TagString: Untagged
@@ -196,53 +195,10 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 1691659755529564869}
   _networkObjectCache: {fileID: 0}
+  _shape: 1
+  _triggerRadius: 0
+  _triggerHalfExtents: {x: 0.46, y: 0.5}
   Damage: 100
---- !u!61 &2822278422150078881
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1553204717528410005}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: -0.0032043457, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 2.5367646, y: 1.1397059}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.9827881, y: 1.1397059}
-  m_EdgeRadius: 0
 --- !u!114 &5346761184591508398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,7 +282,7 @@ MonoBehaviour:
   _targetRenderers:
   - {fileID: 3013936314300115277}
   _targetGroups: []
---- !u!114 &309240296840958742
+--- !u!114 &7757470075671939944
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -335,14 +291,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1553204717528410005}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01a271dd97d875347b0cea860df29a9d, type: 3}
+  m_Script: {fileID: 11500000, guid: b96d45f34d654c07b8525419794b6b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 1691659755529564869}
-  _networkObjectCache: {fileID: 0}
-  _boundingBox: 0
-  _physicsType: 1
-  _boundingBoxSize: {x: 3, y: 3, z: 3}
-  _colliderParents:
-  - {fileID: 1553204717528410005}
+  _rigidbody: {fileID: 7389209222400272676}
+  _colliderRollback: {fileID: 0}

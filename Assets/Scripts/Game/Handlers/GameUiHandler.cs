@@ -1,8 +1,11 @@
 using System;
+using Game.GameFeel;
 using Game.GUI;
 using SkillcadeSDK.Connection;
 using SkillcadeSDK.Events;
 using SkillcadeSDK.FishNetAdapter.Players;
+using SkillcadeSDK.FishNetAdapter.StateMachine.Events;
+using SkillcadeSDK.StateMachine;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -19,13 +22,20 @@ namespace Game.Handlers
         [Inject] private readonly GameUi _gameUi;
         [Inject] private readonly FishNetPlayersController _playersController;
         [Inject] private readonly IConnectionController _connectionController;
+        [Inject] private readonly WebBridge _webBridge;
+        [Inject] private readonly IObjectResolver _objectResolver;
+
+        private GameFeelController _gameFeel;
         
         public void Initialize()
         {
+            _objectResolver.TryResolve(out _gameFeel);
+
             _eventBus.Subscribe<WaitForPlayersEnterEvent>(OnWaitForPlayersEnter);
             _eventBus.Subscribe<AllPlayersReadyEvent>(OnAllPlayersReady);
             _eventBus.Subscribe<CountdownTickEvent>(OnCountdownTick);
             _eventBus.Subscribe<RunningStartEvent>(OnRunningStart);
+            _eventBus.Subscribe<RunningTimerTickEvent>(OnRunningTimerTick);
             _eventBus.Subscribe<GameFinishedEvent>(OnGameFinished);
 
             // Subscribe to UI button click
@@ -42,6 +52,7 @@ namespace Game.Handlers
             _eventBus.Unsubscribe<AllPlayersReadyEvent>(OnAllPlayersReady);
             _eventBus.Unsubscribe<CountdownTickEvent>(OnCountdownTick);
             _eventBus.Unsubscribe<RunningStartEvent>(OnRunningStart);
+            _eventBus.Unsubscribe<RunningTimerTickEvent>(OnRunningTimerTick);
             _eventBus.Unsubscribe<GameFinishedEvent>(OnGameFinished);
 
             _gameUi.WaitForPlayersPanel.OnReadyStateChanged -= OnReadyStateChanged;
@@ -64,25 +75,28 @@ namespace Game.Handlers
 
         private void UpdateWaitForPlayersUi()
         {
+            Debug.Log("[GameUiHandler] Update wait for players ui");
             if (_connectionController.ActiveConfig.TargetPlayerCount > 0)
             {
                 _gameUi.WaitForPlayersPanel.SetWaitForOthersState(true);
                 return;
             }
-
+            
             _gameUi.WaitForPlayersPanel.SetWaitForOthersState(false);
-            bool localReady = _playersController.TryGetPlayerData(_playersController.LocalPlayerId, out var data) &&
-                              PlayerInGameData.TryGetFromPlayer(data, out var inGameData) &&
-                              inGameData.IsReady;
-
-            int readyPlayers = 0;
-            int totalPlayers = 0;
+            var localReady = _playersController.TryGetLocalPlayerData(out var data) &&
+                             PlayerInGameData.TryGetFromPlayer(data, out var inGameData) &&
+                             inGameData.IsReady;
+            
+            var readyPlayers = 0;
+            var totalPlayers = 0;
             foreach (var playerData in _playersController.GetAllPlayersData())
             {
                 totalPlayers++;
                 if (PlayerInGameData.TryGetFromPlayer(playerData, out var playerInGameData) && playerInGameData.IsReady)
                     readyPlayers++;
             }
+
+            Debug.Log($"[GameUiHandler] Total players: {totalPlayers}, ready: {readyPlayers}, local ready: {localReady}");
 
             _gameUi.WaitForPlayersPanel.SetReadyState(readyPlayers, totalPlayers, localReady);
         }
@@ -94,9 +108,9 @@ namespace Game.Handlers
 
         private void OnReadyStateChanged(bool isReady)
         {
-            if (!_playersController.TryGetPlayerData(_playersController.LocalPlayerId, out var playerData))
+            if (!_playersController.TryGetLocalPlayerData(out var playerData))
             {
-                Debug.LogError($"[GameUiHandler] Can't get local player data for id {_playersController.LocalPlayerId}");
+                Debug.LogError($"[GameUiHandler] Can't get local player data");
                 return;
             }
             
@@ -115,25 +129,85 @@ namespace Game.Handlers
 
         private void OnRunningStart(RunningStartEvent evt)
         {
-            _gameUi.CountdownPanel.gameObject.SetActive(false);
+            // Keep the countdown panel up for the GO! flourish; it self-hides after the punch animation.
+            _gameUi.CountdownPanel.gameObject.SetActive(true);
+            _gameUi.CountdownPanel.ShowGo();
             _gameUi.RunningPanel.gameObject.SetActive(true);
+            _gameUi.speedrunTimePanel.StartSpeedrunTime();
+            _gameUi.remainingTimePanel.Disable();
+
+            if (_gameFeel != null)
+            {
+                _gameFeel.Flash(new Color(1f, 1f, 1f, 0.65f), 0.18f);
+                _gameFeel.ShakeStrong();
+            }
+        }
+
+        private void OnRunningTimerTick(RunningTimerTickEvent evt)
+        {
+            _gameUi.remainingTimePanel.UpdateTimer(evt);
         }
 
         private void OnGameFinished(GameFinishedEvent evt)
         {
             _gameUi.RunningPanel.gameObject.SetActive(false);
+            _gameUi.speedrunTimePanel.StopSpeedrunTime();
+
+            var mode = _connectionController.ConnectionState == ConnectionState.SinglePlayer
+                ? FinishedPanel.FinishPanelMode.SinglePlayer
+                : _connectionController.ActiveConfig.SkillcadeHubIntegrated
+                    ? FinishedPanel.FinishPanelMode.SkillcadeHub
+                    : FinishedPanel.FinishPanelMode.Default;
+
+            _gameUi.FinishedPanel.SetMode(mode);
             _gameUi.FinishedPanel.gameObject.SetActive(true);
-            
-            if (!_playersController.TryGetPlayerData(evt.WinnerId, out var playerData))
+
+            if (evt.FinishReason == FinishReason.Draw)
             {
-                Debug.LogError($"[GameUiHandler] Can't get winner player data {evt.WinnerId}");
+                _gameUi.FinishedPanel.SetWinner("—", evt.FinishReason);
+                _gameUi.FinishedPanel.SetDraw();
                 return;
             }
+            
+            string winnerName = evt.WinnerId >= 0 ? $"Player {evt.WinnerId}" : "—";
 
-            if (PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
-                _gameUi.FinishedPanel.SetWinner(matchData.Nickname, evt.FinishReason);
+            if (_playersController.TryGetPlayerData(evt.WinnerId, out var playerData))
+            {
+                if (PlayerMatchData.TryGetFromPlayer(playerData, out var matchData))
+                    winnerName = matchData.Nickname;
+            }
+            else
+            {
+                Debug.LogWarning($"[GameUiHandler] Can't get winner player data {evt.WinnerId}; using stable result data");
+            }
 
-            _gameUi.FinishedPanel.SetUserState(_playersController.LocalPlayerId == evt.WinnerId);
+            _gameUi.FinishedPanel.SetWinner(winnerName, evt.FinishReason);
+            bool localWon = IsLocalWinner(evt);
+            _gameUi.FinishedPanel.SetUserState(localWon);
+
+            // Soften loss: if the gap was tight, surface a "you were close" line so the loss
+            // doesn't read as a blowout. Skip on win — winners don't need consolation.
+            if (!localWon && _gameUi.PlayerProgressLine != null)
+            {
+                _gameUi.FinishedPanel.ShowCloseMatch(Mathf.Abs(_gameUi.PlayerProgressLine.LastLocalGap));
+            }
+        }
+
+        private bool IsLocalWinner(GameFinishedEvent evt)
+        {
+            var useStablePlayerId = _connectionController.ActiveConfig.SkillcadeHubIntegrated &&
+                                    !string.IsNullOrEmpty(evt.WinnerPlayerId);
+
+            if (!useStablePlayerId)
+                return _playersController.IsLocalPlayerId(evt.WinnerId);
+
+            if (_playersController.TryGetLocalPlayerData(out var localPlayerData) &&
+                PlayerMatchData.TryGetFromPlayer(localPlayerData, out var localMatchData))
+            {
+                return localMatchData.PlayerId == evt.WinnerPlayerId;
+            }
+
+            return _webBridge.Payload != null && _webBridge.Payload.PlayerId == evt.WinnerPlayerId;
         }
     }
 }

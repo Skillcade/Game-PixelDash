@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8945670142821006019}
   - component: {fileID: 4726032134448527420}
   - component: {fileID: 6248397851354379535}
+  - component: {fileID: 8522923327257932392}
   - component: {fileID: 1618705665565809933}
   - component: {fileID: 2271500187710771536}
   - component: {fileID: 6465623768314185214}
@@ -95,9 +96,25 @@ MonoBehaviour:
   _timingType: 1
   _allowTickDropping: 1
   _maximumFrameTicks: 5
-  _tickRate: 60
+  _tickRate: 30
   _pingInterval: 1
   _physicsMode: 1
+--- !u!114 &8522923327257932392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5991760196429670136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d331f979d46e8e4a9fc90070c596d44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _updateHostVisibility: 1
+  _maximumTimedObserversDuration: 10
+  _defaultConditions:
+  - {fileID: 11400000, guid: 9379fcee950a06941b3c7bea8ec354c5, type: 2}
 --- !u!114 &1618705665565809933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,7 +149,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5991760196429670136}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cdcee4396754c63a1574492499cffc8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c72c21304bc0e5419ee1d34141fca39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ProtocolType: 0
@@ -141,13 +158,13 @@ MonoBehaviour:
   m_MaxPacketQueueSize: 128
   m_MaxPayloadSize: 6144
   m_HeartbeatTimeoutMS: 500
-  m_ConnectTimeoutMS: 5000
-  m_MaxConnectAttempts: 60
+  m_ConnectTimeoutMS: 2000
+  m_MaxConnectAttempts: 3
   m_DisconnectTimeoutMS: 30000
   ConnectionData:
     Address: 127.0.0.1
-    Port: 10102
-    ServerListenAddress: 0.0.0.0
+    Port: 10902
+    ServerListenAddress: 
   DebugSimulator:
     PacketDelayMS: 0
     PacketJitterMS: 0
@@ -170,7 +187,7 @@ MonoBehaviour:
   _remoteClientTimeoutDuration: 1500
   _allowPredictedSpawning: 0
   _reservedObjectIds: 15
-  _syncTypeRate: 0.1
+  _syncTypeRate: 0
   SpawnPacking:
     Position: 0
     Rotation: 2
@@ -221,7 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _runInRelease: 1
   _networkTraffic:
-    _enableMode: 2
+    _enableMode: 1
     _updateClient: 1
     _updateServer: 1
 --- !u!114 &2356585828229730589
@@ -239,5 +256,5 @@ MonoBehaviour:
   _boundingBoxLayer:
     serializedVersion: 2
     m_Bits: 1024
-  _maximumRollbackTime: 2
-  Interpolation: 2
+  _maximumRollbackTime: 5
+  Interpolation: 6

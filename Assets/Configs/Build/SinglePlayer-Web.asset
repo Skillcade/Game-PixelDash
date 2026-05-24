@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a6c158ae1d54d40a6ae01c437a4561, type: 3}
   m_Name: SinglePlayer-Web
   m_EditorClassIdentifier: 
+  PipelineType: 0
   ConnectionConfig: {fileID: 11400000, guid: 8471d1d5d9b0fc844837a7c2c0ad9566, type: 2}
+  ConnectionConfigName: SinglePlayer
   SceneNames:
   - NetworkingScene-SinglePlayer
   - LevelScene
-  BuildFileName: PixelDash
-  BuildFolderName: Game-PixelDash-Web-London
+  BuildFileName: Game-PixelDash-Web
+  BuildFolderName: Game-PixelDash-Web-SinglePlayer
   BuildTarget: 20
   BuildSubtarget: 0
   ExtraBuildScenes: []
-  ExtraDefines: []
+  UseSkillcadeDebug: 0
   DevelopmentBuild: 0

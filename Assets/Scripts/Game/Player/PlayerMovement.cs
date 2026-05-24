@@ -41,12 +41,17 @@ namespace Game.Player
         private const float JUMP_CUT_MULTIPLIER = 0.5f; // lower = shorter tap jump, higher = less difference
         
         public event System.Action JumpFx;
+        // Fall speed at the moment of landing (positive value). 0 means a soft / no-fall landing.
+        public event System.Action<float> LandFx;
+        public event System.Action DeathFx;
+        public event System.Action OnCharacterNameChanged;
 
-        public Vector2 VelocityVisual => IsOwner ? _rigidbody.Rigidbody.linearVelocity : _velocitySync.Value;
-        public bool IsGroundedVisual => IsOwner ? _isGrounded : _isGroundedSync.Value;
+        public Vector2 VelocityVisual => IsOwner ? _rigidbody.Rigidbody.linearVelocity : _derivedVelocity;
+        public bool IsGroundedVisual => IsOwner ? _isGrounded : _derivedIsGrounded;
         public float Health01 => Mathf.Clamp01(_healthSync.Value / _playerMovementConfig._maxHealth);
         private bool CanMove => _knockbackTimer <= 0 && _healthSync.Value > 0 && _gameStateMachine.CurrentStateType == GameStateType.Running;
         public Transform VisualsTransform => _visualsTransform;
+        public string CharacterName => _characterName.Value;
         
         public PlayerMovementConfig Config => _playerMovementConfig;
         
@@ -61,31 +66,89 @@ namespace Game.Player
 
         [Inject] private readonly SkillcadeGameStateMachine _gameStateMachine;
 
-        private readonly SyncVar<float> _healthSync = new SyncVar<float>(new SyncTypeSettings(WritePermission.ServerOnly));
-        private readonly SyncVar<Vector2> _velocitySync = new SyncVar<Vector2>(new SyncTypeSettings(WritePermission.ServerOnly));
-        private readonly SyncVar<bool> _isGroundedSync = new SyncVar<bool>(new SyncTypeSettings(WritePermission.ServerOnly));
-        
+        private readonly SyncVar<float> _healthSync = new(new SyncTypeSettings(WritePermission.ServerOnly));
+        private readonly SyncVar<string> _characterName = new(new SyncTypeSettings(WritePermission.ServerOnly));
+
         private bool _isGrounded;
         private float _knockbackTimer;
         private float _coyoteTimer;
         private float _jumpTimer;
+        private float _jumpBufferTimer;
+        private float _baseGravityScale;
+        private bool _apexActive;
+        private float _lastVerticalVelocity;
+        private bool _deathFxFired;
 
         private Vector2 _spawnPoint;
+        private string _characterNameToSet;
 
+        // Derived state for remote clients — computed from NetworkTransform position, no extra network traffic
+        private Vector3 _prevPosition;
+        private Vector2 _derivedVelocity;
+        private bool _derivedIsGrounded;
+        
         private PlayerInput _lastCreatedInput;
 
         public override void OnStartNetwork()
         {
+            base.OnStartNetwork();
             this.InjectToMe();
 
             _spawnPoint = transform.position;
+            _prevPosition = transform.position;
 
             _knockbackTimer = 0f;
+            _baseGravityScale = _rigidbody.Rigidbody.gravityScale;
             _healthSync.SetInitialValues(_playerMovementConfig._maxHealth);
             MoveValues.ResetToConfig(_playerMovementConfig);
+            
+            _characterName.OnChange += HandleCharacterNameChanged;
+
+            if (IsServerInitialized)
+            {
+                if (_characterName.Value != _characterNameToSet)
+                    _characterName.Value = _characterNameToSet;
+            }
         }
-        
-        protected override void TimeManager_OnTick() => SimulateInputs(GetInput());
+
+        public override void OnStopNetwork()
+        {
+            base.OnStopNetwork();
+            _characterName.OnChange -= HandleCharacterNameChanged;
+        }
+
+        public void SetCharacterName(string characterName)
+        {
+            Debug.Log($"[PlayerCharacter] Player {OwnerId} set character name: {characterName}");
+            if (!IsServerInitialized)
+            {
+                _characterNameToSet = characterName;
+                return;
+            }
+            
+            _characterName.Value = characterName;
+        }
+
+        protected override void TimeManager_OnTick()
+        {
+            if (IsOwner)
+            {
+                SimulateInputs(GetInput());
+            }
+            else
+            {
+                Vector3 currentPos = transform.position;
+                _derivedVelocity = (currentPos - _prevPosition) / (float)TimeManager.TickDelta;
+                _prevPosition = currentPos;
+                var origin = currentPos + Vector3.up * _playerMovementConfig._groundCheckOffset;
+                
+                bool hitTriggers = Physics2D.queriesHitTriggers;
+                Physics2D.queriesHitTriggers = false;
+                _derivedIsGrounded = Physics2D.Raycast(origin, Vector2.down,
+                    _playerMovementConfig._groundCheckDistance, _playerMovementConfig._groundMask);
+                Physics2D.queriesHitTriggers = hitTriggers;
+            }
+        }
 
         private PlayerInput GetInput()
         {
@@ -102,7 +165,7 @@ namespace Game.Player
             _inputReader.ClearInput();
             return input;
         }
-        
+
         private void SimulateInputs(PlayerInput input)
         {
             if (!IsOwner)
@@ -113,11 +176,29 @@ namespace Game.Player
             if (_jumpTimer > 0f)
                 _jumpTimer -= dt;
 
+            // Jump buffer: tap registered up to _jumpBufferTime before landing should still trigger a jump.
+            if (input.Jump)
+                _jumpBufferTimer = _playerMovementConfig._jumpBufferTime;
+            else if (_jumpBufferTimer > 0f)
+                _jumpBufferTimer -= dt;
+
             UpdateKnockback(dt);
             Move(input, dt);
             ApplyJumpCut(input);
-            
+            ApplyApexHangtime();
+
+            bool wasGrounded = _isGrounded;
+            float vyBeforeUpdate = _rigidbody.Rigidbody.linearVelocity.y;
             UpdateGrounded();
+
+            // Detect land transition before vy gets clamped by ground contact.
+            if (!wasGrounded && _isGrounded)
+            {
+                float impact = Mathf.Max(0f, -_lastVerticalVelocity);
+                LandFx?.Invoke(impact);
+            }
+
+            _lastVerticalVelocity = vyBeforeUpdate;
 
             if (_isGrounded)
                 _coyoteTimer = _playerMovementConfig._coyoteTime;
@@ -125,14 +206,42 @@ namespace Game.Player
                 _coyoteTimer -= (float)TimeManager.TickDelta;
 
             CapFallVelocity();
-            SetMovementValuesServerRpc(_rigidbody.Rigidbody.linearVelocity, _isGrounded);
+        }
+
+        private void ApplyApexHangtime()
+        {
+            // Lower gravity briefly near the top of the jump (small |vy|) for that "floaty" apex feel.
+            // Owner-side, purely physics-state driven — no extra network traffic.
+            float multiplier = _playerMovementConfig._apexGravityMultiplier;
+            if (multiplier <= 0f || Mathf.Approximately(multiplier, 1f))
+                return;
+
+            bool inAir = !_isGrounded;
+            bool nearApex = Mathf.Abs(_rigidbody.Rigidbody.linearVelocity.y) <= _playerMovementConfig._apexVelocityThreshold;
+
+            if (inAir && nearApex)
+            {
+                if (!_apexActive)
+                {
+                    _rigidbody.Rigidbody.gravityScale = _baseGravityScale * multiplier;
+                    _apexActive = true;
+                }
+            }
+            else if (_apexActive)
+            {
+                _rigidbody.Rigidbody.gravityScale = _baseGravityScale;
+                _apexActive = false;
+            }
         }
 
         private void UpdateGrounded()
         {
+            bool hitTriggers = Physics2D.queriesHitTriggers;
+            Physics2D.queriesHitTriggers = false;
             var origin = transform.position + Vector3.up * _playerMovementConfig._groundCheckOffset;
             _isGrounded = Physics2D.Raycast(origin, Vector2.down, _playerMovementConfig._groundCheckDistance,
                 _playerMovementConfig._groundMask);
+            Physics2D.queriesHitTriggers = hitTriggers;
         }
 
         private void UpdateKnockback(float dt)
@@ -143,8 +252,17 @@ namespace Game.Player
             }
             else if (_knockbackTimer <= 0f && _healthSync.Value <= 0f)
             {
+                if (!_deathFxFired)
+                {
+                    _deathFxFired = true;
+                    DeathFx?.Invoke();
+                }
                 _rigidbody.Teleport(_spawnPoint, resetVelocity: true);
                 RespawnServerRpc();
+            }
+            else if (_healthSync.Value > 0f && _deathFxFired)
+            {
+                _deathFxFired = false;
             }
         }
 
@@ -169,10 +287,15 @@ namespace Game.Player
                 _rigidbody.Rigidbody.linearVelocity = new Vector2(newX, currentVelocity.y);
             }
 
-            if (input.Jump && (_isGrounded || _coyoteTimer > 0f) && _jumpTimer <= 0f)
+            // Jump if either the current input fires, or a buffered tap from the last few ms is still alive.
+            // Buffer is cleared on consumption so it can't double-fire.
+            bool jumpRequested = input.Jump || _jumpBufferTimer > 0f;
+            if (jumpRequested && (_isGrounded || _coyoteTimer > 0f) && _jumpTimer <= 0f)
             {
                 Jump();
                 _jumpTimer = _playerMovementConfig._jumpDelay;
+                _jumpBufferTimer = 0f;
+                _coyoteTimer = 0f;
             }
         }
 
@@ -185,22 +308,26 @@ namespace Game.Player
                 _rigidbody.Rigidbody.linearVelocity = velocity;
             }
         }
-        
+
         private void Jump()
         {
             float jumpForce = Mathf.Sqrt(Mathf.Abs(-2.0f * Physics.gravity.y * _playerMovementConfig._jumpHeight * _rigidbody.Rigidbody.gravityScale));
-            if (_rigidbody.Rigidbody.linearVelocity.y < 0f)
-            {
-                jumpForce -= _rigidbody.Rigidbody.linearVelocity.y;
-            }
+            jumpForce -= _rigidbody.Rigidbody.linearVelocity.y;
 
             JumpFx?.Invoke();
             TriggerJumpServerRpc();
 
+            // Restore gravity in case apex hangtime was active from a previous arc.
+            if (_apexActive)
+            {
+                _rigidbody.Rigidbody.gravityScale = _baseGravityScale;
+                _apexActive = false;
+            }
+
             _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             _isGrounded = false;
         }
-        
+
         public void TakeDamage(ObstacleController obstacleController)
         {
             if (!IsServerInitialized)
@@ -212,7 +339,7 @@ namespace Game.Player
             
             KnockbackClientRpc(obstacleController.transform.position);
         }
-        
+
         [ObserversRpc]
         private void KnockbackClientRpc(Vector3 attackerPosition)
         {
@@ -240,13 +367,6 @@ namespace Game.Player
         }
 
         [ServerRpc(RequireOwnership = true)]
-        private void SetMovementValuesServerRpc(Vector2 velocity, bool isGrounded)
-        {
-            _velocitySync.Value = velocity;
-            _isGroundedSync.Value = isGrounded;
-        }
-
-        [ServerRpc(RequireOwnership = true)]
         private void TriggerJumpServerRpc()
         {
             JumpFx?.Invoke();
@@ -256,6 +376,9 @@ namespace Game.Player
         [ObserversRpc(ExcludeOwner = true)]
         private void TriggerJumpObserversRpc()
         {
+            if (IsOwner)
+                return;
+            
             JumpFx?.Invoke();
         }
 
@@ -272,6 +395,11 @@ namespace Game.Player
                 v.y *= JUMP_CUT_MULTIPLIER;
                 _rigidbody.Rigidbody.linearVelocity = v;
             }
+        }
+
+        private void HandleCharacterNameChanged(string prev, string next, bool asServer)
+        {
+            OnCharacterNameChanged?.Invoke();
         }
     }
 }
