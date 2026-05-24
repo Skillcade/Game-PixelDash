@@ -19,5 +19,6 @@ MonoBehaviour:
   UseEncryption: 0
   SkillcadeHubIntegrated: 0
   ReconnectDelay: 1
+  ReconnectGraceSeconds: 0
   TargetPlayerCount: 0
   SceneNames: []

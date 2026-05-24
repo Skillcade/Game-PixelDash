@@ -51,14 +51,20 @@ namespace Game
                 if (!PlayerInGameData.TryGetFromPlayer(playerData, out var data) || !data.InGame)
                     continue;
 
-                if (!_networkManager.ServerManager.Clients.TryGetValue(playerData.PlayerNetworkId, out var connection))
+                // PlayerNetworkId is the stable ReplayClientId after a reconnect, so look the
+                // connection up by the live FishNet OwnerId (= current connection.ClientId).
+                int connectionClientId = playerData.OwnerId;
+                if (!_networkManager.ServerManager.Clients.TryGetValue(connectionClientId, out var connection))
                 {
-                    Debug.LogError($"[PlayerSpawner] Can't get InGame player {playerData.PlayerNetworkId} connection");
+                    Debug.LogError($"[PlayerSpawner] Can't get InGame player networkId={playerData.PlayerNetworkId} connection={connectionClientId}");
                     continue;
                 }
 
                 if (_spawnedPlayers.ContainsKey(playerData.PlayerNetworkId))
+                {
+                    Debug.Log($"[PlayerSpawner] [PlayerReconnect] Player networkId={playerData.PlayerNetworkId} already spawned, skipping");
                     continue;
+                }
                 
 #if UNITY_SERVER || UNITY_EDITOR
                 PlayerCharacterData characterData = null;
@@ -72,6 +78,7 @@ namespace Game
 
                 try
                 {
+                    Debug.Log($"[PlayerSpawner] [PlayerReconnect] Spawning player networkId={playerData.PlayerNetworkId} at {_spawnPoint.position} (connection={connectionClientId})");
                     var instance = _networkManager.ServerManager.InstantiateAndSpawn(
                         _prefab,
                         _spawnPoint.position,
