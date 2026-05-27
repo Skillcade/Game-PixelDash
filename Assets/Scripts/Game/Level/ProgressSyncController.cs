@@ -15,6 +15,9 @@ namespace Game.Level
         [SerializeField] private float _minX;
         [SerializeField] private float _maxX;
 
+        /// <summary>Converts a world-space X position to normalised progress (0-1). Used by GhostSystem.</summary>
+        public float GetProgress(float worldX) => Mathf.InverseLerp(_minX, _maxX, worldX);
+
         [Inject] private FishNetPlayersController _playersController;
         private float _syncTimer;
         private readonly List<PlayerProgressEntry> _entries = new();

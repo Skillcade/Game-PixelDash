@@ -136,6 +136,8 @@ namespace Game.Handlers
             _gameUi.speedrunTimePanel.StartSpeedrunTime();
             _gameUi.remainingTimePanel.Disable();
 
+            _gameUi.MusicController?.Play();
+
             if (_gameFeel != null)
             {
                 _gameFeel.Flash(new Color(1f, 1f, 1f, 0.65f), 0.18f);
@@ -152,6 +154,7 @@ namespace Game.Handlers
         {
             _gameUi.RunningPanel.gameObject.SetActive(false);
             _gameUi.speedrunTimePanel.StopSpeedrunTime();
+            _gameUi.MusicController?.Stop();
 
             var mode = _connectionController.ConnectionState == ConnectionState.SinglePlayer
                 ? FinishedPanel.FinishPanelMode.SinglePlayer
