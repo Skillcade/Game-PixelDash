@@ -14,6 +14,7 @@ namespace Game.GUI
         [SerializeField] public PlayerProgressLine PlayerProgressLine;
         [SerializeField] public Button StopSinglePlayerButton;
         [SerializeField] public Image FlashImage;
+        [SerializeField] public GameMusicController MusicController;
 
         private void Awake()
         {
