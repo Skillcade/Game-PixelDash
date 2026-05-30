@@ -55,8 +55,10 @@ namespace Game.Level
 
             foreach (var playerData in _playersController.GetAllPlayersData())
             {
-                int id = playerData.PlayerNetworkId;
-                if (!NetworkManager.ServerManager.Clients.TryGetValue(id, out var conn))
+                // After reconnect PlayerNetworkId is the stable ReplayClientId, but clients
+                // register progress markers under the live FishNet connection id (OwnerId).
+                int connectionClientId = playerData.OwnerId;
+                if (!NetworkManager.ServerManager.Clients.TryGetValue(connectionClientId, out var conn))
                     continue;
 
                 PlayerMovement movement = null;
@@ -72,7 +74,7 @@ namespace Game.Level
                 float t = Mathf.InverseLerp(_minX, _maxX, movement.transform.position.x);
                 var entry = new PlayerProgressEntry
                 {
-                    PlayerId = id,
+                    PlayerId = connectionClientId,
                     Progress = t
                 };
                 _entries.Add(entry);
