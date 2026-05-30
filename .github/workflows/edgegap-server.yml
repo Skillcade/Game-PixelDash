@@ -14,21 +14,118 @@ on:
         options:
           - staging
           - production
-      version:
-        description: 'Docker image version tag (e.g. v1.8.0)'
+      version_mode:
+        description: 'Version source — manual input or auto-increment from Edgegap'
         required: true
+        type: choice
+        options:
+          - manual
+          - auto
+        default: manual
+      version:
+        description: 'Manual only — Docker image version tag (e.g. v1.9.12)'
+        required: false
+        default: ''
         type: string
+      bump_type:
+        description: 'Auto only — which SemVer part to increment'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        default: patch
       build_config:
         description: 'Build config asset path override (optional, leave blank to use vars.SERVER_BUILD_CONFIG)'
         required: false
         default: ''
 
 concurrency:
-  group: unity-build-${{ github.workflow }}-${{ github.ref }}
+  group: edgegap-server-${{ inputs.environment }}
   cancel-in-progress: false
 
 jobs:
+  resolve-version:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    outputs:
+      version: ${{ steps.resolve.outputs.version }}
+    steps:
+      - name: Resolve version
+        id: resolve
+        env:
+          VERSION_MODE: ${{ inputs.version_mode }}
+          MANUAL_VERSION: ${{ inputs.version }}
+          BUMP_TYPE: ${{ inputs.bump_type }}
+          EDGEGAP_API_KEY: ${{ secrets.EDGEGAP_API_KEY }}
+          EDGEGAP_APP_NAME: ${{ vars.EDGEGAP_APP_NAME }}
+          EDGEGAP_VERSION_NAME: ${{ vars.EDGEGAP_VERSION_NAME }}
+        run: |
+          parse_and_format() {
+            local raw="$1"
+            if [[ ! "$raw" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+              echo "Cannot parse SemVer from: '$raw' (expected format v1.9.12)"
+              exit 1
+            fi
+            echo "v${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.${BASH_REMATCH[3]}"
+          }
+
+          bump_version() {
+            local version="$1"
+            local bump="$2"
+            if [[ ! "$version" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+              echo "Internal error: invalid version format '$version'"
+              exit 1
+            fi
+            local major="${BASH_REMATCH[1]}"
+            local minor="${BASH_REMATCH[2]}"
+            local patch="${BASH_REMATCH[3]}"
+            case "$bump" in
+              major)
+                major=$((major + 1))
+                minor=0
+                patch=0
+                ;;
+              minor)
+                minor=$((minor + 1))
+                patch=0
+                ;;
+              patch)
+                patch=$((patch + 1))
+                ;;
+            esac
+            echo "v${major}.${minor}.${patch}"
+          }
+
+          if [[ "$VERSION_MODE" == "manual" ]]; then
+            if [[ -z "$MANUAL_VERSION" ]]; then
+              echo "Manual version mode requires the version input (e.g. v1.9.12)."
+              exit 1
+            fi
+            NEW_VERSION="$(parse_and_format "$MANUAL_VERSION")"
+            echo "Using manual version: $NEW_VERSION"
+          else
+            RESPONSE="$(curl -sf \
+              "https://api.edgegap.com/v1/app/${EDGEGAP_APP_NAME}/version/${EDGEGAP_VERSION_NAME}" \
+              -H "Authorization: token ${EDGEGAP_API_KEY}")"
+            CURRENT_TAG="$(echo "$RESPONSE" | jq -r '.docker_tag // empty')"
+            if [[ -z "$CURRENT_TAG" ]]; then
+              echo "Edgegap API did not return docker_tag for app '${EDGEGAP_APP_NAME}' version '${EDGEGAP_VERSION_NAME}'."
+              echo "Response: $RESPONSE"
+              exit 1
+            fi
+            PARSED_CURRENT="$(parse_and_format "$CURRENT_TAG")"
+            NEW_VERSION="$(bump_version "$PARSED_CURRENT" "$BUMP_TYPE")"
+            echo "Current Edgegap docker_tag: $PARSED_CURRENT"
+            echo "Bump type: $BUMP_TYPE"
+            echo "New version: $NEW_VERSION"
+          fi
+
+          echo "version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
+
   deploy:
+    needs: resolve-version
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
@@ -104,18 +201,22 @@ jobs:
           echo $EDGEGAP_PASSWORD | docker login -u "$EDGEGAP_USERNAME" --password-stdin registry.edgegap.com
 
       - name: Tag and push image
+        env:
+          VERSION: ${{ needs.resolve-version.outputs.version }}
         run: |
-          TAG="registry.edgegap.com/${{ secrets.EDGEGAP_PROJECT_NAME }}/${{ secrets.EDGEGAP_IMAGE_NAME }}:${{ inputs.version }}"
+          TAG="registry.edgegap.com/${{ secrets.EDGEGAP_PROJECT_NAME }}/${{ secrets.EDGEGAP_IMAGE_NAME }}:${VERSION}"
           docker tag "${{ secrets.EDGEGAP_IMAGE_NAME }}" "$TAG"
           docker push "$TAG"
 
       - name: Update Edgegap app version
+        env:
+          VERSION: ${{ needs.resolve-version.outputs.version }}
         run: |
           curl -sf -w "\nHTTP %{http_code}" -X PATCH \
             "https://api.edgegap.com/v1/app/${{ vars.EDGEGAP_APP_NAME }}/version/${{ vars.EDGEGAP_VERSION_NAME }}" \
             -H "Authorization: token ${{ secrets.EDGEGAP_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d "{\"docker_tag\": \"${{ inputs.version }}\"}"
+            -d "{\"docker_tag\": \"${VERSION}\"}"
 
       - name: Docker logout
         if: always()
