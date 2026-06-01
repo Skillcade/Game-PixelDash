@@ -334,11 +334,48 @@ namespace Game.GUI
         {
             if (_entries.ContainsKey(playerId))
                 return;
+
+            RemoveDuplicateMarkerForPlayer(playerData);
             
             if (!PlayerInGameData.TryGetFromPlayer(playerData, out var inGameData) || !inGameData.InGame)
                 return;
 
             CreatePlayerMarker(playerId, playerData);
+        }
+
+        private void RemoveDuplicateMarkerForPlayer(FishNetPlayerData playerData)
+        {
+            if (!PlayerMatchData.TryGetFromPlayer(playerData, out var matchData)
+                || string.IsNullOrEmpty(matchData.PlayerId))
+                return;
+
+            var staleKeys = new List<int>();
+            foreach (var kvp in _entries)
+            {
+                if (kvp.Key == playerData.PlayerNetworkId)
+                    continue;
+
+                if (!_playersController.TryGetPlayerData(kvp.Key, out var existingData))
+                    continue;
+
+                if (!PlayerMatchData.TryGetFromPlayer(existingData, out var existingMatch))
+                    continue;
+
+                if (existingMatch.PlayerId == matchData.PlayerId)
+                    staleKeys.Add(kvp.Key);
+            }
+
+            for (int i = 0; i < staleKeys.Count; i++)
+                RemoveMarkerEntry(staleKeys[i]);
+        }
+
+        private void RemoveMarkerEntry(int playerId)
+        {
+            if (!_entries.TryGetValue(playerId, out var entry))
+                return;
+
+            Destroy(entry.Marker.gameObject);
+            _entries.Remove(playerId);
         }
 
         private MarkerEntry CreatePlayerMarker(int playerId, FishNetPlayerData playerData)
@@ -370,6 +407,8 @@ namespace Game.GUI
         {
             if (!PlayerInGameData.TryGetFromPlayer(playerData, out var inGameData) || !inGameData.InGame)
                 return;
+
+            RemoveDuplicateMarkerForPlayer(playerData);
             
             if (!_entries.TryGetValue(playerId, out var entry))
                 entry = CreatePlayerMarker(playerId, playerData);
@@ -386,11 +425,7 @@ namespace Game.GUI
 
         private void OnPlayerRemoved(int playerId, FishNetPlayerData playerData)
         {
-            if (!_entries.TryGetValue(playerId, out var entry))
-                return;
-
-            Destroy(entry.Marker.gameObject);
-            _entries.Remove(playerId);
+            RemoveMarkerEntry(playerId);
         }
 
         // ── Glow overlay ─────────────────────────────────────────────────────────
