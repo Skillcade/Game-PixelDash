@@ -4079,7 +4079,7 @@ MonoBehaviour:
   - {fileID: 490252889}
   _playerSpawner: {fileID: 490252890}
   _finishLine: {fileID: 1543381764}
-  _collectablesRespawnService: {fileID: 337552299}
+  _perPlayerCollectablesSpawner: {fileID: 337552301}
   gameCameraTarget: {fileID: 910000003}
   _charactersConfig: {fileID: 11400000, guid: d8779a513ca97b1419dfe24bed4f26a4, type: 2}
   _cameraShaker: {fileID: 910000004}
@@ -4107,8 +4107,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 337552300}
-  - component: {fileID: 337552299}
   - component: {fileID: 337552298}
+  - component: {fileID: 337552301}
   m_Layer: 0
   m_Name: CollectablesRespawnService
   m_TagString: Untagged
@@ -4170,21 +4170,6 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 0}
     Scale: {x: 0, y: 0, z: 0}
     IsValid: 0
---- !u!114 &337552299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 337552297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22fbc160977e44fdb0bd6c436663c080, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 337552298}
-  _networkObjectCache: {fileID: 0}
 --- !u!4 &337552300
 Transform:
   m_ObjectHideFlags: 0
@@ -4200,6 +4185,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &337552301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337552297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 575205966f00e364f9d3affb58f2c32e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 337552298}
+  _networkObjectCache: {fileID: 0}
 --- !u!1 &339281579
 GameObject:
   m_ObjectHideFlags: 0

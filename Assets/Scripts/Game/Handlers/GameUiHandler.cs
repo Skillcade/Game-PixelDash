@@ -75,7 +75,6 @@ namespace Game.Handlers
 
         private void UpdateWaitForPlayersUi()
         {
-            Debug.Log("[GameUiHandler] Update wait for players ui");
             if (_connectionController.ActiveConfig.TargetPlayerCount > 0)
             {
                 _gameUi.WaitForPlayersPanel.SetWaitForOthersState(true);
@@ -95,8 +94,6 @@ namespace Game.Handlers
                 if (PlayerInGameData.TryGetFromPlayer(playerData, out var playerInGameData) && playerInGameData.IsReady)
                     readyPlayers++;
             }
-
-            Debug.Log($"[GameUiHandler] Total players: {totalPlayers}, ready: {readyPlayers}, local ready: {localReady}");
 
             _gameUi.WaitForPlayersPanel.SetReadyState(readyPlayers, totalPlayers, localReady);
         }
@@ -133,7 +130,7 @@ namespace Game.Handlers
             _gameUi.CountdownPanel.gameObject.SetActive(true);
             _gameUi.CountdownPanel.ShowGo();
             _gameUi.RunningPanel.gameObject.SetActive(true);
-            _gameUi.speedrunTimePanel.StartSpeedrunTime();
+            _gameUi.speedrunTimePanel.StartSpeedrunTime(evt.RunningStartTime);
             _gameUi.remainingTimePanel.Disable();
 
             _gameUi.MusicController?.Play();

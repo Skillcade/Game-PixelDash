@@ -19,12 +19,13 @@ namespace Game.GUI
 
         private int _lastShownSeconds;
 
-        public void StartSpeedrunTime()
+        public void StartSpeedrunTime(double runningStartTime)
         {
             this.InjectToMe();
-            _startTime = Time;
+            _startTime = runningStartTime;
             _started = true;
-            SetTime(0);
+            var passed = Mathf.Max(0f, (float)(Time - _startTime));
+            SetTime(Mathf.RoundToInt(passed));
         }
 
         public void StopSpeedrunTime()

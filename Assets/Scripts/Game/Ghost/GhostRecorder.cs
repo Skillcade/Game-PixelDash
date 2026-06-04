@@ -73,7 +73,7 @@ namespace Game.Ghost
 
         private static PlayerMovement FindLocalPlayer()
         {
-            foreach (var pm in FindObjectsOfType<PlayerMovement>())
+            foreach (var pm in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
             {
                 if (pm.IsClientInitialized && pm.IsOwner)
                     return pm;

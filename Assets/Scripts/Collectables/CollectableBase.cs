@@ -15,6 +15,11 @@ namespace Collectables
         {
             if (!IsServerInitialized || Collected)
                 return false;
+
+            if (TryGetComponent(out CollectableOwner owner)
+                && owner.OwnerClientId != 0
+                && (playerCollector.Owner == null || playerCollector.Owner.ClientId != owner.OwnerClientId))
+                return false;
             
             Collected = true;
             return true;

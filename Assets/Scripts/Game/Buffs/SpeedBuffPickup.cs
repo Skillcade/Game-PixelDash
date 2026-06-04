@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Game.Buffs
 {
+    [RequireComponent(typeof(CollectableOwner))]
     public class SpeedBuffPickup : CollectableBase
     {
         [SerializeField] private SpeedBuffType _buffType = SpeedBuffType.Multiply;

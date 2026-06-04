@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using FishNet;
 using FishNet.Transporting;
 using Game.Level;
+using Game.Player;
 using Game.RigidbodyInterpolation;
 using SkillcadeSDK;
 using SkillcadeSDK.Connection;
@@ -50,6 +51,7 @@ namespace Game.GUI
 
         [Inject] private readonly IConnectionController _connectionController;
         [Inject] private readonly FishNetPlayersController _playersController;
+        [Inject] private readonly PlayerCharactersConfig _playerCharactersConfig;
 
         public float LastLocalGap       { get; private set; }
         /// <summary>Current normalised progress (0-1) of the local player. Used by GhostRecorder.</summary>
@@ -386,7 +388,7 @@ namespace Game.GUI
                 : "Player";
 
             bool isLocal = _playersController.IsLocalPlayerId(playerId);
-            Sprite icon = isLocal ? _localPlayerIcon : _opponentIcon;
+            Sprite icon = ResolveMarkerIcon(playerData, isLocal);
 
             marker.Initialize(nickname, icon);
             marker.SetProgress(0f);
@@ -418,9 +420,26 @@ namespace Game.GUI
                 : "Player";
 
             bool isLocal = _playersController.IsLocalPlayerId(playerId);
-            Sprite icon = isLocal ? _localPlayerIcon : _opponentIcon;
+            Sprite icon = ResolveMarkerIcon(playerData, isLocal);
 
             entry.Marker.Initialize(nickname, icon);
+        }
+
+        private Sprite ResolveMarkerIcon(FishNetPlayerData playerData, bool isLocal)
+        {
+            if (PlayerCharacterData.TryGetFromPlayer(playerData, out var characterData)
+                && !string.IsNullOrEmpty(characterData.CharacterName)
+                && _playerCharactersConfig != null)
+            {
+                foreach (var character in _playerCharactersConfig.Characters)
+                {
+                    if (string.Equals(character.CharacterName, characterData.CharacterName)
+                        && character.Icon != null)
+                        return character.Icon;
+                }
+            }
+
+            return isLocal ? _localPlayerIcon : _opponentIcon;
         }
 
         private void OnPlayerRemoved(int playerId, FishNetPlayerData playerData)

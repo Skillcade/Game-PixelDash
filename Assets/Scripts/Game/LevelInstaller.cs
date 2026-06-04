@@ -15,7 +15,8 @@ namespace Game
     {
         [SerializeField] private PlayerSpawner _playerSpawner;
         [SerializeField] private FinishLine _finishLine;
-        [SerializeField] private CollectablesRespawnService _collectablesRespawnService;
+        // [SerializeField] private CollectablesRespawnService _collectablesRespawnService;
+        [SerializeField] private PerPlayerCollectablesSpawner _perPlayerCollectablesSpawner;
         [SerializeField] private GameCameraTarget gameCameraTarget;
         [SerializeField] private PlayerCharactersConfig _charactersConfig;
         [SerializeField] private CameraShaker _cameraShaker;
@@ -26,7 +27,8 @@ namespace Game
             builder.RegisterInstance(_finishLine);
             builder.RegisterInstance(_charactersConfig);
             builder.RegisterInstance(_cameraShaker);
-            builder.RegisterInstance(_collectablesRespawnService).As<IRespawnService>();
+            // builder.RegisterInstance(_collectablesRespawnService).As<IRespawnService>();
+            builder.RegisterInstance(_perPlayerCollectablesSpawner).As<IRespawnService>();
 
             // PlayerSpawner
             builder.RegisterInstance(_playerSpawner).As<IPlayerSpawner>();

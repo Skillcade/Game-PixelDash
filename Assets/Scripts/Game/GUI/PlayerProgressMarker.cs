@@ -35,20 +35,15 @@ namespace Game.GUI
         [SerializeField] private Color _behindColor = new Color(1f, 0.4f, 0.4f);
         [SerializeField] private Color _aheadColor = new Color(1f, 0.85f, 0.3f);
 
-        [Header("Colour lerp")]
-        [SerializeField] private float _colorLerpSpeed = 8f;
-
         private RectTransform _rectTransform;
         private Role _role = Role.Neutral;
         private State _state = State.Neutral;
         private Color _targetColor;
-        private Color _currentColor;
 
         private void Awake()
         {
             EnsureRect();
             _targetColor  = _neutralColor;
-            _currentColor = _neutralColor;
         }
 
         private void EnsureRect()
@@ -117,11 +112,6 @@ namespace Game.GUI
             {
                 _targetColor = Color.Lerp(_neutralColor, _targetColor, 0.6f);
             }
-        }
-
-        private void Update()
-        {
-            // Colour lerp kept for potential future use but no longer applied to the icon.
         }
     }
 }

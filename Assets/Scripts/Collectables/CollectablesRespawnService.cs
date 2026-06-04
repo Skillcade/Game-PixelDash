@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using FishNet.Object;
+using Game.Buffs;
 using SkillcadeSDK.Common.Level;
 using SkillcadeSDK.FishNetAdapter;
+using SkillcadeSDK.FishNetAdapter.Players;
 using UnityEngine;
+using VContainer;
 
 namespace Collectables
 {
@@ -17,6 +20,10 @@ namespace Collectables
 
         private readonly List<SpawnPoint> _spawnPoints = new();
 
+        [Inject] private readonly IObjectResolver _objectResolver;
+
+        private FishNetPlayersController _playersController;
+        
         public override void OnStartServer()
         {
             base.OnStartServer();
@@ -30,7 +37,7 @@ namespace Collectables
 
             foreach (var c in collectables)
             {
-                if (c == null || c.RespawnPrefab == null)
+                if (c == null || c.RespawnPrefab == null || c is SpeedBuffPickup)
                 {
                     continue;
                 }
@@ -54,26 +61,20 @@ namespace Collectables
             var existing = FindObjectsByType<CollectableBase>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
             foreach (var c in existing)
             {
-                if (c?.NetworkObject == null)
-                {
+                if (c == null || c is SpeedBuffPickup || c.NetworkObject == null)
                     continue;
-                }
                 
                 if (c.NetworkObject.IsSpawned)
-                {
                     c.NetworkObject.Despawn();
-                }
                 else
-                {
                     Destroy(c.gameObject);
-                }
             }
 
-            foreach (var point in _spawnPoints)
-            {
-                if (point.Prefab != null)
-                    NetworkManager.ServerManager.InstantiateAndSpawn(point.Prefab, point.Position, point.Rotation);
-            }
+            // foreach (var point in _spawnPoints)
+            // {
+            //     if (point.Prefab != null)
+            //         NetworkManager.ServerManager.InstantiateAndSpawn(point.Prefab, point.Position, point.Rotation);
+            // }
         }
     }
 

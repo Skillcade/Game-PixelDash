@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 8149275630184729562}
   - component: {fileID: 8149275630184729563}
   - component: {fileID: 8149275630184729564}
+  - component: {fileID: 2090035824157504446}
+  - component: {fileID: 7792290097775644960}
   m_Layer: 10
   m_Name: SpeedBuff
   m_TagString: Untagged
@@ -274,3 +276,34 @@ MonoBehaviour:
   _rigidbody: {fileID: 8149275630184729562}
   _playerRollbackSource: {fileID: 0}
   _colliderRollback: {fileID: 0}
+--- !u!114 &2090035824157504446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697982328058417135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b71e0ad977f00b44da3796c0f24ae9b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 5495940997801683735}
+  _networkObjectCache: {fileID: 0}
+--- !u!114 &7792290097775644960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697982328058417135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71fd7f855ec523429999fc4e14a1928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _overrideType: 3
+  _updateHostVisibility: 1
+  _observerConditions:
+  - {fileID: 11400000, guid: d4e5f60718293a4b5c6d7e8f90123456, type: 2}

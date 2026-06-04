@@ -56,7 +56,7 @@ namespace Game.Ghost
             get
             {
                 if (_progressLine == null)
-                    _progressLine = FindObjectOfType<PlayerProgressLine>();
+                    _progressLine = FindFirstObjectByType<PlayerProgressLine>();
                 return _progressLine;
             }
         }
@@ -66,7 +66,7 @@ namespace Game.Ghost
             get
             {
                 if (_syncController == null)
-                    _syncController = FindObjectOfType<ProgressSyncController>();
+                    _syncController = FindFirstObjectByType<ProgressSyncController>();
                 return _syncController;
             }
         }
@@ -236,7 +236,7 @@ namespace Game.Ghost
 
         private static PlayerMovement FindLocalPlayer()
         {
-            foreach (var pm in FindObjectsOfType<PlayerMovement>())
+            foreach (var pm in FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None))
                 if (pm.IsClientInitialized && pm.IsOwner)
                     return pm;
             return null;
