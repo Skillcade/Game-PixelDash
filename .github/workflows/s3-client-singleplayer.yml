@@ -1,23 +1,23 @@
-name: S3 Singleplayer — Client Build & Deploy
+name: S3 Singleplayer — Client
 
 on:
   workflow_dispatch:
     inputs:
       ref:
-        description: 'Branch, tag, or commit SHA to deploy (e.g. main, v1.8.0)'
+        description: "Branch, tag, or commit SHA to deploy (e.g. main, v1.8.0)"
         required: false
-        default: ''
+        default: ""
       environment:
-        description: 'Target singleplayer environment'
+        description: "Target singleplayer environment"
         required: true
         type: choice
         options:
           - staging-singleplayer
           - production-singleplayer
       build_config:
-        description: 'Build config asset path override (optional, leave blank to use vars.CLIENT_BUILD_CONFIG)'
+        description: "Build config asset path override (optional, leave blank to use vars.CLIENT_BUILD_CONFIG)"
         required: false
-        default: ''
+        default: ""
 
 concurrency:
   group: unity-build-${{ github.workflow }}-${{ github.ref }}

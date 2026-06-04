@@ -1,23 +1,23 @@
-name: S3 — Client Build & Deploy
+name: S3 — Client
 
 on:
   workflow_dispatch:
     inputs:
       ref:
-        description: 'Branch, tag, or commit SHA to deploy (e.g. main, v1.8.0)'
+        description: "Branch, tag, or commit SHA to deploy (e.g. main, v1.8.0)"
         required: false
-        default: ''
+        default: ""
       environment:
-        description: 'Target environment'
+        description: "Target environment"
         required: true
         type: choice
         options:
           - staging
           - production
       build_config:
-        description: 'Build config asset path override (optional, leave blank to use vars.CLIENT_BUILD_CONFIG)'
+        description: "Build config asset path override (optional, leave blank to use vars.CLIENT_BUILD_CONFIG)"
         required: false
-        default: ''
+        default: ""
 
 concurrency:
   group: unity-build-${{ github.workflow }}-${{ github.ref }}

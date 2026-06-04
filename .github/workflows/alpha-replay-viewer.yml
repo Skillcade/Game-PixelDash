@@ -1,4 +1,4 @@
-name: Alpha — Replay Viewer Build & Deploy
+name: Alpha — Replay Viewer
 
 on:
   workflow_dispatch:

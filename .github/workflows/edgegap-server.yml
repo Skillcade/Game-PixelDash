@@ -1,21 +1,21 @@
-name: Edgegap — Server Build & Deploy
+name: Edgegap — Server
 
 on:
   workflow_dispatch:
     inputs:
       ref:
-        description: 'Branch, tag, or commit SHA to deploy (e.g. main, v1.8.0)'
+        description: "Branch, tag, or commit SHA to deploy (e.g. main, v1.8.0)"
         required: false
-        default: ''
+        default: ""
       environment:
-        description: 'Target environment'
+        description: "Target environment"
         required: true
         type: choice
         options:
           - staging
           - production
       version_mode:
-        description: 'Version source — manual input or auto-increment from Edgegap'
+        description: "Version source — manual input or auto-increment from Edgegap"
         required: true
         type: choice
         options:
@@ -23,12 +23,12 @@ on:
           - auto
         default: manual
       version:
-        description: 'Manual only — Docker image version tag (e.g. v1.9.12)'
+        description: "Manual only — Docker image version tag (e.g. v1.9.12)"
         required: false
-        default: ''
+        default: ""
         type: string
       bump_type:
-        description: 'Auto only — which SemVer part to increment'
+        description: "Auto only — which SemVer part to increment"
         required: true
         type: choice
         options:
@@ -37,9 +37,9 @@ on:
           - major
         default: patch
       build_config:
-        description: 'Build config asset path override (optional, leave blank to use vars.SERVER_BUILD_CONFIG)'
+        description: "Build config asset path override (optional, leave blank to use vars.SERVER_BUILD_CONFIG)"
         required: false
-        default: ''
+        default: ""
 
 concurrency:
   group: edgegap-server-${{ inputs.environment }}

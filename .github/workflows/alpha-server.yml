@@ -1,4 +1,4 @@
-name: Alpha — Server Build & Deploy
+name: Alpha — Server
 
 on:
   workflow_dispatch:

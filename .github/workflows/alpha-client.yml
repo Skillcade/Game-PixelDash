@@ -1,4 +1,4 @@
-name: Alpha — Client Build & Deploy
+name: Alpha — Client
 
 on:
   workflow_dispatch:
