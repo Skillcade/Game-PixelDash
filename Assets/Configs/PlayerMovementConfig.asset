@@ -24,7 +24,7 @@ MonoBehaviour:
   _jumpBufferTime: 0.1
   _apexVelocityThreshold: 2
   _apexGravityMultiplier: 0.3
-  _groundCheckOffset: 0.1
+  _groundCheckOffset: 0.3
   _groundCheckDistance: 0.5
   _groundMask:
     serializedVersion: 2

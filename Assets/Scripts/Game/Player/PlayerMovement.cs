@@ -239,8 +239,12 @@ namespace Game.Player
             bool hitTriggers = Physics2D.queriesHitTriggers;
             Physics2D.queriesHitTriggers = false;
             var origin = transform.position + Vector3.up * _playerMovementConfig._groundCheckOffset;
-            _isGrounded = Physics2D.Raycast(origin, Vector2.down, _playerMovementConfig._groundCheckDistance,
-                _playerMovementConfig._groundMask);
+            var hit = Physics2D.Raycast(origin, Vector2.down, _playerMovementConfig._groundCheckDistance, _playerMovementConfig._groundMask);
+            _isGrounded = hit;
+#if UNITY_EDITOR
+            var distance = hit ? hit.distance : _playerMovementConfig._groundCheckDistance;
+            Debug.DrawLine(origin, origin + Vector3.down * distance, _isGrounded ? Color.green : Color.red);
+#endif
             Physics2D.queriesHitTriggers = hitTriggers;
         }
 
@@ -369,7 +373,6 @@ namespace Game.Player
         [ServerRpc(RequireOwnership = true)]
         private void TriggerJumpServerRpc()
         {
-            JumpFx?.Invoke();
             TriggerJumpObserversRpc();
         }
 
@@ -378,7 +381,7 @@ namespace Game.Player
         {
             if (IsOwner)
                 return;
-            
+
             JumpFx?.Invoke();
         }
 

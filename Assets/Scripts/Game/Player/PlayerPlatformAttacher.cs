@@ -66,15 +66,16 @@ namespace Game.Player
             if (!IsOwner)
                 return;
 
-            var platform = other.GetComponentInParent<Platform>();
-            if (platform == null)
+            var trigger = other.GetComponent<PlatformTrigger>();
+            if (trigger == null || trigger.Target == null)
                 return;
 
+            var platform = trigger.Target;
             if (_attachedToPlatform != null)
                 return;
 
             _attachedToPlatform = platform;
-            // NetworkObject.SetParent(platform);
+            NetworkObject.SetParent(platform);
             
             SetAttachedToPlatformObjectID(platform.OwnerId);
             
@@ -87,15 +88,16 @@ namespace Game.Player
             if (!IsOwner)
                 return;
 
-            var platform = other.GetComponentInParent<Platform>();
-            if (platform == null)
+            var trigger = other.GetComponent<PlatformTrigger>();
+            if (trigger == null || trigger.Target == null)
                 return;
 
+            var platform = trigger.Target;
             if (_attachedToPlatform != platform)
                 return;
 
             _attachedToPlatform = null;
-            // NetworkObject.UnsetParent();
+            NetworkObject.UnsetParent();
             
             SetAttachedToPlatformObjectID(-1);
             

@@ -55,6 +55,7 @@ MonoBehaviour:
   _targetObject: {fileID: 1274593300539092038}
   _graphicsObject: {fileID: 6963108022184480121}
   _networkObject: {fileID: 3163456729119693188}
+  _hideIfDifferentClientWorld: 0
   _targetRenderers:
   - {fileID: 8202044100441441694}
   _targetGroups: []
@@ -71,7 +72,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _debug: 0
-  _useOverridePosition: 0
   _rigidbody: {fileID: 7708937912395519445}
   _playerRollbackSource: {fileID: 0}
   _colliderRollback: {fileID: 1957085061284429708}
@@ -329,6 +329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3596103041739656846}
   - component: {fileID: 2578347298406121940}
+  - component: {fileID: 7989534623952926998}
   m_Layer: 0
   m_Name: CheckTrigger
   m_TagString: Untagged
@@ -397,6 +398,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2.95, y: 1.1}
   m_EdgeRadius: 0
+--- !u!114 &7989534623952926998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5514294861752925983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d6d245783c7466e8fdd6009018ade00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 1748959626818576942}
 --- !u!1 &5640061688148572173
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,7 +627,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.0023421496}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -623,7 +637,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.95, y: 0.95}
+  m_Size: {x: 2.95, y: 0.57993364}
   m_EdgeRadius: 0
 --- !u!1 &8617325004856715412
 GameObject:
