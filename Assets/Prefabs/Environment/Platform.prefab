@@ -314,7 +314,7 @@ MonoBehaviour:
   _networkObject: {fileID: 3163456729119693188}
   _rigidbody: {fileID: 7708937912395519445}
   _visualTransform: {fileID: 1551337445953160360}
-  _workOnNotOwner: 1
+  _workOnNotOwner: 0
   _interpolationSettings: {fileID: 11400000, guid: eb3f9fb8a67c19b47a45dbe8a1dba394, type: 2}
   _state: 0
   _isActive: 0

@@ -9,10 +9,17 @@ namespace Game.Player
     public class PlayerPlatformAttacher : NetworkBehaviour
     {
         [SerializeField] private NetworkRigidbody2DInterpolator _rigidbodyInterpolator;
+        [SerializeField] private PlayerMovement _playerMovement;
+        [SerializeField] private Platform _candidatePlatform;
         [SerializeField] private Platform _attachedToPlatform;
         [SerializeField] private Transform _playerVisuals;
 
         private readonly SyncVar<int> _attachedToPlatformObjectId = new SyncVar<int>(new SyncTypeSettings(WritePermission.ServerOnly));
+
+        private void Awake()
+        {
+            ResolvePlayerMovement();
+        }
 
         public override void OnStartClient()
         {
@@ -31,10 +38,11 @@ namespace Game.Player
             if (!IsOwner)
                 return;
 
-            _attachedToPlatform = null;
-            
             if (next <= 0)
+            {
+                _attachedToPlatform = null;
                 return;
+            }
 
             if (!NetworkManager.ClientManager.Objects.Spawned.TryGetValue(next, out var platformNetworkObject))
                 return;
@@ -74,13 +82,8 @@ namespace Game.Player
             if (_attachedToPlatform != null)
                 return;
 
-            _attachedToPlatform = platform;
-            NetworkObject.SetParent(platform);
-            
-            SetAttachedToPlatformObjectID(platform.OwnerId);
-            
-            if (_rigidbodyInterpolator != null)
-                _rigidbodyInterpolator.Ignore = true;
+            _candidatePlatform = platform;
+            TryAttachToGroundedCandidate();
         }
 
         private void OnTriggerExit2D(Collider2D other)
@@ -93,16 +96,67 @@ namespace Game.Player
                 return;
 
             var platform = trigger.Target;
-            if (_attachedToPlatform != platform)
+            if (_candidatePlatform == platform)
+                _candidatePlatform = null;
+
+            if (_attachedToPlatform == platform)
+                DetachFromPlatform();
+        }
+
+        private void LateUpdate()
+        {
+            if (!IsOwner)
                 return;
 
+            TryAttachToGroundedCandidate();
+
+            if (_rigidbodyInterpolator != null && _attachedToPlatform != null)
+                _rigidbodyInterpolator.Ignore = true;
+        }
+
+        private void TryAttachToGroundedCandidate()
+        {
+            if (!CanAttachToCandidate())
+                return;
+
+            AttachToPlatform(_candidatePlatform);
+        }
+
+        private bool CanAttachToCandidate()
+        {
+            ResolvePlayerMovement();
+            return _attachedToPlatform == null &&
+                   _candidatePlatform != null &&
+                   _playerMovement != null &&
+                   _playerMovement.GroundedPlatform == _candidatePlatform;
+        }
+
+        private void AttachToPlatform(Platform platform)
+        {
+            _attachedToPlatform = platform;
+            NetworkObject.SetParent(platform);
+
+            SetAttachedToPlatformObjectID(platform.NetworkObject.ObjectId);
+
+            if (_rigidbodyInterpolator != null)
+                _rigidbodyInterpolator.Ignore = true;
+        }
+
+        private void DetachFromPlatform()
+        {
             _attachedToPlatform = null;
             NetworkObject.UnsetParent();
-            
+
             SetAttachedToPlatformObjectID(-1);
-            
+
             if (_rigidbodyInterpolator != null)
                 _rigidbodyInterpolator.Ignore = false;
+        }
+
+        private void ResolvePlayerMovement()
+        {
+            if (_playerMovement == null)
+                _playerMovement = GetComponent<PlayerMovement>();
         }
 
         [ServerRpc]

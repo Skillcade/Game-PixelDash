@@ -48,6 +48,7 @@ namespace Game.Player
 
         public Vector2 VelocityVisual => IsOwner ? _rigidbody.Rigidbody.linearVelocity : _derivedVelocity;
         public bool IsGroundedVisual => IsOwner ? _isGrounded : _derivedIsGrounded;
+        public Platform GroundedPlatform { get; private set; }
         public float Health01 => Mathf.Clamp01(_healthSync.Value / _playerMovementConfig._maxHealth);
         private bool CanMove => _knockbackTimer <= 0 && _healthSync.Value > 0 && _gameStateMachine.CurrentStateType == GameStateType.Running;
         public Transform VisualsTransform => _visualsTransform;
@@ -241,6 +242,7 @@ namespace Game.Player
             var origin = transform.position + Vector3.up * _playerMovementConfig._groundCheckOffset;
             var hit = Physics2D.Raycast(origin, Vector2.down, _playerMovementConfig._groundCheckDistance, _playerMovementConfig._groundMask);
             _isGrounded = hit;
+            GroundedPlatform = hit.collider != null ? hit.collider.GetComponentInParent<Platform>() : null;
 #if UNITY_EDITOR
             var distance = hit ? hit.distance : _playerMovementConfig._groundCheckDistance;
             Debug.DrawLine(origin, origin + Vector3.down * distance, _isGrounded ? Color.green : Color.red);
